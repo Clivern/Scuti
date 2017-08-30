@@ -15,6 +15,8 @@ Vagrant.configure("2") do |config|
     # boxes at https://atlas.hashicorp.com/search.
     config.vm.box = "ubuntu/trusty64"
 
+    config.vm.hostname = "Jake"
+
     # Disable automatic box update checking. If you disable this, then
     # boxes will only be checked for updates when the user runs
     # `vagrant box outdated`. This is not recommended.
@@ -50,6 +52,8 @@ Vagrant.configure("2") do |config|
     # backing providers for Vagrant. These expose provider-specific options.
     # Example for VirtualBox:
     config.vm.provider "virtualbox" do |vb|
+        # Machine Name
+        vb.name = "Jake"
         # Display the VirtualBox GUI when booting the machine
         # vb.gui = true
         # Customize the amount of memory on the VM:
@@ -68,8 +72,11 @@ Vagrant.configure("2") do |config|
     # Enable provisioning with a shell script. Additional provisioners such as
     # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
     # documentation for more information about their specific syntax and use.
-    # config.vm.provision "shell", inline: <<-SHELL
-    #   apt-get update
-    #   apt-get install -y apache2
-    # SHELL
+    config.vm.provision "shell", inline: <<-SHELL
+        echo "Inline VM Provisioning!"
+    SHELL
+
+    config.vm.provision "shell" do |s|
+        s.path = "provision/setup.sh"
+    end
 end
