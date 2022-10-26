@@ -490,9 +490,7 @@ scuti_app.users_list = (Vue, axios, $) => {
 $(document).ready(() => {
     axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRF-Token': csrfToken,
-        'X-User-Token': Cookies.get('_token') || '',
-        'X-User-Id': Cookies.get('_uid') || ''
+        'X-CSRF-Token': csrfToken
     };
 
     if (document.getElementById("app_install")) {

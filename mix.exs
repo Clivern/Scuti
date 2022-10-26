@@ -58,8 +58,7 @@ defmodule Scuti.MixProject do
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.5"},
       {:bcrypt_elixir, "~> 3.0"},
-      {:req, "~> 0.4.0"},
-      {:prom_ex, "~> 1.9.0"}
+      {:req, "~> 0.4.0"}
     ]
   end
 
@@ -74,8 +73,8 @@ defmodule Scuti.MixProject do
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      # "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end
