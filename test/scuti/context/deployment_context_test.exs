@@ -26,8 +26,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -45,8 +43,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -94,8 +90,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -116,8 +110,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -148,8 +140,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -170,8 +160,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -204,8 +192,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -226,8 +212,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -260,8 +244,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -282,8 +264,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -299,8 +279,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~new_hosts_filter~",
           host_groups_filter: "~new_host_groups_filter~",
           patch_type: "~new_patch_type~",
-          pkgs_to_upgrade: "~new_pkgs_to_upgrade~",
-          pkgs_to_exclude: "~new_pkgs_to_exclude~",
           pre_patch_script: "~new_pre_patch_script~",
           patch_script: "~new_patch_script~",
           post_patch_script: "~new_post_patch_script~",
@@ -319,8 +297,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~new_hosts_filter~"
       assert deployment.host_groups_filter == "~new_host_groups_filter~"
       assert deployment.patch_type == "~new_patch_type~"
-      assert deployment.pkgs_to_upgrade == "~new_pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~new_pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~new_pre_patch_script~"
       assert deployment.patch_script == "~new_patch_script~"
       assert deployment.post_patch_script == "~new_post_patch_script~"
@@ -350,8 +326,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -372,8 +346,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -410,8 +382,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -432,8 +402,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -470,8 +438,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -492,8 +458,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -531,8 +495,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -553,8 +515,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -593,8 +553,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -615,8 +573,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -655,8 +611,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -677,8 +631,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
-      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
-      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
       assert deployment.patch_script == "~patch_script~"
       assert deployment.post_patch_script == "~post_patch_script~"
@@ -716,8 +668,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -769,8 +719,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -822,8 +770,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -885,8 +831,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -943,8 +887,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",
@@ -997,8 +939,6 @@ defmodule Scuti.Context.DeploymentContextTest do
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
-          pkgs_to_upgrade: "~pkgs_to_upgrade~",
-          pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
           patch_script: "~patch_script~",
           post_patch_script: "~post_patch_script~",

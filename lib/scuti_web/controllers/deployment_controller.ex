@@ -76,8 +76,6 @@ defmodule ScutiWeb.DeploymentController do
           hosts_filter: hosts_filter,
           host_groups_filter: host_groups_filter,
           patch_type: patch_type,
-          pkgs_to_upgrade: "~",
-          pkgs_to_exclude: "~",
           pre_patch_script: pre_patch_script,
           patch_script: patch_script,
           post_patch_script: post_patch_script,

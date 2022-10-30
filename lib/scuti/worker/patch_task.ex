@@ -24,8 +24,6 @@ defmodule Scuti.Worker.PatchTask do
           host_uuid: msg.host.uuid,
           task_uuid: msg.task.uuid,
           patch_type: payload["patch_type"],
-          pkgs_to_upgrade: payload["pkgs_to_upgrade"] || "",
-          pkgs_to_exclude: payload["pkgs_to_exclude"] || "",
           pre_patch_script: payload["pre_patch_script"] || "",
           patch_script: payload["patch_script"] || "",
           post_patch_script: payload["post_patch_script"] || "",
@@ -67,13 +65,11 @@ defmodule Scuti.Worker.PatchTask do
          host_uuid: host_uuid,
          task_uuid: task_uuid,
          patch_type: patch_type,
-         pkgs_to_upgrade: pkgs_to_upgrade,
-         pkgs_to_exclude: pkgs_to_exclude,
          pre_patch_script: pre_patch_script,
          patch_script: patch_script,
          post_patch_script: post_patch_script,
          post_patch_reboot_option: post_patch_reboot_option
        }) do
-    ~c"{\"deployment_uuid\":\"#{deployment_uuid}\",\"host_uuid\":\"#{host_uuid}\",\"task_uuid\":\"#{task_uuid}\",\"patch_type\":\"#{patch_type}\",\"pkgs_to_upgrade\":\"#{pkgs_to_upgrade}\",\"pkgs_to_exclude\":\"#{pkgs_to_exclude}\",\"pre_patch_script\":\"#{pre_patch_script}\",\"patch_script\":\"#{patch_script}\",\"post_patch_script\":\"#{post_patch_script}\",\"post_patch_reboot_option\":\"#{post_patch_reboot_option}\"}"
+    ~c"{\"deployment_uuid\":\"#{deployment_uuid}\",\"host_uuid\":\"#{host_uuid}\",\"task_uuid\":\"#{task_uuid}\",\"patch_type\":\"#{patch_type}\",\"pre_patch_script\":\"#{pre_patch_script}\",\"patch_script\":\"#{patch_script}\",\"post_patch_script\":\"#{post_patch_script}\",\"post_patch_reboot_option\":\"#{post_patch_reboot_option}\"}"
   end
 end

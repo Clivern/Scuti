@@ -23,8 +23,6 @@ defmodule Scuti.Context.DeploymentContext do
       hosts_filter: attrs.hosts_filter,
       host_groups_filter: attrs.host_groups_filter,
       patch_type: attrs.patch_type,
-      pkgs_to_upgrade: attrs.pkgs_to_upgrade,
-      pkgs_to_exclude: attrs.pkgs_to_exclude,
       pre_patch_script: attrs.pre_patch_script,
       patch_script: attrs.patch_script,
       post_patch_script: attrs.post_patch_script,

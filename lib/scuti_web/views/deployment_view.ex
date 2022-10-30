@@ -22,8 +22,6 @@ defmodule ScutiWeb.DeploymentView do
       hosts_filter: deployment.hosts_filter,
       host_groups_filter: deployment.host_groups_filter,
       patch_type: deployment.patch_type,
-      pkgs_to_upgrade: deployment.pkgs_to_upgrade,
-      pkgs_to_exclude: deployment.pkgs_to_exclude,
       pre_patch_script: deployment.pre_patch_script,
       patch_script: deployment.patch_script,
       post_patch_script: deployment.post_patch_script,

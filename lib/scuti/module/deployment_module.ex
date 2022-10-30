@@ -20,8 +20,6 @@ defmodule Scuti.Module.DeploymentModule do
         hosts_filter: data[:hosts_filter],
         host_groups_filter: data[:host_groups_filter],
         patch_type: data[:patch_type],
-        pkgs_to_upgrade: data[:pkgs_to_upgrade],
-        pkgs_to_exclude: data[:pkgs_to_exclude],
         pre_patch_script: data[:pre_patch_script],
         patch_script: data[:patch_script],
         post_patch_script: data[:post_patch_script],

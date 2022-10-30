@@ -22,10 +22,7 @@ defmodule Scuti.Model.Deployment do
 
     # :os_upgrade || :distribution_upgrade || :custom_system_patch
     field :patch_type, :string
-    # ONLY IF patch_type IS :upgrade
-    field :pkgs_to_upgrade, :string
-    # ONLY IF patch_type IS :upgrade
-    field :pkgs_to_exclude, :string
+
     # ALWAYS Available
     field :pre_patch_script, :string
     field :patch_script, :string
@@ -60,8 +57,6 @@ defmodule Scuti.Model.Deployment do
       :hosts_filter,
       :host_groups_filter,
       :patch_type,
-      :pkgs_to_upgrade,
-      :pkgs_to_exclude,
       :pre_patch_script,
       :patch_script,
       :post_patch_script,
@@ -81,8 +76,6 @@ defmodule Scuti.Model.Deployment do
       :hosts_filter,
       :host_groups_filter,
       :patch_type,
-      # :pkgs_to_upgrade,
-      # :pkgs_to_exclude,
       # :pre_patch_script,
       # :patch_script,
       # :post_patch_script,

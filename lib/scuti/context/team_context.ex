@@ -26,11 +26,11 @@ defmodule Scuti.Context.TeamContext do
   @doc """
   Get a team meta
   """
-  def new_meta(attrs \\ %{}) do
+  def new_meta(meta \\ %{}) do
     %{
-      key: attrs.key,
-      value: attrs.value,
-      team_id: attrs.team_id
+      key: meta.key,
+      value: meta.value,
+      team_id: meta.team_id
     }
   end
 

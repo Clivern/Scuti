@@ -15,8 +15,6 @@ defmodule Scuti.Repo.Migrations.CreateDeployments do
       add :host_groups_filter, :string
 
       add :patch_type, :string
-      add :pkgs_to_upgrade, :string
-      add :pkgs_to_exclude, :string
 
       add :pre_patch_script, :string
       add :patch_script, :string
