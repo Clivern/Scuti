@@ -8,7 +8,6 @@ defmodule Scuti.Module.TaskModule do
   """
 
   alias Scuti.Context.TaskContext
-  alias Scuti.Service.ValidatorService
   alias Scuti.Module.DeploymentModule
 
   @doc """
