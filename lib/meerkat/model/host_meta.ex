@@ -2,34 +2,34 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.StateMeta do
+defmodule Meerkat.Model.HostMeta do
   @moduledoc """
-  StateMeta Model
+  HostMeta Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "states_meta" do
+  schema "hosts_meta" do
     field :key, :string
     field :value, :string
-    field :state_id, :id
+    field :host_id, :id
 
     timestamps()
   end
 
   @doc false
-  def changeset(state_meta, attrs) do
-    state_meta
+  def changeset(meta, attrs) do
+    meta
     |> cast(attrs, [
       :key,
       :value,
-      :state_id
+      :host_id
     ])
     |> validate_required([
       :key,
       :value,
-      :state_id
+      :host_id
     ])
   end
 end

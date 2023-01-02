@@ -2,20 +2,22 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.Project do
+defmodule Meerkat.Model.Log do
   @moduledoc """
-  Project Model
+  Log Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "projects" do
+  schema "logs" do
     field :uuid, Ecto.UUID
-    field :name, :string
-    field :slug, :string
-    field :description, :string
+    field :user_id, :id
     field :team_id, :id
+    field :host_id, :id
+    field :host_group_id, :id
+    field :deployment_id, :id
+    field :record, :string
 
     timestamps()
   end
@@ -25,17 +27,16 @@ defmodule Meerkat.Model.Project do
     project
     |> cast(attrs, [
       :uuid,
-      :name,
-      :slug,
-      :description,
-      :team_id
+      :user_id,
+      :team_id,
+      :host_id,
+      :host_group_id,
+      :deployment_id,
+      :record
     ])
     |> validate_required([
       :uuid,
-      :name,
-      :slug,
-      :description,
-      :team_id
+      :record
     ])
   end
 end

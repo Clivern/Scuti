@@ -2,37 +2,40 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.State do
+defmodule Meerkat.Model.Task do
   @moduledoc """
-  State Model
+  Task Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "states" do
+  schema "tasks" do
     field :uuid, Ecto.UUID
-    field :name, :string
-    field :value, :string
-    field :environment_id, :id
+    field :deployment_id, :id
+    field :payload, :string
+    field :result, :string
+    field :status, :string
 
     timestamps()
   end
 
   @doc false
-  def changeset(state, attrs) do
-    state
+  def changeset(meta, attrs) do
+    meta
     |> cast(attrs, [
       :uuid,
-      :name,
-      :value,
-      :environment_id
+      :deployment_id,
+      :payload,
+      :result,
+      :status
     ])
     |> validate_required([
       :uuid,
-      :name,
-      :value,
-      :environment_id
+      :deployment_id,
+      :payload,
+      :result,
+      :status
     ])
   end
 end

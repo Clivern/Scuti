@@ -2,34 +2,34 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.Team do
+defmodule Meerkat.Model.LogMeta do
   @moduledoc """
-  Team Model
+  LogMeta Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "teams" do
-    field :uuid, Ecto.UUID
-    field :name, :string
-    field :description, :string
+  schema "logs_meta" do
+    field :key, :string
+    field :value, :string
+    field :log_id, :id
 
     timestamps()
   end
 
   @doc false
-  def changeset(state, attrs) do
-    state
+  def changeset(meta, attrs) do
+    meta
     |> cast(attrs, [
-      :uuid,
-      :name,
-      :description
+      :key,
+      :value,
+      :log_id
     ])
     |> validate_required([
-      :uuid,
-      :name,
-      :description
+      :key,
+      :value,
+      :log_id
     ])
   end
 end

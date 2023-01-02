@@ -2,8 +2,8 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Module.EnvironmentModule do
+defmodule Meerkat.Context.DeploymentContext do
   @moduledoc """
-  Environment Module
+  Deployment Context Module
   """
 end

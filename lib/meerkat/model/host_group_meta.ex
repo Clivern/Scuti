@@ -2,34 +2,34 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.ProjectMeta do
+defmodule Meerkat.Model.HostGroupMeta do
   @moduledoc """
-  ProjectMeta Model
+  HostGroupMeta Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "projects_meta" do
+  schema "host_groups_meta" do
     field :key, :string
     field :value, :string
-    field :project_id, :id
+    field :host_group_id, :id
 
     timestamps()
   end
 
   @doc false
-  def changeset(project_meta, attrs) do
-    project_meta
+  def changeset(meta, attrs) do
+    meta
     |> cast(attrs, [
       :key,
       :value,
-      :project_id
+      :host_group_id
     ])
     |> validate_required([
       :key,
       :value,
-      :project_id
+      :host_group_id
     ])
   end
 end

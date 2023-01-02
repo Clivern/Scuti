@@ -2,34 +2,34 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.LockMeta do
+defmodule Meerkat.Model.TaskMeta do
   @moduledoc """
-  LockMeta Model
+  TaskMeta Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "locks_meta" do
+  schema "tasks_meta" do
     field :key, :string
     field :value, :string
-    field :lock_id, :id
+    field :task_id, :id
 
     timestamps()
   end
 
   @doc false
-  def changeset(lock_meta, attrs) do
-    lock_meta
+  def changeset(meta, attrs) do
+    meta
     |> cast(attrs, [
       :key,
       :value,
-      :lock_id
+      :task_id
     ])
     |> validate_required([
       :key,
       :value,
-      :lock_id
+      :task_id
     ])
   end
 end

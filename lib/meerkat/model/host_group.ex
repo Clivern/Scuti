@@ -2,23 +2,20 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.Lock do
+defmodule Meerkat.Model.HostGroup do
   @moduledoc """
-  Lock Model
+  HostGroup Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "locks" do
+  schema "host_groups" do
     field :uuid, Ecto.UUID
-    field :environment_id, :id
-    field :operation, :string
-    field :info, :string
-    field :who, :string
-    field :version, :string
-    field :path, :string
-    field :is_active, :boolean
+    field :team_id, :id
+    field :name, :string
+    field :api_key, :string
+    field :labels, :string
 
     timestamps()
   end
@@ -28,17 +25,17 @@ defmodule Meerkat.Model.Lock do
     lock
     |> cast(attrs, [
       :uuid,
-      :environment_id,
-      :operation,
-      :info,
-      :who,
-      :version,
-      :path,
-      :is_active
+      :team_id,
+      :name,
+      :api_key,
+      :labels
     ])
     |> validate_required([
       :uuid,
-      :environment_id
+      :team_id,
+      :name,
+      :api_key,
+      :labels
     ])
   end
 end

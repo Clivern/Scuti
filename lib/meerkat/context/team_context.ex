@@ -16,7 +16,6 @@ defmodule Meerkat.Context.TeamContext do
   """
   def new_team(team \\ %{}) do
     %{
-      slug: team.slug,
       name: team.name,
       description: team.description,
       uuid: Ecto.UUID.generate()
@@ -57,17 +56,6 @@ defmodule Meerkat.Context.TeamContext do
     from(
       t in Team,
       where: t.uuid == ^uuid
-    )
-    |> Repo.one()
-  end
-
-  @doc """
-  Get team by slug
-  """
-  def get_team_by_slug(slug) do
-    from(
-      t in Team,
-      where: t.slug == ^slug
     )
     |> Repo.one()
   end

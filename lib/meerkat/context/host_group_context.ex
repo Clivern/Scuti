@@ -2,9 +2,9 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Context.ProjectContext do
+defmodule Meerkat.Context.HostGroupContext do
   @moduledoc """
-  Project Context Module
+  HostGroup Context Module
   """
 
   import Ecto.Query

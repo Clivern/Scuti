@@ -2,34 +2,34 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.EnvironmentMeta do
+defmodule Meerkat.Model.DeploymentMeta do
   @moduledoc """
-  EnvironmentMeta Model
+  DeploymentMeta Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "environments_meta" do
+  schema "deployments_meta" do
     field :key, :string
     field :value, :string
-    field :environment_id, :id
+    field :deployment_id, :id
 
     timestamps()
   end
 
   @doc false
-  def changeset(lock_meta, attrs) do
-    lock_meta
+  def changeset(meta, attrs) do
+    meta
     |> cast(attrs, [
       :key,
       :value,
-      :environment_id
+      :deployment_id
     ])
     |> validate_required([
       :key,
       :value,
-      :environment_id
+      :deployment_id
     ])
   end
 end

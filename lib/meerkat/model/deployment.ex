@@ -2,21 +2,19 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Model.Environment do
+defmodule Meerkat.Model.Deployment do
   @moduledoc """
-  Environment Model
+  Deployment Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "environments" do
+  schema "deployments" do
     field :uuid, Ecto.UUID
     field :name, :string
-    field :slug, :string
-    field :username, :string
-    field :secret, :string
-    field :project_id, :id
+    field :value, :string
+    field :environment_id, :id
 
     timestamps()
   end
@@ -27,18 +25,14 @@ defmodule Meerkat.Model.Environment do
     |> cast(attrs, [
       :uuid,
       :name,
-      :slug,
-      :username,
-      :secret,
-      :project_id
+      :value,
+      :environment_id
     ])
     |> validate_required([
       :uuid,
       :name,
-      :slug,
-      :username,
-      :secret,
-      :project_id
+      :value,
+      :environment_id
     ])
   end
 end
