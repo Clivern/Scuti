@@ -27,11 +27,6 @@ defmodule MeerkatWeb.Router do
     plug Meerkat.Middleware.Logger
   end
 
-  pipeline :client do
-    plug :accepts, ["json"]
-    plug Meerkat.Middleware.Logger
-  end
-
   scope "/", MeerkatWeb do
     pipe_through :browser
 
@@ -59,45 +54,47 @@ defmodule MeerkatWeb.Router do
     # User CRUD
     get "/user", UserController, :list
     post "/user", UserController, :create
-    get "/user/:uid", UserController, :index
-    put "/user/:uid", UserController, :update
-    delete "/user/:uid", UserController, :delete
+    get "/user/:id", UserController, :index
+    put "/user/:id", UserController, :update
+    delete "/user/:id", UserController, :delete
 
     # Team CRUD
     get "/team", TeamController, :list
     post "/team", TeamController, :create
-    get "/team/:tid", TeamController, :index
-    put "/team/:tid", TeamController, :update
-    delete "/team/:tid", TeamController, :delete
+    get "/team/:id", TeamController, :index
+    put "/team/:id", TeamController, :update
+    delete "/team/:id", TeamController, :delete
 
     # Settings Endpoint
     put "/settings", SettingsController, :update
 
-    # Project CRUD
-    get "/project", ProjectController, :list
-    post "/project", ProjectController, :create
-    get "/project/:pid", ProjectController, :index
-    put "/project/:pid", ProjectController, :update
-    delete "/project/:pid", ProjectController, :delete
+    # HostGroup CRUD
+    get "/hostGroup", HostGroupController, :list
+    post "/hostGroup", HostGroupController, :create
+    get "/hostGroup/:id", HostGroupController, :index
+    put "/hostGroup/:id", HostGroupController, :update
+    delete "/hostGroup/:id", HostGroupController, :delete
 
-    # Environment CRUD
-    get "/project/:pid/environment", EnvironmentController, :list
-    post "/project/:pid/environment", EnvironmentController, :create
-    get "/project/:pid/environment/:eid", EnvironmentController, :index
-    put "/project/:pid/environment/:eid", EnvironmentController, :update
-    delete "/project/:pid/environment/:eid", EnvironmentController, :delete
-  end
+    # Host CRUD
+    get "/hostGroup/hgid/host", HostController, :list
+    post "/hostGroup/hgid/host", HostController, :create
+    get "/hostGroup/hgid/host/:hid", HostController, :index
+    put "/hostGroup/hgid/host/:hid", HostController, :update
+    delete "/hostGroup/hgid/host/:hid", HostController, :delete
 
-  scope "/client", MeerkatWeb do
-    pipe_through :client
+    # Deployment CRUD
+    get "/deployment", DeploymentController, :list
+    post "/deployment", DeploymentController, :create
+    get "/deployment/:id", DeploymentController, :index
+    put "/deployment/:id", DeploymentController, :update
+    delete "/deployment/:id", DeploymentController, :delete
 
-    # Locking API
-    post "/:tsg/:psg/:esg/lock", LockController, :lock
-    post "/:tsg/:psg/:esg/unlock", LockController, :unlock
-
-    # State API
-    get "/:tsg/:psg/:esg/state", StateController, :index
-    post "/:tsg/:psg/:esg/state", StateController, :create
+    # Task CRUD
+    get "/task", TaskController, :list
+    post "/task", TaskController, :create
+    get "/task/:id", TaskController, :index
+    put "/task/:id", TaskController, :update
+    delete "/task/:id", TaskController, :delete
   end
 
   # Enables LiveDashboard only for development

@@ -8,6 +8,7 @@ defmodule MeerkatWeb.HealthController do
   """
 
   use MeerkatWeb, :controller
+
   require Logger
 
   @doc """

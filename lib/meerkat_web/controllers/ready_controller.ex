@@ -8,6 +8,7 @@ defmodule MeerkatWeb.ReadyController do
   """
 
   use MeerkatWeb, :controller
+
   require Logger
 
   @doc """
