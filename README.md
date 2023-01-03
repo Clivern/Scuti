@@ -1,7 +1,7 @@
 <p align="center">
     <img alt="Meerkat Logo" src="/assets/img/logo.png?v=0.4.0" width="250" />
     <h3 align="center">Meerkat</h3>
-    <p align="center">A Fast, Secure and Reliable Terraform Backend, Set up in Minutes.</p>
+    <p align="center">A Lightweight and Reliable Patching Configuration System, Set up in Minutes.</p>
     <p align="center">
         <a href="https://github.com/Clivern/Meerkat/actions/workflows/ci.yml">
             <img src="https://github.com/Clivern/Meerkat/actions/workflows/ci.yml/badge.svg"/>
@@ -14,67 +14,6 @@
         </a>
     </p>
 </p>
-
-
-### Getting Started
-
-To install dependencies.
-
-```zsh
-$ make deps
-```
-
-To create and migrate your database.
-
-```zsh
-$ make migrate
-```
-
-To start the application.
-
-```zsh
-$ cp .env.example .env.local
-$ export $(cat .env | xargs)
-
-$ make run
-```
-
-Now you can visit [localhost:4000](http://localhost:4000) from your browser.
-
-To run test cases:
-
-```zsh
-$ make ci
-```
-
-To list all commands:
-
-```zsh
-$ make
-```
-
-To run `postgresql` with `docker`
-
-```zsh
-$ docker run -itd \
-    -e POSTGRES_USER=meerkat \
-    -e POSTGRES_PASSWORD=meerkat \
-    -e POSTGRES_DB=meerkat_dev \
-    -p 5432:5432 \
-    --name postgresql \
-    postgres:15.2
-
-$ podman run -itd \
-    -e POSTGRES_USER=meerkat \
-    -e POSTGRES_PASSWORD=meerkat \
-    -e POSTGRES_DB=meerkat_dev \
-    -p 5432:5432 \
-    --name postgresql \
-    postgres:15.2
-
-# https://github.com/dbcli/pgcli
-$ psql -h 127.0.0.1 -U meerkat -d meerkat_dev -W
-```
 
 
 ### Versioning
