@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="Meerkat Logo" src="/assets/img/logo.png?v=0.4.0" width="100" />
+    <img alt="Meerkat Logo" src="/assets/img/logo.png?v=0.4.0" width="180" />
     <h3 align="center">Meerkat</h3>
     <p align="center">A Lightweight and Reliable Patching Configuration System, Set up in Minutes.</p>
     <p align="center">
