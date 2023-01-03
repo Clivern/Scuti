@@ -28,6 +28,21 @@ defmodule Meerkat.Context.TeamContextTest do
     end
   end
 
+  describe "new_meta/1" do
+    test "returns a new team meta" do
+      meta =
+        TeamContext.new_meta(%{
+          key: "meta_key",
+          value: "meta_value",
+          team_id: 1
+        })
+
+      assert meta.key == "meta_key"
+      assert meta.value == "meta_value"
+      assert meta.team_id == 1
+    end
+  end
+
   describe "create_team/1" do
     test "creates a new team" do
       attrs =
@@ -99,7 +114,6 @@ defmodule Meerkat.Context.TeamContextTest do
       {status2, updated_team} = TeamContext.update_team(team1, updated_attrs)
 
       assert status2 == :ok
-
       assert updated_team.name == "Team 6"
       assert updated_team.description == "Description 6"
       assert updated_team.uuid == team1.uuid
@@ -324,7 +338,7 @@ defmodule Meerkat.Context.TeamContextTest do
 
       {_, team_meta} = TeamContext.create_team_meta(attrs)
 
-      result =  TeamContext.get_team_meta_by_id_key(team.id, team_meta.key)
+      result = TeamContext.get_team_meta_by_id_key(team.id, team_meta.key)
 
       assert result == team_meta
     end
@@ -349,7 +363,7 @@ defmodule Meerkat.Context.TeamContextTest do
 
       {_, team_meta} = TeamContext.create_team_meta(attrs)
 
-      result =  TeamContext.get_team_metas(team.id)
+      result = TeamContext.get_team_metas(team.id)
 
       assert result == [team_meta]
     end
