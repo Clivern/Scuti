@@ -2,9 +2,9 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule MeerkatWeb.EnvironmentController do
+defmodule MeerkatWeb.HostGroupController do
   @moduledoc """
-  Environment Controller
+  HostGroup Controller
   """
 
   use MeerkatWeb, :controller
