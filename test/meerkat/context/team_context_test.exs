@@ -1,13 +1,22 @@
+# Copyright 2023 Clivern. All rights reserved.
+# Use of this source code is governed by the MIT
+# license that can be found in the LICENSE file.
+
 defmodule Meerkat.Context.TeamContextTest do
+  @moduledoc """
+  Team Context Test Cases
+  """
   use ExUnit.Case
 
   alias Meerkat.Context.TeamContext
 
   describe "new_team/1" do
     test "returns a new team" do
-      team = TeamContext.new_team(%{slug: "team-1", name: "Team 1", description: "Description 1"})
+      team = TeamContext.new_team(%{
+        name: "Team 1",
+        description: "Description 1"
+      })
 
-      assert team.slug == "team-1"
       assert team.name == "Team 1"
       assert team.description == "Description 1"
       assert is_binary(team.uuid)
@@ -16,10 +25,9 @@ defmodule Meerkat.Context.TeamContextTest do
 
   describe "create_team/1" do
     test "creates a new team" do
-      attrs = %{slug: "team-1", name: "Team 1", description: "Description 1"}
+      attrs = %{name: "Team 1", description: "Description 1"}
       team = TeamContext.create_team(attrs)
 
-      assert team.slug == "team-1"
       assert team.name == "Team 1"
       assert team.description == "Description 1"
       assert is_binary(team.uuid)
@@ -28,7 +36,7 @@ defmodule Meerkat.Context.TeamContextTest do
 
   describe "get_team_by_id/1" do
     test "returns the team with the given ID" do
-      attrs = %{slug: "team-1", name: "Team 1", description: "Description 1"}
+      attrs = %{name: "Team 1", description: "Description 1"}
       team = TeamContext.create_team(attrs)
 
       result = TeamContext.get_team_by_id(team.id)
@@ -39,7 +47,7 @@ defmodule Meerkat.Context.TeamContextTest do
 
   describe "get_team_by_uuid/1" do
     test "returns the team with the given UUID" do
-      attrs = %{slug: "team-1", name: "Team 1", description: "Description 1"}
+      attrs = %{name: "Team 1", description: "Description 1"}
       team = TeamContext.create_team(attrs)
 
       result = TeamContext.get_team_by_uuid(team.uuid)
@@ -48,23 +56,12 @@ defmodule Meerkat.Context.TeamContextTest do
     end
   end
 
-  describe "get_team_by_slug/1" do
-    test "returns the team with the given slug" do
-      attrs = %{slug: "team-1", name: "Team 1", description: "Description 1"}
-      team = TeamContext.create_team(attrs)
-
-      result = TeamContext.get_team_by_slug(team.slug)
-
-      assert result == team
-    end
-  end
-
   describe "update_team/2" do
     test "updates the team with the given attributes" do
-      attrs = %{slug: "team-1", name: "Team 1", description: "Description 1"}
+      attrs = %{name: "Team 1", description: "Description 1"}
       team = TeamContext.create_team(attrs)
 
-      updated_attrs = %{slug: "team-2", name: "Team 2", description: "Description 2"}
+      updated_attrs = %{name: "Team 2", description: "Description 2"}
       updated_team = TeamContext.update_team(team, updated_attrs)
 
       assert updated_team.slug == "team-2"
@@ -76,7 +73,7 @@ defmodule Meerkat.Context.TeamContextTest do
 
   describe "delete_team/1" do
     test "deletes the given team" do
-      attrs = %{slug: "team-1", name: "Team 1", description: "Description 1"}
+      attrs = %{name: "Team 1", description: "Description 1"}
       team = TeamContext.create_team(attrs)
 
       TeamContext.delete_team(team)
@@ -87,8 +84,8 @@ defmodule Meerkat.Context.TeamContextTest do
 
   describe "get_teams/0" do
     test "returns all teams" do
-      attrs1 = %{slug: "team-1", name: "Team 1", description: "Description 1"}
-      attrs2 = %{slug: "team-2", name: "Team 2", description: "Description 2"}
+      attrs1 = %{name: "Team 1", description: "Description 1"}
+      attrs2 = %{name: "Team 2", description: "Description 2"}
       team1 = TeamContext.create_team(attrs1)
       team2 = TeamContext.create_team(attrs2)
 
@@ -100,9 +97,9 @@ defmodule Meerkat.Context.TeamContextTest do
 
   describe "get_teams/2" do
     test "returns the teams with the given offset and limit" do
-      attrs1 = %{slug: "team-1", name: "Team 1", description: "Description 1"}
-      attrs2 = %{slug: "team-2", name: "Team 2", description: "Description 2"}
-      attrs3 = %{slug: "team-3", name: "Team 3", description: "Description 3"}
+      attrs1 = %{name: "Team 1", description: "Description 1"}
+      attrs2 = %{name: "Team 2", description: "Description 2"}
+      attrs3 = %{name: "Team 3", description: "Description 3"}
       team1 = TeamContext.create_team(attrs1)
       team2 = TeamContext.create_team(attrs2)
       team3 = TeamContext.create_team(attrs3)

@@ -9,12 +9,11 @@ defmodule Meerkat.Repo.Migrations.CreateTeams do
     create table(:teams) do
       add :uuid, :uuid
       add :name, :string
-      add :slug, :string, unique: true
       add :description, :string
 
       timestamps()
     end
 
-    create index(:teams, [:slug])
+    create index(:teams, [:uuid])
   end
 end
