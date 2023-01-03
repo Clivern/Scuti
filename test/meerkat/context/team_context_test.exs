@@ -329,4 +329,29 @@ defmodule Meerkat.Context.TeamContextTest do
       assert result == team_meta
     end
   end
+
+  describe "get_team_metas/1" do
+    test "get all metas for a team" do
+      attrs1 =
+        TeamContext.new_team(%{
+          name: "team_222",
+          description: "description_222"
+        })
+
+      {_, team} = TeamContext.create_team(attrs1)
+
+      attrs =
+        TeamContext.new_meta(%{
+          key: "foo_222",
+          value: "bar_222",
+          team_id: team.id
+        })
+
+      {_, team_meta} = TeamContext.create_team_meta(attrs)
+
+      result =  TeamContext.get_team_metas(team.id)
+
+      assert result == [team_meta]
+    end
+  end
 end
