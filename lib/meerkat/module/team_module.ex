@@ -145,10 +145,4 @@ defmodule Meerkat.Module.TeamModule do
         {:error, "Invalid Team ID"}
     end
   end
-
-  @doc """
-  Generate slug from team name
-  """
-  def generate_team_slug(_name) do
-  end
 end

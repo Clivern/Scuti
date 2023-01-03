@@ -170,9 +170,9 @@ defmodule Meerkat.Context.TeamContextTest do
           description: "Description 3"
         })
 
-      {status1, team1} = TeamContext.create_team(attrs1)
+      {status1, _} = TeamContext.create_team(attrs1)
       {status2, team2} = TeamContext.create_team(attrs2)
-      {status3, team3} = TeamContext.create_team(attrs3)
+      {status3, _} = TeamContext.create_team(attrs3)
 
       assert status1 == :ok
       assert status2 == :ok
@@ -302,6 +302,31 @@ defmodule Meerkat.Context.TeamContextTest do
       TeamContext.delete_team_meta(team_meta)
 
       assert TeamContext.get_team_meta_by_id(team_meta.id) == nil
+    end
+  end
+
+  describe "get_team_meta_by_id_key/2" do
+    test "get team meta by team id and key" do
+      attrs1 =
+        TeamContext.new_team(%{
+          name: "team_111",
+          description: "description_111"
+        })
+
+      {_, team} = TeamContext.create_team(attrs1)
+
+      attrs =
+        TeamContext.new_meta(%{
+          key: "foo_111",
+          value: "bar_111",
+          team_id: team.id
+        })
+
+      {_, team_meta} = TeamContext.create_team_meta(attrs)
+
+      result =  TeamContext.get_team_meta_by_id_key(team.id, team_meta.key)
+
+      assert result == team_meta
     end
   end
 end
