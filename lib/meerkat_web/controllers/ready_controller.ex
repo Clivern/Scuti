@@ -15,7 +15,7 @@ defmodule MeerkatWeb.ReadyController do
   Ready Endpoint
   """
   def ready(conn, _params) do
-    Logger.info("Application is ready")
+    Logger.info("Application is ready. RequestId=#{conn.assigns[:request_id]}")
 
     conn
     |> put_resp_content_type("application/json")
