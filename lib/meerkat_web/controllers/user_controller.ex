@@ -98,8 +98,10 @@ defmodule MeerkatWeb.UserController do
   @doc """
   Delete Action Endpoint
   """
-  def delete(conn, %{"uid" => uid}) do
-    result = UserModule.delete_user(uid)
+  def delete(conn, %{"id" => id}) do
+    Logger.info("Delete user with id #{id}. RequestId=#{conn.assigns[:request_id]}")
+
+    result = UserModule.delete_user(id)
 
     case result do
       {:not_found, msg} ->

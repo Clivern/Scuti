@@ -9,6 +9,9 @@ defmodule MeerkatWeb.HostController do
 
   use MeerkatWeb, :controller
 
+  alias Meerkat.Module.HostModule
+  alias Meerkat.Service.ValidatorService
+
   require Logger
 
   @default_list_limit "10"
@@ -87,9 +90,25 @@ defmodule MeerkatWeb.HostController do
   @doc """
   Delete Action Endpoint
   """
-  def delete(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def delete(conn, %{"hid" => id}) do
+    Logger.info("Delete host with id #{id}. RequestId=#{conn.assigns[:request_id]}")
+
+    result = HostModule.delete_host(id)
+
+    case result do
+      {:not_found, msg} ->
+        conn
+        |> put_status(:not_found)
+        |> render("error.json", %{error: msg})
+
+      {:ok, _} ->
+        conn
+        |> send_resp(:no_content, "")
+
+      {:error, msg} ->
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{error: msg})
+    end
   end
 end

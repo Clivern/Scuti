@@ -76,11 +76,11 @@ defmodule MeerkatWeb.Router do
     delete "/hostGroup/:id", HostGroupController, :delete
 
     # Host CRUD
-    get "/hostGroup/hgid/host", HostController, :list
-    post "/hostGroup/hgid/host", HostController, :create
-    get "/hostGroup/hgid/host/:hid", HostController, :index
-    put "/hostGroup/hgid/host/:hid", HostController, :update
-    delete "/hostGroup/hgid/host/:hid", HostController, :delete
+    get "/hostGroup/:hgid/host", HostController, :list
+    post "/hostGroup/:hgid/host", HostController, :create
+    get "/hostGroup/:hgid/host/:hid", HostController, :index
+    put "/hostGroup/:hgid/host/:hid", HostController, :update
+    delete "/hostGroup/:hgid/host/:hid", HostController, :delete
 
     # Deployment CRUD
     get "/deployment", DeploymentController, :list

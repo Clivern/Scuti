@@ -98,8 +98,10 @@ defmodule MeerkatWeb.TeamController do
   @doc """
   Delete Action Endpoint
   """
-  def delete(conn, %{"tid" => tid}) do
-    result = TeamModule.delete_team(tid)
+  def delete(conn, %{"id" => id}) do
+    Logger.info("Delete team with id #{id}. RequestId=#{conn.assigns[:request_id]}")
+
+    result = TeamModule.delete_team(id)
 
     case result do
       {:not_found, msg} ->

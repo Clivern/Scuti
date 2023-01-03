@@ -9,6 +9,9 @@ defmodule MeerkatWeb.DeploymentController do
 
   use MeerkatWeb, :controller
 
+  alias Meerkat.Module.DeploymentModule
+  alias Meerkat.Service.ValidatorService
+
   require Logger
 
   @default_list_limit "10"
@@ -87,9 +90,25 @@ defmodule MeerkatWeb.DeploymentController do
   @doc """
   Delete Action Endpoint
   """
-  def delete(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def delete(conn, %{"id" => id}) do
+    Logger.info("Delete deployment with id #{id}. RequestId=#{conn.assigns[:request_id]}")
+
+    result = DeploymentModule.delete_deployment(id)
+
+    case result do
+      {:not_found, msg} ->
+        conn
+        |> put_status(:not_found)
+        |> render("error.json", %{error: msg})
+
+      {:ok, _} ->
+        conn
+        |> send_resp(:no_content, "")
+
+      {:error, msg} ->
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{error: msg})
+    end
   end
 end
