@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkweb"]=self["webpackChunkweb"]||[]).push([[255],{6255:function(e,t,l){l.r(t),l.d(t,{default:function(){return o}});var n=function(){var e=this,t=e._self._c;return t("div",{})},s=[],r={name:"HostGroupsAddPage",data(){return{loader:{isFullPage:!0,ref:null}}},methods:{loading(){this.loader.ref=this.$buefy.loading.open({container:this.loader.isFullPage?null:this.$refs.element.$el})}},mounted(){this.$emit("refresh-state"),this.loading()}},a=r,u=l(1001),i=(0,u.Z)(a,n,s,!1,null,"c748b18a",null),o=i.exports}}]);
-//# sourceMappingURL=255.4ce0e621.js.map

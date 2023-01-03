@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkweb"]=self["webpackChunkweb"]||[]).push([[937],{5937:function(e,t,l){l.r(t),l.d(t,{default:function(){return d}});var n=function(){var e=this,t=e._self._c;return t("div",{})},s=[],r={name:"UsersAddPage",data(){return{loader:{isFullPage:!0,ref:null}}},methods:{loading(){this.loader.ref=this.$buefy.loading.open({container:this.loader.isFullPage?null:this.$refs.element.$el})}},mounted(){this.$emit("refresh-state"),this.loading()}},a=r,i=l(1001),u=(0,i.Z)(a,n,s,!1,null,"7b1af8f9",null),d=u.exports}}]);
-//# sourceMappingURL=937.c6cfd5e6.js.map

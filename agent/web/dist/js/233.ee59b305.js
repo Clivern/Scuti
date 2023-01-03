@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkweb"]=self["webpackChunkweb"]||[]).push([[233],{7233:function(e,t,l){l.r(t),l.d(t,{default:function(){return d}});var n=function(){var e=this,t=e._self._c;return t("div",{})},s=[],a={name:"TeamsAddPage",data(){return{loader:{isFullPage:!0,ref:null}}},methods:{loading(){this.loader.ref=this.$buefy.loading.open({container:this.loader.isFullPage?null:this.$refs.element.$el})}},mounted(){this.$emit("refresh-state"),this.loading()}},r=a,i=l(1001),u=(0,i.Z)(r,n,s,!1,null,"2f23eec6",null),d=u.exports}}]);
-//# sourceMappingURL=233.ee59b305.js.map
