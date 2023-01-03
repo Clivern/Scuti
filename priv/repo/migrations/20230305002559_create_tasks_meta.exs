@@ -14,7 +14,7 @@ defmodule Meerkat.Repo.Migrations.CreateTasksMeta do
       timestamps()
     end
 
-    create index(:projects_meta, [:key])
-    create index(:projects_meta, [:task_id])
+    create index(:tasks_meta, [:key])
+    create index(:tasks_meta, [:task_id])
   end
 end

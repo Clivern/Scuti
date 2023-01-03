@@ -2,19 +2,27 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Repo.Migrations.CreateEnvironmentsMeta do
+defmodule Meerkat.Repo.Migrations.CreateHosts do
   use Ecto.Migration
 
   def change do
-    create table(:environments_meta) do
-      add :key, :string
-      add :value, :text
-      add :environment_id, references(:environments, on_delete: :delete_all)
+    create table(:hosts) do
+      add :uuid, :uuid
+      add :name, :string
+      add :hostname, :string
+      add :private_ips, :string
+      add :public_ips, :string
+      add :labels, :string
+      add :status, :string
+      add :team_id, references(:teams, on_delete: :delete_all)
+      add :host_group_id, references(:host_groups, on_delete: :delete_all)
+      add :reported_at, :utc_datetime
 
       timestamps()
     end
 
-    create index(:environments_meta, [:key])
-    create index(:environments_meta, [:environment_id])
+    create index(:hosts, [:uuid])
+    create index(:hosts, [:team_id])
+    create index(:hosts, [:host_group_id])
   end
 end

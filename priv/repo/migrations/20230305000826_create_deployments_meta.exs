@@ -15,6 +15,6 @@ defmodule Meerkat.Repo.Migrations.CreateDeploymentsMeta do
     end
 
     create index(:deployments_meta, [:key])
-    create index(:deployments_meta, [:host_id])
+    create index(:deployments_meta, [:deployment_id])
   end
 end

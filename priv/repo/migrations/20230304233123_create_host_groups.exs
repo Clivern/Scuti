@@ -2,20 +2,19 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Meerkat.Repo.Migrations.CreateProjects do
+defmodule Meerkat.Repo.Migrations.CreateHostGroups do
   use Ecto.Migration
 
   def change do
-    create table(:projects) do
+    create table(:host_groups) do
       add :uuid, :uuid
       add :name, :string
-      add :slug, :string
       add :description, :string
       add :team_id, references(:teams, on_delete: :delete_all)
 
       timestamps()
     end
 
-    create index(:projects, [:slug])
+    create index(:host_groups, [:uuid])
   end
 end
