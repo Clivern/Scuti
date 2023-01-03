@@ -149,6 +149,6 @@ defmodule Meerkat.Module.TeamModule do
   @doc """
   Generate slug from team name
   """
-  def generate_team_slug(name) do
+  def generate_team_slug(_name) do
   end
 end

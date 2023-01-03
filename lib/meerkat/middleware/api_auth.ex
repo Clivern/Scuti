@@ -12,6 +12,7 @@ defmodule Meerkat.Middleware.APIAuthMiddleware do
   require Logger
 
   alias Meerkat.Service.AuthService
+  alias Meerkat.Module.UserModule
 
   def init(_opts), do: nil
 
