@@ -390,12 +390,88 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "update_user_meta/2" do
-    test "test case" do
+    test "test update_user_meta" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_meta(%{
+          key: "meta_key",
+          value: "meta_value",
+          user_id: user.id
+        })
+
+      {status, meta} = UserContext.create_user_meta(attr)
+
+      assert status == :ok
+      assert meta.key == "meta_key"
+      assert meta.value == "meta_value"
+
+      {status, meta} =
+        UserContext.update_user_meta(
+          meta,
+          %{key: "new_meta_key", value: "new_meta_value"}
+        )
+
+      assert status == :ok
+      assert meta.key == "new_meta_key"
+      assert meta.value == "new_meta_value"
+
+      result = UserContext.get_user_meta_by_id(meta.id)
+
+      assert status == :ok
+      assert result.key == "new_meta_key"
+      assert result.value == "new_meta_value"
     end
   end
 
   describe "update_user_session/2" do
-    test "test case" do
+    test "test update_user_session" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      dt = DateTime.utc_now()
+
+      attr =
+        UserContext.new_session(%{
+          expire_at: dt,
+          value: "session_value",
+          user_id: user.id
+        })
+
+      {status, session} = UserContext.create_user_session(attr)
+
+      assert status == :ok
+      assert session.value == "session_value"
+      assert session.user_id == user.id
+      assert session.id > 0 == true
+
+      {status, session} = UserContext.update_user_session(session, %{value: "new_session_value"})
+
+      assert status == :ok
+      assert session.value == "new_session_value"
+      assert session.user_id == user.id
+      assert session.id > 0 == true
     end
   end
 
@@ -497,21 +573,134 @@ defmodule Meerkat.Context.UserContextTest do
 
   describe "get_user_meta_by_id_key/2" do
     test "test case" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_meta(%{
+          key: "meta_key",
+          value: "meta_value",
+          user_id: user.id
+        })
+
+      UserContext.create_user_meta(attr)
+
+      result = UserContext.get_user_meta_by_id_key(user.id, "meta_key")
+
+      assert result.key == "meta_key"
+      assert result.value == "meta_value"
+      assert result.user_id == user.id
     end
   end
 
   describe "get_user_session_by_id_key/2" do
-    test "test case" do
+    test "test get_user_session_by_id_key" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_session(%{
+          expire_at: DateTime.utc_now(),
+          value: "session_value",
+          user_id: user.id
+        })
+
+      UserContext.create_user_session(attr)
+
+      result = UserContext.get_user_session_by_id_value(user.id, "session_value")
+
+      assert result.value == "session_value"
+      assert result.user_id == user.id
     end
   end
 
   describe "get_user_sessions/1" do
-    test "test case" do
+    test "test get_user_sessions" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      dt = DateTime.utc_now()
+
+      attr =
+        UserContext.new_session(%{
+          expire_at: dt,
+          value: "session_value",
+          user_id: user.id
+        })
+
+      {_, session} = UserContext.create_user_session(attr)
+
+      result = UserContext.get_user_sessions(user.id)
+
+      assert result == [session]
+
+      result = UserContext.get_user_sessions(1000)
+
+      assert result == []
     end
   end
 
   describe "get_user_metas/1" do
-    test "test case" do
+    test "test get_user_metas" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_meta(%{
+          key: "meta_key",
+          value: "meta_value",
+          user_id: user.id
+        })
+
+      {_, meta} = UserContext.create_user_meta(attr)
+
+      result = UserContext.get_user_metas(user.id)
+
+      assert result == [meta]
+
+      result = UserContext.get_user_metas(1000)
+
+      assert result == []
     end
   end
 
