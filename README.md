@@ -19,50 +19,43 @@
 </p>
 
 
-### Development
+#### Development
 
-```
+```zsh
 $
 ```
 
 
-### Server Deployment
+#### Deployment
 
-```
+```zsh
 $
 ```
 
 
-### Agent Deployment
-
-```
-$
-```
-
-
-### Versioning
+#### Versioning
 
 For transparency into our release cycle and in striving to maintain backward compatibility, `Scuti` is maintained under the [Semantic Versioning guidelines](https://semver.org/) and release process is predictable and business-friendly.
 
 See the [Releases section of our GitHub project](https://github.com/clivern/scuti/releases) for changelogs for each release version of `Scuti`. It contains summaries of the most noteworthy changes made in each release. Also see the [Milestones section](https://github.com/clivern/scuti/milestones) for the future roadmap.
 
 
-### Bug tracker
+#### Bug tracker
 
 If you have any suggestions, bug reports, or annoyances please report them to our issue tracker at https://github.com/clivern/scuti/issues
 
 
-### Security Issues
+#### Security Issues
 
 If you discover a security vulnerability within `Scuti`, please send an email to [hello@clivern.com](mailto:hello@clivern.com)
 
 
-### Contributing
+#### Contributing
 
 We are an open source, community-driven project so please feel free to join us. see the [contributing guidelines](CONTRIBUTING.md) for more details.
 
 
-### License
+#### License
 
 © 2022, Clivern. Released under [MIT License](https://opensource.org/licenses/mit-license.php).
 
