@@ -705,27 +705,319 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "add_user_to_team/2" do
-    test "test case" do
+    test "test add_user_to_team" do
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_a",
+          description: "team_a"
+        })
+
+      {status_a, team_a} = TeamContext.create_team(attrs)
+
+      assert status_a == :ok
+      assert team_a.name == "team_a"
+      assert team_a.description == "team_a"
+      assert is_binary(team_a.uuid)
+
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_b",
+          description: "team_b"
+        })
+
+      {status_b, team_b} = TeamContext.create_team(attrs)
+
+      assert status_b == :ok
+      assert team_b.name == "team_b"
+      assert team_b.description == "team_b"
+      assert is_binary(team_b.uuid)
+
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      {status1, result1} = UserContext.add_user_to_team(user.id, team_a.id)
+      {status2, result2} = UserContext.add_user_to_team(user.id, team_b.id)
+
+      assert status1 == :ok
+      assert status2 == :ok
+
+      assert result1.user_id == user.id
+      assert result2.user_id == user.id
+
+      assert result1.team_id == team_a.id
+      assert result2.team_id == team_b.id
+
+      result = UserContext.get_user_teams(user.id)
+
+      assert result == [team_a, team_b]
+
+      assert UserContext.get_user_teams(10000) == []
     end
   end
 
   describe "remove_user_from_team/2" do
-    test "test case" do
+    test "test remove_user_from_team" do
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_a",
+          description: "team_a"
+        })
+
+      {status_a, team_a} = TeamContext.create_team(attrs)
+
+      assert status_a == :ok
+      assert team_a.name == "team_a"
+      assert team_a.description == "team_a"
+      assert is_binary(team_a.uuid)
+
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_b",
+          description: "team_b"
+        })
+
+      {status_b, team_b} = TeamContext.create_team(attrs)
+
+      assert status_b == :ok
+      assert team_b.name == "team_b"
+      assert team_b.description == "team_b"
+      assert is_binary(team_b.uuid)
+
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      {status1, result1} = UserContext.add_user_to_team(user.id, team_a.id)
+      {status2, result2} = UserContext.add_user_to_team(user.id, team_b.id)
+
+      assert status1 == :ok
+      assert status2 == :ok
+
+      assert result1.user_id == user.id
+      assert result2.user_id == user.id
+
+      assert result1.team_id == team_a.id
+      assert result2.team_id == team_b.id
+
+      # Remove user from team a
+      UserContext.remove_user_from_team(user.id, team_a.id)
+
+      result = UserContext.get_user_teams(user.id)
+
+      assert result == [team_b]
+
+      assert UserContext.get_user_teams(10000) == []
     end
   end
 
   describe "remove_user_from_team_by_uuid/1" do
-    test "test case" do
+    test "test remove_user_from_team_by_uuid" do
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_a",
+          description: "team_a"
+        })
+
+      {status_a, team_a} = TeamContext.create_team(attrs)
+
+      assert status_a == :ok
+      assert team_a.name == "team_a"
+      assert team_a.description == "team_a"
+      assert is_binary(team_a.uuid)
+
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_b",
+          description: "team_b"
+        })
+
+      {status_b, team_b} = TeamContext.create_team(attrs)
+
+      assert status_b == :ok
+      assert team_b.name == "team_b"
+      assert team_b.description == "team_b"
+      assert is_binary(team_b.uuid)
+
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      {status1, result1} = UserContext.add_user_to_team(user.id, team_a.id)
+      {status2, result2} = UserContext.add_user_to_team(user.id, team_b.id)
+
+      assert status1 == :ok
+      assert status2 == :ok
+
+      assert result1.user_id == user.id
+      assert result2.user_id == user.id
+
+      assert result1.team_id == team_a.id
+      assert result2.team_id == team_b.id
+
+      UserContext.remove_user_from_team_by_uuid(result1.uuid)
+
+      result = UserContext.get_user_teams(user.id)
+
+      assert result == [team_b]
+
+      assert UserContext.get_user_teams(10000) == []
     end
   end
 
   describe "get_user_teams/1" do
-    test "test case" do
+    test "test get_user_teams" do
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_a",
+          description: "team_a"
+        })
+
+      {status_a, team_a} = TeamContext.create_team(attrs)
+
+      assert status_a == :ok
+      assert team_a.name == "team_a"
+      assert team_a.description == "team_a"
+      assert is_binary(team_a.uuid)
+
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_b",
+          description: "team_b"
+        })
+
+      {status_b, team_b} = TeamContext.create_team(attrs)
+
+      assert status_b == :ok
+      assert team_b.name == "team_b"
+      assert team_b.description == "team_b"
+      assert is_binary(team_b.uuid)
+
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      {status1, result1} = UserContext.add_user_to_team(user.id, team_a.id)
+      {status2, result2} = UserContext.add_user_to_team(user.id, team_b.id)
+
+      assert status1 == :ok
+      assert status2 == :ok
+
+      assert result1.user_id == user.id
+      assert result2.user_id == user.id
+
+      assert result1.team_id == team_a.id
+      assert result2.team_id == team_b.id
+
+      # Remove user from team a
+      UserContext.remove_user_from_team(user.id, team_a.id)
+
+      result = UserContext.get_user_teams(user.id)
+
+      assert result == [team_b]
+
+      assert UserContext.get_user_teams(10000) == []
     end
   end
 
   describe "get_team_users/1" do
-    test "test case" do
+    test "test get_team_users" do
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_a",
+          description: "team_a"
+        })
+
+      {status_a, team_a} = TeamContext.create_team(attrs)
+
+      assert status_a == :ok
+      assert team_a.name == "team_a"
+      assert team_a.description == "team_a"
+      assert is_binary(team_a.uuid)
+
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_b",
+          description: "team_b"
+        })
+
+      {status_b, team_b} = TeamContext.create_team(attrs)
+
+      assert status_b == :ok
+      assert team_b.name == "team_b"
+      assert team_b.description == "team_b"
+      assert is_binary(team_b.uuid)
+
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      {status1, result1} = UserContext.add_user_to_team(user.id, team_a.id)
+      {status2, result2} = UserContext.add_user_to_team(user.id, team_b.id)
+
+      assert status1 == :ok
+      assert status2 == :ok
+
+      assert result1.user_id == user.id
+      assert result2.user_id == user.id
+
+      assert result1.team_id == team_a.id
+      assert result2.team_id == team_b.id
+
+      result = UserContext.get_team_users(team_a.id)
+
+      assert result == [user]
+
+      result = UserContext.get_team_users(team_b.id)
+
+      assert result == [user]
+
+      assert UserContext.get_team_users(10000) == []
     end
   end
 
