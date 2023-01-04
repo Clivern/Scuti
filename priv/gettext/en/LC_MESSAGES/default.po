@@ -11,62 +11,62 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/meerkat_web/templates/page/index.html.heex:6
+#: lib/scuti_web/templates/page/index.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "Home"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:50
+#: lib/scuti_web/templates/page/index.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "If you have any suggestions, bug reports, or annoyances"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:24
+#: lib/scuti_web/templates/page/index.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Live"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:38
+#: lib/scuti_web/templates/page/index.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Login"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:31
+#: lib/scuti_web/templates/page/index.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Logout"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:56
+#: lib/scuti_web/templates/page/index.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Made with"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:17
+#: lib/scuti_web/templates/page/index.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "New Project"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:12
+#: lib/scuti_web/templates/page/index.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Projects"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:47
+#: lib/scuti_web/templates/page/index.html.heex:47
 #, elixir-autogen, elixir-format
-msgid "Welcome to Meerkat"
+msgid "Welcome to Scuti"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:56
+#: lib/scuti_web/templates/page/index.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "by"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:52
+#: lib/scuti_web/templates/page/index.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "issue tracker"
 msgstr ""
 
-#: lib/meerkat_web/templates/page/index.html.heex:51
+#: lib/scuti_web/templates/page/index.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "please report them to our"
 msgstr ""

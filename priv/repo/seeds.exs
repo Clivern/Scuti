@@ -9,7 +9,7 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Meerkat.Repo.insert!(%Meerkat.SomeSchema{})
+#     Scuti.Repo.insert!(%Scuti.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.

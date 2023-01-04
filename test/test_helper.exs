@@ -3,4 +3,4 @@
 # license that can be found in the LICENSE file.
 
 ExUnit.start()
-Ecto.Adapters.SQL.Sandbox.mode(Meerkat.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Scuti.Repo, :manual)

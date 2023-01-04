@@ -7,7 +7,7 @@ services:
     environment:
       PGUSER: root
       PGPASSWORD: D1q9f0C2&PEW
-      PGDATABASE: meerkat
+      PGDATABASE: scuti
       PGPORT: 5432
       PGHOST: db
     restart: unless-stopped
@@ -18,7 +18,7 @@ services:
  db:
     image: postgres:15.6
     environment:
-      POSTGRES_DB: meerkat
+      POSTGRES_DB: scuti
       POSTGRES_USER: root
       POSTGRES_PASSWORD: D1q9f0C2&PEW
     restart: unless-stopped

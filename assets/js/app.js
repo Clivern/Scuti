@@ -45,10 +45,10 @@ window.liveSocket = liveSocket
 
 import socket from "./user_socket"
 
-var meerkat_app = meerkat_app || {};
+var scuti_app = scuti_app || {};
 
 // Install Page
-meerkat_app.install_screen = (Vue, axios, $) => {
+scuti_app.install_screen = (Vue, axios, $) => {
 
     return new Vue({
         delimiters: ['${', '}'],
@@ -92,7 +92,7 @@ meerkat_app.install_screen = (Vue, axios, $) => {
 }
 
 // Login Page
-meerkat_app.login_screen = (Vue, axios, $) => {
+scuti_app.login_screen = (Vue, axios, $) => {
 
     return new Vue({
         delimiters: ['${', '}'],
@@ -144,7 +144,7 @@ $(document).ready(() => {
     };
 
     if (document.getElementById("app_install")) {
-        meerkat_app.install_screen(
+        scuti_app.install_screen(
             Vue,
             axios,
             $
@@ -152,7 +152,7 @@ $(document).ready(() => {
     }
 
     if (document.getElementById("app_login")) {
-        meerkat_app.login_screen(
+        scuti_app.login_screen(
             Vue,
             axios,
             $

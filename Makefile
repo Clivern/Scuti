@@ -4,7 +4,7 @@ iex          ?= iex
 
 help: Makefile
 	@echo
-	@echo " Choose a command run in Meerkat:"
+	@echo " Choose a command run in Scuti:"
 	@echo
 	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
 	@echo
@@ -68,10 +68,10 @@ migrate:
 	@$(mix) ecto.setup
 
 
-## run: Run meerkat
+## run: Run scuti
 .PHONY: run
 run:
-	@echo ">> ============= Run meerkat ============= <<"
+	@echo ">> ============= Run scuti ============= <<"
 	@$(mix) phx.server
 
 

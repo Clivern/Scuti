@@ -22,9 +22,9 @@ jobs:
         image: postgres:latest
         ports: ['5432:5432']
         env:
-          POSTGRES_DB: meerkat_dev
-          POSTGRES_USER: meerkat
-          POSTGRES_PASSWORD: meerkat
+          POSTGRES_DB: scuti_dev
+          POSTGRES_USER: scuti
+          POSTGRES_PASSWORD: scuti
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v3
@@ -36,14 +36,14 @@ jobs:
       - name: Get Dependencies
         run: make deps
 
-      - name: Check Meerkat Format
+      - name: Check Scuti Format
         run: make fmt_check
 
       - name: Get Version
         run: make v
 
-      - name: Test Meerkat
+      - name: Test Scuti
         run: make ci
 
-      - name: Build Meerkat
+      - name: Build Scuti
         run: make build

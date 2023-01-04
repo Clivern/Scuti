@@ -7,14 +7,14 @@
 # General application configuration
 import Config
 
-config :meerkat,
-  ecto_repos: [Meerkat.Repo]
+config :scuti,
+  ecto_repos: [Scuti.Repo]
 
 # Configures the endpoint
-config :meerkat, MeerkatWeb.Endpoint,
+config :scuti, ScutiWeb.Endpoint,
   url: [host: System.get_env("APP_HOST") || "localhost"],
-  render_errors: [view: MeerkatWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: Meerkat.PubSub,
+  render_errors: [view: ScutiWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: Scuti.PubSub,
   live_view: [signing_salt: "/FQ30bq7"]
 
 # Configures the mailer
@@ -24,7 +24,7 @@ config :meerkat, MeerkatWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :meerkat, Meerkat.Mailer, adapter: Swoosh.Adapters.Local
+config :scuti, Scuti.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
