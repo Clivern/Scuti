@@ -35,7 +35,9 @@ $ docker run -itd \
     -p 5432:5432 \
     --name postgresql \
     postgres:15.2
+```
 
+```zsh
 $ podman run -itd \
     -e POSTGRES_USER=scuti \
     -e POSTGRES_PASSWORD=scuti \
@@ -43,7 +45,9 @@ $ podman run -itd \
     -p 5432:5432 \
     --name postgresql \
     postgres:15.2
+```
 
+```zsh
 # https://github.com/dbcli/pgcli
 $ psql -h 127.0.0.1 -U scuti -d scuti_dev -W
 ```
