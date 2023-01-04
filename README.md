@@ -25,6 +25,29 @@
 $
 ```
 
+To run `postgresql` with `docker`
+
+```zsh
+$ docker run -itd \
+    -e POSTGRES_USER=scuti \
+    -e POSTGRES_PASSWORD=scuti \
+    -e POSTGRES_DB=scuti_dev \
+    -p 5432:5432 \
+    --name postgresql \
+    postgres:15.2
+
+$ podman run -itd \
+    -e POSTGRES_USER=scuti \
+    -e POSTGRES_PASSWORD=scuti \
+    -e POSTGRES_DB=scuti_dev \
+    -p 5432:5432 \
+    --name postgresql \
+    postgres:15.2
+
+# https://github.com/dbcli/pgcli
+$ psql -h 127.0.0.1 -U scuti -d scuti_dev -W
+```
+
 
 #### Deployment
 
