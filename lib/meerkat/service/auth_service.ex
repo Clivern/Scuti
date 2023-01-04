@@ -97,7 +97,7 @@ defmodule Meerkat.Service.AuthService do
   """
   def is_authenticated(user_id, session_value)
       when not is_nil(user_id) and not is_nil(session_value) do
-    result = UserContext.get_user_session_by_id_key(user_id, session_value)
+    result = UserContext.get_user_session_by_id_value(user_id, session_value)
 
     case result do
       nil ->

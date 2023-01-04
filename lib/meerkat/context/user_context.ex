@@ -225,7 +225,7 @@ defmodule Meerkat.Context.UserContext do
   @doc """
   Get user session by user id and value
   """
-  def get_user_session_by_id_key(user_id, value) do
+  def get_user_session_by_id_value(user_id, value) do
     from(
       u in UserSession,
       where: u.user_id == ^user_id,

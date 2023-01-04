@@ -16,7 +16,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "new_user/1" do
-    test "test new_user method" do
+    test "test new_user" do
       user =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -39,7 +39,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "new_meta/1" do
-    test "test new_meta method" do
+    test "test new_meta" do
       meta =
         UserContext.new_meta(%{
           key: "meta_key",
@@ -54,7 +54,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "new_session/1" do
-    test "test new_session method" do
+    test "test new_session" do
       session =
         UserContext.new_session(%{
           expire_at: "expire_at",
@@ -69,7 +69,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "create_user/1" do
-    test "test create_user method" do
+    test "test create_user" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -90,7 +90,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "get_user_by_id/1" do
-    test "test get_user_by_id method" do
+    test "test get_user_by_id" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -115,7 +115,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "get_user_by_uuid/1" do
-    test "test get_user_by_uuid method" do
+    test "test get_user_by_uuid" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -140,7 +140,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "get_user_by_api_key/1" do
-    test "test get_user_by_api_key method" do
+    test "test get_user_by_api_key" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -165,7 +165,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "get_user_by_email/1" do
-    test "test get_user_by_email method" do
+    test "test get_user_by_email" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -190,7 +190,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "update_user/2" do
-    test "test update_user method" do
+    test "test update_user" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -215,7 +215,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "delete_user/1" do
-    test "test delete_user method" do
+    test "test delete_user" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -236,7 +236,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "get_users/0" do
-    test "test get_users method" do
+    test "test get_users" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -255,7 +255,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "get_users/2" do
-    test "test get_users method" do
+    test "test get_users" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -275,7 +275,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "count_users/0" do
-    test "test count_users method" do
+    test "test count_users" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -294,17 +294,98 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "create_user_meta/1" do
-    test "test case" do
+    test "test create_user_meta" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_meta(%{
+          key: "meta_key",
+          value: "meta_value",
+          user_id: user.id
+        })
+
+      {status, meta} = UserContext.create_user_meta(attr)
+
+      assert status == :ok
+      assert meta.key == "meta_key"
+      assert meta.value == "meta_value"
+      assert meta.user_id == user.id
+      assert meta.id > 0 == true
     end
   end
 
   describe "create_user_session/1" do
-    test "test case" do
+    test "test create_user_session" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      dt = DateTime.utc_now()
+
+      attr =
+        UserContext.new_session(%{
+          expire_at: dt,
+          value: "session_value",
+          user_id: user.id
+        })
+
+      {status, session} = UserContext.create_user_session(attr)
+
+      assert status == :ok
+      assert session.value == "session_value"
+      assert session.user_id == user.id
+      assert session.id > 0 == true
     end
   end
 
   describe "get_user_meta_by_id/1" do
-    test "test case" do
+    test "test get_user_meta_by_id" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_meta(%{
+          key: "meta_key",
+          value: "meta_value",
+          user_id: user.id
+        })
+
+      {status, meta} = UserContext.create_user_meta(attr)
+
+      result = UserContext.get_user_meta_by_id(meta.id)
+
+      assert status == :ok
+      assert meta == result
     end
   end
 
@@ -319,17 +400,98 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "delete_user_meta/1" do
-    test "test case" do
+    test "test delete_user_meta" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_meta(%{
+          key: "meta_key",
+          value: "meta_value",
+          user_id: user.id
+        })
+
+      {_, meta} = UserContext.create_user_meta(attr)
+
+      UserContext.delete_user_meta(meta)
+
+      result = UserContext.get_user_meta_by_id(meta.id)
+
+      assert result == nil
     end
   end
 
   describe "delete_user_session/1" do
-    test "test case" do
+    test "test delete_user_session" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_session(%{
+          expire_at: DateTime.utc_now(),
+          value: "session_value",
+          user_id: user.id
+        })
+
+      {_, session} = UserContext.create_user_session(attr)
+
+      UserContext.delete_user_session(session)
+
+      result = UserContext.get_user_session_by_id_value(user.id, "session_value")
+
+      assert result == nil
     end
   end
 
   describe "delete_user_sessions/1" do
-    test "test case" do
+    test "test delete_user_sessions" do
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      attr =
+        UserContext.new_session(%{
+          expire_at: DateTime.utc_now(),
+          value: "session_value",
+          user_id: user.id
+        })
+
+      UserContext.create_user_session(attr)
+
+      UserContext.delete_user_sessions(user.id)
+
+      result = UserContext.get_user_session_by_id_value(user.id, "session_value")
+
+      assert result == nil
     end
   end
 
@@ -379,7 +541,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "validate_user_id/1" do
-    test "test validate_user_id method" do
+    test "test validate_user_id" do
       attr =
         UserContext.new_user(%{
           email: "hello@clivern.com",
@@ -402,7 +564,7 @@ defmodule Meerkat.Context.UserContextTest do
   end
 
   describe "validate_team_id/1" do
-    test "test case" do
+    test "test validate_team_id" do
       attrs =
         TeamContext.new_team(%{
           name: "Team 2",
