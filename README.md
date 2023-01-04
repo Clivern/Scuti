@@ -25,7 +25,7 @@
 $
 ```
 
-To run `postgresql` with `docker`
+To run `postgresql` with `docker` or `podman` for development:
 
 ```zsh
 $ docker run -itd \
