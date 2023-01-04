@@ -3,8 +3,11 @@
     <h3 align="center">Scuti</h3>
     <p align="center">A Lightweight and Reliable Patching Configuration System, Set up in Minutes.</p>
     <p align="center">
-        <a href="https://github.com/Clivern/Scuti/actions/workflows/ci.yml">
-            <img src="https://github.com/Clivern/Scuti/actions/workflows/ci.yml/badge.svg"/>
+        <a href="https://github.com/Clivern/Scuti/actions/workflows/agent_ci.yml">
+            <img src="https://github.com/Clivern/Scuti/actions/workflows/agent_ci.yml/badge.svg"/>
+        </a>
+        <a href="https://github.com/Clivern/Scuti/actions/workflows/server_ci.yml">
+            <img src="https://github.com/Clivern/Scuti/actions/workflows/server_ci.yml/badge.svg"/>
         </a>
         <a href="https://github.com/Clivern/Scuti/releases">
             <img src="https://img.shields.io/badge/Version-0.4.0-1abc9c.svg">
@@ -14,6 +17,27 @@
         </a>
     </p>
 </p>
+
+
+### Development
+
+```
+$
+```
+
+
+### Server Deployment
+
+```
+$
+```
+
+
+### Agent Deployment
+
+```
+$
+```
 
 
 ### Versioning
