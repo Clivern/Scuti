@@ -1,0 +1,41 @@
+agent:
+  # Agent name
+  name: ${SCUTI_AGENT_NAME:-scuti}
+  # Env mode (dev or prod)
+  mode: ${SCUTI_AGENT_MODE:-dev}
+  # Hostname
+  hostname: ${SCUTI_AGENT_HOSTNAME:-127.0.0.1}
+  # Global timeout
+  timeout: ${SCUTI_AGENT_TIMEOUT:-50}
+
+  # Agent labels
+  labels:
+    - region: ams-01
+    - team: reds
+    - app: scuti-agent
+
+  # Agent telemetry configs
+  telemetry:
+    # Whether to enable or disable
+    status: ${SCUTI_AGENT_TELEMETRY_STATUS:-enabled}
+    # To expose on which port
+    port: ${SCUTI_AGENT_TELEMETRY_PORT:-8000}
+    # TLS configs
+    tls:
+      status: ${SCUTI_AGENT_TELEMETRY_TLS_STATUS:-off}
+      crt_path: ${SCUTI_AGENT_TELEMETRY_TLS_PEMPATH:-cert/server.crt}
+      key_path: ${SCUTI_AGENT_TELEMETRY_TLS_KEYPATH:-cert/server.key}
+
+  # Remote server configs
+  server:
+    # Remote server endpoint
+    endpoint: ${SCUTI_AGENT_SV_ENDPOINT:-http://localhost:8000/api/v1/heartbeat}
+
+  # Log configs
+  log:
+    # Log level, it can be debug, info, warn, error, panic, fatal
+    level: ${SCUTI_AGENT_LOG_LEVEL:-debug}
+    # Output can be stdout or abs path to log file /var/logs/scuti.log
+    output: ${SCUTI_AGENT_LOG_OUTPUT:-stdout}
+    # Format can be json
+    format: ${SCUTI_AGENT_LOG_FORMAT:-json}
