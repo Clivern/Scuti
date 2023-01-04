@@ -34,16 +34,16 @@ jobs:
           elixir-version: ${{matrix.elixir}}
 
       - name: Get Dependencies
-        run: make deps
+        run: make -f makefile.server deps
 
       - name: Check Scuti Format
-        run: make fmt_check
+        run: make -f makefile.server fmt_check
 
       - name: Get Version
-        run: make v
+        run: make -f makefile.server v
 
       - name: Test Scuti
-        run: make ci
+        run: make -f makefile.server ci
 
       - name: Build Scuti
-        run: make build
+        run: make -f makefile.server build
