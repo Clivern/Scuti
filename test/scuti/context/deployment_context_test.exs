@@ -2,22 +2,21 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Scuti.Context.HostGroupContextTest do
+defmodule Scuti.Context.DeploymentContextTest do
   @moduledoc """
-  Host Group Context Test Cases
+  Deployment Context Test Cases
   """
   use ExUnit.Case
 
   alias Scuti.Context.TeamContext
-  alias Scuti.Context.HostContext
-  alias Scuti.Context.HostGroupContext
+  alias Scuti.Context.DeploymentContext
 
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Scuti.Repo)
   end
 
-  describe "new_group/1" do
-    test "new_group/1 test cases" do
+  describe "new_deployment/1" do
+    test "new_deployment/1 test cases" do
     end
   end
 end
