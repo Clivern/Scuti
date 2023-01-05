@@ -10,9 +10,9 @@ agent:
 
   # Agent labels
   labels:
-    - region: ams-01
-    - team: reds
-    - app: scuti-agent
+    - dc: ams-01
+    - team: milky_way
+    - service: payment01
 
   # Agent telemetry configs
   telemetry:
