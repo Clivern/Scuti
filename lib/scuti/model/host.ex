@@ -12,7 +12,6 @@ defmodule Scuti.Model.Host do
 
   schema "hosts" do
     field :uuid, Ecto.UUID
-    field :team_id, :id
     field :host_group_id, :id
     field :name, :string
     field :hostname, :string
@@ -30,7 +29,6 @@ defmodule Scuti.Model.Host do
     host
     |> cast(attrs, [
       :uuid,
-      :team_id,
       :host_group_id,
       :name,
       :hostname,
@@ -42,7 +40,6 @@ defmodule Scuti.Model.Host do
     ])
     |> validate_required([
       :uuid,
-      :team_id,
       :host_group_id,
       :name,
       :hostname,
