@@ -11,10 +11,12 @@ defmodule Scuti.Context.UserContextTest do
   alias Scuti.Context.UserContext
   alias Scuti.Context.TeamContext
 
+  # Init
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Scuti.Repo)
   end
 
+  # Test Cases
   describe "new_user/1" do
     test "test new_user" do
       user =

@@ -10,10 +10,12 @@ defmodule Scuti.Context.TeamContextTest do
 
   alias Scuti.Context.TeamContext
 
+  # Init
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Scuti.Repo)
   end
 
+  # Test Cases
   describe "new_team/1" do
     test "returns a new team" do
       team =

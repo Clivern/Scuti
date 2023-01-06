@@ -9,10 +9,12 @@ defmodule Scuti.Context.ConfigContextTest do
   use Scuti.DataCase
   alias Scuti.Context.ConfigContext, as: ConfigContext
 
+  # Init
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Scuti.Repo)
   end
 
+  # Test Cases
   describe "new_config/1" do
     # new_config/1
     test "new_config/1 test cases" do

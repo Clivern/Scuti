@@ -9,12 +9,15 @@ defmodule Scuti.Repo.Migrations.CreateHostGroups do
     create table(:host_groups) do
       add :uuid, :uuid
       add :name, :string
-      add :description, :string
+      add :api_key, :string
+      add :labels, :string
       add :team_id, references(:teams, on_delete: :delete_all)
 
       timestamps()
     end
 
     create index(:host_groups, [:uuid])
+    create index(:host_groups, [:team_id])
+    create index(:host_groups, [:api_key])
   end
 end

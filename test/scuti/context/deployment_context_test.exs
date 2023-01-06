@@ -11,10 +11,12 @@ defmodule Scuti.Context.DeploymentContextTest do
   alias Scuti.Context.TeamContext
   alias Scuti.Context.DeploymentContext
 
+  # Init
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Scuti.Repo)
   end
 
+  # Test Cases
   describe "new_deployment/1" do
     test "new_deployment/1 test cases" do
     end
