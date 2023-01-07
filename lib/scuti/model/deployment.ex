@@ -22,9 +22,10 @@ defmodule Scuti.Model.Deployment do
     field :pkgs_to_upgrade, :string
     field :pkgs_to_exclude, :string
     field :pre_patch_script, :string
+    field :patch_script, :string
     field :post_patch_script, :string
     field :post_patch_reboot_option, :string
-    field :rollout_options, :string
+    field :rollout_strategy, :string
     field :schedule_type, :string
     field :schedule_time, :utc_datetime
     field :status, :string
@@ -39,7 +40,6 @@ defmodule Scuti.Model.Deployment do
     |> cast(attrs, [
       :uuid,
       :team_id,
-      :user_id,
       :name,
       :hosts_list,
       :host_groups_list,
@@ -49,9 +49,10 @@ defmodule Scuti.Model.Deployment do
       :pkgs_to_upgrade,
       :pkgs_to_exclude,
       :pre_patch_script,
+      :patch_script,
       :post_patch_script,
       :post_patch_reboot_option,
-      :rollout_options,
+      :rollout_strategy,
       :schedule_type,
       :schedule_time,
       :status,
@@ -69,9 +70,10 @@ defmodule Scuti.Model.Deployment do
       :pkgs_to_upgrade,
       :pkgs_to_exclude,
       :pre_patch_script,
+      :patch_script,
       :post_patch_script,
       :post_patch_reboot_option,
-      :rollout_options,
+      :rollout_strategy,
       :schedule_type,
       :schedule_time,
       :status,

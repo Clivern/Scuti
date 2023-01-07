@@ -17,20 +17,27 @@ defmodule Scuti.Context.DeploymentContext do
     %{
       team_id: deployment.team_id,
       name: deployment.name,
+
       hosts_list: deployment.hosts_list,
       host_groups_list: deployment.host_groups_list,
       hosts_filter: deployment.hosts_filter,
       host_groups_filter: deployment.host_groups_filter,
+
       upgrade_type: deployment.upgrade_type,
+
       pkgs_to_upgrade: deployment.pkgs_to_upgrade,
       pkgs_to_exclude: deployment.pkgs_to_exclude,
+
       pre_patch_script: deployment.pre_patch_script,
       patch_script: deployment.patch_script,
       post_patch_script: deployment.post_patch_script,
       post_patch_reboot_option: deployment.post_patch_reboot_option,
+
       rollout_strategy: deployment.rollout_strategy,
+
       schedule_type: deployment.schedule_type,
       schedule_time: deployment.schedule_time,
+
       status: deployment.status,
       run_at: deployment.run_at,
       uuid: Ecto.UUID.generate()
