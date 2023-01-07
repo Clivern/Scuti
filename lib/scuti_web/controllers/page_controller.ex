@@ -188,7 +188,6 @@ defmodule ScutiWeb.PageController do
     )
   end
 
-
   @doc """
   Teams List Page
   """
