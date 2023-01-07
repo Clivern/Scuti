@@ -11,29 +11,38 @@ defmodule ScutiWeb.PageController do
   alias Scuti.Module.InstallModule
   alias Scuti.Service.AuthService
 
-  plug :auth
+  @doc """
+  Login Page
+  """
+  def login(conn, _params) do
+    is_installed = InstallModule.is_installed()
 
-  defp auth(conn, _opts) do
-    result =
-      AuthService.is_authenticated(
-        conn.req_cookies["_uid"],
-        conn.req_cookies["_token"]
-      )
+    case {is_installed, conn.assigns[:is_logged]} do
+      {false, _} ->
+        redirect(conn, to: "/install")
 
-    conn =
-      case result do
-        false ->
-          assign(conn, :is_logged, false)
-          |> assign(:user_id, "")
-          |> assign(:user_token, "")
+      {_, true} ->
+        redirect(conn, to: "/")
 
-        {true, session} ->
-          assign(conn, :is_logged, true)
-          |> assign(:user_id, session.user_id)
-          |> assign(:user_token, session.value)
-      end
+      {true, _} ->
+        render(conn, "login.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super]
+          }
+        )
+    end
+  end
+
+  @doc """
+  Logout Action
+  """
+  def logout(conn, _params) do
+    AuthService.logout(conn.assigns[:user_id])
 
     conn
+    |> clear_session()
+    |> redirect(to: "/")
   end
 
   @doc """
@@ -65,97 +74,202 @@ defmodule ScutiWeb.PageController do
         render(conn, "home.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            user_id: conn.assigns[:user_id],
-            user_token: conn.assigns[:user_token]
+            is_super: conn.assigns[:is_super]
           }
         )
     end
   end
 
   @doc """
-  Login Page
+  Host Groups List Page
   """
-  def login(conn, _params) do
-    is_installed = InstallModule.is_installed()
-
-    case {is_installed, conn.assigns[:is_logged]} do
-      {false, _} ->
-        redirect(conn, to: "/install")
-
-      {_, true} ->
-        redirect(conn, to: "/")
-
-      {true, _} ->
-        render(conn, "login.html",
-          data: %{
-            is_logged: conn.assigns[:is_logged],
-            user_id: conn.assigns[:user_id],
-            user_token: conn.assigns[:user_token]
-          }
-        )
-    end
-  end
-
-  @doc """
-  Logout Action
-  """
-  def logout(conn, _params) do
-    AuthService.logout(conn.assigns[:user_id])
-    redirect(conn, to: "/")
-  end
-
-  @doc """
-  Projects Page
-  """
-  def projects(conn, _params) do
-    render(conn, "projects.html",
+  def list_groups(conn, _params) do
+    render(conn, "list_groups.html",
       data: %{
         is_logged: conn.assigns[:is_logged],
-        user_id: conn.assigns[:user_id],
-        user_token: conn.assigns[:user_token]
+        is_super: conn.assigns[:is_super]
       }
     )
   end
 
   @doc """
-  Project Page
+  Host Groups Edit Page
   """
-  def project(conn, _params) do
-    render(conn, "project.html", is_logged: conn.assigns[:is_logged])
+  def edit_group(conn, _params) do
+    render(conn, "edit_group.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
   end
 
   @doc """
-  New Project Page
+  Host Groups Add Page
   """
-  def new_project(conn, _params) do
-    render(conn, "add_project.html", is_logged: conn.assigns[:is_logged])
+  def add_group(conn, _params) do
+    render(conn, "add_group.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
   end
 
   @doc """
-  List Users Page
+  Hosts List Page
   """
-  def users(conn, _params) do
-    render(conn, "users.html", is_logged: conn.assigns[:is_logged])
+  def list_hosts(conn, _params) do
+    render(conn, "list_hosts.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
   end
 
   @doc """
-  Add User Page
+  Hosts Edit Page
   """
-  def new_user(conn, _params) do
-    render(conn, "add_user.html", is_logged: conn.assigns[:is_logged])
+  def edit_host(conn, _params) do
+    render(conn, "edit_host.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
   end
 
   @doc """
-  Edit User Page
+  Hosts Add Page
+  """
+  def add_host(conn, _params) do
+    render(conn, "add_host.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+  @doc """
+  Deployments List Page
+  """
+  def list_deployments(conn, _params) do
+    render(conn, "list_deployments.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+  @doc """
+  Deployments Edit Page
+  """
+  def edit_deployment(conn, _params) do
+    render(conn, "edit_deployment.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+  @doc """
+  Deployments Add Page
+  """
+  def add_deployment(conn, _params) do
+    render(conn, "add_deployment.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+
+  @doc """
+  Teams List Page
+  """
+  def list_teams(conn, _params) do
+    render(conn, "list_teams.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+  @doc """
+  Teams Edit Page
+  """
+  def edit_team(conn, _params) do
+    render(conn, "edit_team.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+  @doc """
+  Teams Add Page
+  """
+  def add_team(conn, _params) do
+    render(conn, "add_team.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+  @doc """
+  Users List Page
+  """
+  def list_users(conn, _params) do
+    render(conn, "list_users.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+  @doc """
+  Users Edit Page
   """
   def edit_user(conn, _params) do
-    render(conn, "edit_user.html", is_logged: conn.assigns[:is_logged])
+    render(conn, "edit_user.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
   end
 
   @doc """
-  Settings Page
+  Users Add Page
+  """
+  def add_user(conn, _params) do
+    render(conn, "add_user.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
+  end
+
+  @doc """
+  Users Add Page
   """
   def settings(conn, _params) do
-    render(conn, "settings.html", is_logged: conn.assigns[:is_logged])
+    render(conn, "settings.html",
+      data: %{
+        is_logged: conn.assigns[:is_logged],
+        is_super: conn.assigns[:is_super]
+      }
+    )
   end
 end

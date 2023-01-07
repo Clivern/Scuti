@@ -137,6 +137,50 @@ scuti_app.login_screen = (Vue, axios, $) => {
 
 }
 
+// Settings Page
+scuti_app.settings_screen = (Vue, axios, $) => {
+
+    return new Vue({
+        delimiters: ['${', '}'],
+        el: '#app_settings',
+        data() {
+            return {
+                isInProgress: false,
+            }
+        },
+        methods: {
+            settingsAction(event) {
+                event.preventDefault();
+                this.isInProgress = true;
+
+                let inputs = {};
+                let _self = $(event.target);
+                let _form = _self.closest("form");
+
+                _form.serializeArray().map((item, index) => {
+                    inputs[item.name] = item.value;
+                });
+
+                axios.post(_form.attr('action'), inputs)
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            toastr.clear();
+                            toastr.info(response.data.successMessage);
+                            location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        this.isInProgress = false;
+                        // Show error
+                        toastr.clear();
+                        toastr.error(error.response.data.errorMessage);
+                    });
+            }
+        }
+    });
+
+}
+
 $(document).ready(() => {
     axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
@@ -153,6 +197,14 @@ $(document).ready(() => {
 
     if (document.getElementById("app_login")) {
         scuti_app.login_screen(
+            Vue,
+            axios,
+            $
+        );
+    }
+
+    if (document.getElementById("app_settings")) {
+        scuti_app.settings_screen(
             Vue,
             axios,
             $

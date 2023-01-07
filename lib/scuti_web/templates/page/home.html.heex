@@ -7,13 +7,35 @@
       <%= if @is_logged do %>
         |
         <a href={Routes.page_path(@conn, :projects)}
-          ><span class="icon"><i class="fas fa-server"></i></span>
-          <%= gettext "Projects" %>
+          ><span class="icon"><i class="fas fa-layer-group"></i></span>
+          <%= gettext "Groups" %>
         </a>
         |
         <a href={Routes.page_path(@conn, :new_project)}
-          ><span class="icon"><i class="fas fa-pen"></i></span>
-          <%= gettext "New Project" %>
+          ><span class="icon"><i class="fas fa-server"></i></span>
+          <%= gettext "Hosts" %>
+        </a>
+        |
+        <a href={Routes.page_path(@conn, :new_project)}
+          ><span class="icon"><i class="fas fa-rocket"></i></span>
+          <%= gettext "Deployments" %>
+        </a>
+      <% end %>
+      <%= if @is_super do %>
+        |
+        <a href={Routes.page_path(@conn, :projects)}
+          ><span class="icon"><i class="fas fa-user-group"></i></span>
+          <%= gettext "Teams" %>
+        </a>
+        |
+        <a href={Routes.page_path(@conn, :new_project)}
+          ><span class="icon"><i class="fas fa-users"></i></span>
+          <%= gettext "Users" %>
+        </a>
+        |
+        <a href={Routes.page_path(@conn, :new_project)}
+          ><span class="icon"><i class="fas fa-cog"></i></span>
+          <%= gettext "Settings" %>
         </a>
       <% end %>
       <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
