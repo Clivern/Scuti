@@ -1,0 +1,66 @@
+<div id="app">
+  <div id="nav">
+      <a href={Routes.page_path(@conn, :home)}
+        ><span class="icon"><i class="fas fa-home"></i></span>
+        <%= gettext "Home" %>
+      </a>
+      <%= if @is_logged do %>
+        |
+        <a href={Routes.page_path(@conn, :list_groups)}
+          ><span class="icon"><i class="fas fa-layer-group"></i></span>
+          <%= gettext "Groups" %>
+        </a>
+        |
+        <a href={Routes.page_path(@conn, :list_hosts)}
+          ><span class="icon"><i class="fas fa-server"></i></span>
+          <%= gettext "Hosts" %>
+        </a>
+        |
+        <a href={Routes.page_path(@conn, :list_deployments)}
+          ><span class="icon"><i class="fas fa-rocket"></i></span>
+          <%= gettext "Deployments" %>
+        </a>
+      <% end %>
+      <%= if @is_super do %>
+        |
+        <a href={Routes.page_path(@conn, :list_teams)}
+          ><span class="icon"><i class="fas fa-user-group"></i></span>
+          <%= gettext "Teams" %>
+        </a>
+        |
+        <a href={Routes.page_path(@conn, :list_users)}
+          ><span class="icon"><i class="fas fa-users"></i></span>
+          <%= gettext "Users" %>
+        </a>
+        |
+        <a href={Routes.page_path(@conn, :settings)}
+          ><span class="icon"><i class="fas fa-cog"></i></span>
+          <%= gettext "Settings" %>
+        </a>
+      <% end %>
+      <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+        |
+        <a href={Routes.live_dashboard_path(@conn, :home)}
+          ><span class="icon"><i class="fas fa-plus-square"></i></span>
+          <%= gettext "Live" %>
+        </a>
+      <% end %>
+      <%= if @is_logged do %>
+        |
+        <a href={Routes.page_path(@conn, :logout)}
+          ><span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+          <%= gettext "Logout" %>
+        </a>
+      <% end %>
+      <%= if !@is_logged do %>
+        |
+        <a href={Routes.page_path(@conn, :login)}
+          ><span class="icon"><i class="fas fa-sign-in-alt"></i></span>
+          <%= gettext "Login" %>
+        </a>
+      <% end %>
+  </div>
+  <div class="list_teams">
+    <br /><br /><br />
+  </div>
+</div>
