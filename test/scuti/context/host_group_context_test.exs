@@ -9,7 +9,6 @@ defmodule Scuti.Context.HostGroupContextTest do
   use ExUnit.Case
 
   alias Scuti.Context.TeamContext
-  alias Scuti.Context.HostContext
   alias Scuti.Context.HostGroupContext
 
   # Init
