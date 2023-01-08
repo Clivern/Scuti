@@ -93,36 +93,6 @@ defmodule ScutiWeb.PageController do
   end
 
   @doc """
-  Host Groups Edit Page
-
-  Ignore
-  """
-
-  # def edit_group(conn, _params) do
-  #   render(conn, "edit_group.html",
-  #     data: %{
-  #       is_logged: conn.assigns[:is_logged],
-  #       is_super: conn.assigns[:is_super]
-  #     }
-  #   )
-  # end
-
-  @doc """
-  Host Groups Add Page
-
-  Ignore
-  """
-
-  # def add_group(conn, _params) do
-  #   render(conn, "add_group.html",
-  #     data: %{
-  #       is_logged: conn.assigns[:is_logged],
-  #       is_super: conn.assigns[:is_super]
-  #     }
-  #   )
-  # end
-
-  @doc """
   Hosts List Page
   """
   def list_hosts(conn, _params) do
@@ -133,36 +103,6 @@ defmodule ScutiWeb.PageController do
       }
     )
   end
-
-  @doc """
-  Hosts Edit Page
-
-  Ignore
-  """
-
-  # def edit_host(conn, _params) do
-  #   render(conn, "edit_host.html",
-  #     data: %{
-  #       is_logged: conn.assigns[:is_logged],
-  #       is_super: conn.assigns[:is_super]
-  #     }
-  #   )
-  # end
-
-  @doc """
-  Hosts Add Page
-
-  Ignore
-  """
-
-  # def add_host(conn, _params) do
-  #   render(conn, "add_host.html",
-  #     data: %{
-  #       is_logged: conn.assigns[:is_logged],
-  #       is_super: conn.assigns[:is_super]
-  #     }
-  #   )
-  # end
 
   @doc """
   Deployments List Page
@@ -213,36 +153,6 @@ defmodule ScutiWeb.PageController do
   end
 
   @doc """
-  Teams Edit Page
-
-  Ignore
-  """
-
-  # def edit_team(conn, _params) do
-  #   render(conn, "edit_team.html",
-  #     data: %{
-  #       is_logged: conn.assigns[:is_logged],
-  #       is_super: conn.assigns[:is_super]
-  #     }
-  #   )
-  # end
-
-  @doc """
-  Teams Add Page
-
-  Ignore
-  """
-
-  # def add_team(conn, _params) do
-  #   render(conn, "add_team.html",
-  #     data: %{
-  #       is_logged: conn.assigns[:is_logged],
-  #       is_super: conn.assigns[:is_super]
-  #     }
-  #   )
-  # end
-
-  @doc """
   Users List Page
   """
   def list_users(conn, _params) do
@@ -253,36 +163,6 @@ defmodule ScutiWeb.PageController do
       }
     )
   end
-
-  @doc """
-  Users Edit Page
-
-  Ignore
-  """
-
-  # def edit_user(conn, _params) do
-  #   render(conn, "edit_user.html",
-  #     data: %{
-  #       is_logged: conn.assigns[:is_logged],
-  #       is_super: conn.assigns[:is_super]
-  #     }
-  #   )
-  # end
-
-  @doc """
-  Users Add Page
-
-  Ignore
-  """
-
-  # def add_user(conn, _params) do
-  #   render(conn, "add_user.html",
-  #     data: %{
-  #       is_logged: conn.assigns[:is_logged],
-  #       is_super: conn.assigns[:is_super]
-  #     }
-  #   )
-  # end
 
   @doc """
   Settings Page

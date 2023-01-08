@@ -36,24 +36,16 @@ defmodule ScutiWeb.Router do
     get "/logout", PageController, :logout
 
     get "/admin/group", PageController, :list_groups
-    get "/admin/group/edit/:id", PageController, :edit_group
-    get "/admin/group/add", PageController, :add_group
 
     get "/admin/host", PageController, :list_hosts
-    get "/admin/host/edit/:id", PageController, :edit_host
-    get "/admin/host/add", PageController, :add_host
 
     get "/admin/deployment", PageController, :list_deployments
     get "/admin/deployment/edit/:id", PageController, :edit_deployment
     get "/admin/deployment/add", PageController, :add_deployment
 
     get "/admin/team", PageController, :list_teams
-    get "/admin/team/edit/:id", PageController, :edit_team
-    get "/admin/team/add", PageController, :add_team
 
     get "/admin/user", PageController, :list_users
-    get "/admin/user/edit/:id", PageController, :edit_user
-    get "/admin/user/add", PageController, :add_user
 
     get "/admin/settings", PageController, :settings
   end
