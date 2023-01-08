@@ -94,6 +94,8 @@ defmodule ScutiWeb.PageController do
 
   @doc """
   Host Groups Edit Page
+
+  Ignore
   """
   def edit_group(conn, _params) do
     render(conn, "edit_group.html",
@@ -106,6 +108,8 @@ defmodule ScutiWeb.PageController do
 
   @doc """
   Host Groups Add Page
+
+  Ignore
   """
   def add_group(conn, _params) do
     render(conn, "add_group.html",
@@ -130,6 +134,8 @@ defmodule ScutiWeb.PageController do
 
   @doc """
   Hosts Edit Page
+
+  Ignore
   """
   def edit_host(conn, _params) do
     render(conn, "edit_host.html",
@@ -142,6 +148,8 @@ defmodule ScutiWeb.PageController do
 
   @doc """
   Hosts Add Page
+
+  Ignore
   """
   def add_host(conn, _params) do
     render(conn, "add_host.html",
@@ -202,6 +210,8 @@ defmodule ScutiWeb.PageController do
 
   @doc """
   Teams Edit Page
+
+  Ignore
   """
   def edit_team(conn, _params) do
     render(conn, "edit_team.html",
@@ -214,6 +224,8 @@ defmodule ScutiWeb.PageController do
 
   @doc """
   Teams Add Page
+
+  Ignore
   """
   def add_team(conn, _params) do
     render(conn, "add_team.html",
@@ -238,6 +250,8 @@ defmodule ScutiWeb.PageController do
 
   @doc """
   Users Edit Page
+
+  Ignore
   """
   def edit_user(conn, _params) do
     render(conn, "edit_user.html",
@@ -250,6 +264,8 @@ defmodule ScutiWeb.PageController do
 
   @doc """
   Users Add Page
+
+  Ignore
   """
   def add_user(conn, _params) do
     render(conn, "add_user.html",
@@ -261,7 +277,7 @@ defmodule ScutiWeb.PageController do
   end
 
   @doc """
-  Users Add Page
+  Settings Page
   """
   def settings(conn, _params) do
     render(conn, "settings.html",
