@@ -20,13 +20,16 @@ defmodule ScutiWeb.PageController do
 
     case {is_installed, conn.assigns[:is_logged]} do
       {false, _} ->
-        redirect(conn, to: "/install")
+        conn
+        |> redirect(to: "/install")
 
       {_, true} ->
-        redirect(conn, to: "/")
+        conn
+        |> redirect(to: "/")
 
       {true, _} ->
-        render(conn, "login.html",
+        conn
+        |> render("login.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super]
@@ -54,10 +57,12 @@ defmodule ScutiWeb.PageController do
 
     case is_installed do
       true ->
-        redirect(conn, to: "/")
+        conn
+        |> redirect(to: "/")
 
       false ->
-        render(conn, "install.html")
+        conn
+        |> render("install.html")
     end
   end
 
@@ -69,10 +74,12 @@ defmodule ScutiWeb.PageController do
 
     case is_installed do
       false ->
-        redirect(conn, to: "/install")
+        conn
+        |> redirect(to: "/")
 
       true ->
-        render(conn, "home.html",
+        conn
+        |> render("home.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super]
@@ -85,98 +92,162 @@ defmodule ScutiWeb.PageController do
   Host Groups List Page
   """
   def list_groups(conn, _params) do
-    render(conn, "list_groups.html",
-      data: %{
-        is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super]
-      }
-    )
+    case conn.assigns[:is_logged] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("list_groups.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super]
+          }
+        )
+    end
   end
 
   @doc """
   Hosts List Page
   """
   def list_hosts(conn, _params) do
-    render(conn, "list_hosts.html",
-      data: %{
-        is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super]
-      }
-    )
+    case conn.assigns[:is_logged] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("list_hosts.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super]
+          }
+        )
+    end
   end
 
   @doc """
   Deployments List Page
   """
   def list_deployments(conn, _params) do
-    render(conn, "list_deployments.html",
-      data: %{
-        is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super]
-      }
-    )
+    case conn.assigns[:is_logged] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("list_deployments.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super]
+          }
+        )
+    end
   end
 
   @doc """
   Deployments Edit Page
   """
   def edit_deployment(conn, _params) do
-    render(conn, "edit_deployment.html",
-      data: %{
-        is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super]
-      }
-    )
+    case conn.assigns[:is_logged] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("edit_deployment.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super]
+          }
+        )
+    end
   end
 
   @doc """
   Deployments Add Page
   """
   def add_deployment(conn, _params) do
-    render(conn, "add_deployment.html",
-      data: %{
-        is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super]
-      }
-    )
+    case conn.assigns[:is_logged] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("add_deployment.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super]
+          }
+        )
+    end
   end
 
   @doc """
   Teams List Page
   """
   def list_teams(conn, _params) do
-    render(conn, "list_teams.html",
-      data: %{
-        is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super]
-      }
-    )
+    case conn.assigns[:is_super] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("list_teams.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super]
+          }
+        )
+    end
   end
 
   @doc """
   Users List Page
   """
   def list_users(conn, _params) do
-    render(conn, "list_users.html",
-      data: %{
-        is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super]
-      }
-    )
+    case conn.assigns[:is_super] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("list_users.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super]
+          }
+        )
+    end
   end
 
   @doc """
   Settings Page
   """
   def settings(conn, _params) do
-    render(conn, "settings.html",
-      data: %{
-        is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super],
-        app_name: SettingsModule.get_config("app_name", ""),
-        app_url: SettingsModule.get_config("app_url", ""),
-        app_email: SettingsModule.get_config("app_email", "")
-      }
-    )
+    case conn.assigns[:is_super] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("settings.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", ""),
+            app_email: SettingsModule.get_config("app_email", "")
+          }
+        )
+    end
   end
 end

@@ -27,6 +27,8 @@ defmodule Scuti.Module.SettingsModule do
           {:success, nil}
 
         {:error, changeset} ->
+          IO.inspect(changeset)
+
           messages =
             changeset.errors()
             |> Enum.map(fn {field, {message, _options}} -> "#{field}: #{message}" end)

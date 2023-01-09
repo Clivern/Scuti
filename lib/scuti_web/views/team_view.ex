@@ -12,4 +12,15 @@ defmodule ScutiWeb.TeamView do
   def render("success.json", %{message: message}) do
     %{successMessage: message}
   end
+
+  def render("create.json", %{team: team}) do
+    %{
+      id: team.id,
+      uuid: team.uuid,
+      name: team.name,
+      description: team.description,
+      createdAt: team.inserted_at,
+      updatedAt: team.updated_at
+    }
+  end
 end

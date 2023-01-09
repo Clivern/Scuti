@@ -10,7 +10,9 @@ defmodule ScutiWeb.TeamController do
   use ScutiWeb, :controller
 
   alias Scuti.Module.TeamModule
+  alias Scuti.Module.UserModule
   alias Scuti.Service.ValidatorService
+  alias Scuti.Exception.InvalidRequest
 
   require Logger
 
@@ -71,10 +73,42 @@ defmodule ScutiWeb.TeamController do
   @doc """
   Create Action Endpoint
   """
-  def create(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def create(conn, params) do
+    try do
+      validate_create_request(params)
+
+      name = ValidatorService.get_str(params["name"], "")
+      description = ValidatorService.get_str(params["description"], "")
+      members = ValidatorService.get_list(params["members"], [])
+
+      result =
+        TeamModule.create_team(%{
+          name: name,
+          description: description
+        })
+
+      TeamModule.sync_team_members(members)
+
+      case result do
+        {:error, _} ->
+          raise InvalidRequest, message: "Invalid Request"
+
+        {:ok, team} ->
+          conn
+          |> put_status(:created)
+          |> render("create.json", %{team: team})
+      end
+    rescue
+      e in InvalidRequest ->
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{message: e.message})
+
+      _ ->
+        conn
+        |> put_status(:internal_server_error)
+        |> render("error.json", %{message: "Internal server error"})
+    end
   end
 
   @doc """
@@ -117,6 +151,30 @@ defmodule ScutiWeb.TeamController do
         conn
         |> put_status(:bad_request)
         |> render("error.json", %{error: msg})
+    end
+  end
+
+  defp validate_create_request(params) do
+    name = ValidatorService.get_str(params["name"], "")
+    description = ValidatorService.get_str(params["description"], "")
+    members = ValidatorService.get_list(params["members"], [])
+
+    if ValidatorService.is_empty(name) do
+      raise InvalidRequest, message: "Team name is required"
+    end
+
+    if ValidatorService.is_empty(description) do
+      raise InvalidRequest, message: "Team description is required"
+    end
+
+    for member <- members do
+      if not ValidatorService.validate_int(member) do
+        raise InvalidRequest, message: "Team members are invalid"
+      end
+
+      if UserModule.validate_user_id(member) do
+        raise InvalidRequest, message: "Team members are invalid"
+      end
     end
   end
 end

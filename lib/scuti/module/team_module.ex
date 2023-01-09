@@ -35,6 +35,31 @@ defmodule Scuti.Module.TeamModule do
   end
 
   @doc """
+  Sync team members
+  """
+  def sync_team_members(team_id, future_members \\ []) do
+    current_members = []
+
+    current_members =
+      for member <- UserContext.get_team_users(team_id) do
+        current_members ++ member.id
+      end
+
+    # @TODO: Track errors
+    for member <- current_members do
+      if member not in future_members do
+        UserContext.remove_user_from_team(member, team_id)
+      end
+    end
+
+    for member <- future_members do
+      if member not in current_members do
+        UserContext.add_user_to_team(member, team_id)
+      end
+    end
+  end
+
+  @doc """
   Update a team
   """
   def update_team(data \\ %{}) do

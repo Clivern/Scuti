@@ -140,4 +140,11 @@ defmodule Scuti.Module.UserModule do
         {:error, "Invalid User ID"}
     end
   end
+
+  @doc """
+  Validate User ID
+  """
+  def validate_user_id(user_id) do
+    UserContext.validate_user_id(user_id)
+  end
 end

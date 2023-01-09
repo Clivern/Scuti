@@ -11,6 +11,7 @@ defmodule ScutiWeb.SettingsController do
 
   alias Scuti.Module.SettingsModule
   alias Scuti.Service.ValidatorService
+  alias Scuti.Exception.InvalidRequest
 
   require Logger
 
@@ -26,7 +27,6 @@ defmodule ScutiWeb.SettingsController do
       conn
       |> put_status(:forbidden)
       |> render("error.json", %{message: "Forbidden Access"})
-      |> halt()
     else
       # If user not super, return forbidden access
       if conn.assigns[:user_role] != :super do
@@ -37,7 +37,6 @@ defmodule ScutiWeb.SettingsController do
         conn
         |> put_status(:forbidden)
         |> render("error.json", %{message: "Forbidden Access"})
-        |> halt()
       else
         Logger.info(
           "User with id #{conn.assigns[:user_id]} can access this endpoint. RequestId=#{conn.assigns[:request_id]}"
@@ -52,28 +51,63 @@ defmodule ScutiWeb.SettingsController do
   Update Action Endpoint
   """
   def update(conn, params) do
-    config_results =
-      SettingsModule.update_configs(%{
-        app_name: ValidatorService.get_str(params["app_name"], ""),
-        app_url: ValidatorService.get_str(params["app_url"], ""),
-        app_email: ValidatorService.get_str(params["app_email"], "")
-      })
+    try do
+      validate_update_request(params)
 
-    for config_result <- config_results do
-      case config_result do
-        {:error, msg} ->
-          conn
-          |> put_status(:bad_request)
-          |> render("error.json", %{message: msg})
-          |> halt()
+      app_name = ValidatorService.get_str(params["app_name"], "")
+      app_url = ValidatorService.get_str(params["app_url"], "")
+      app_email = ValidatorService.get_str(params["app_email"], "")
 
-        _ ->
-          nil
+      config_results =
+        SettingsModule.update_configs(%{
+          app_name: app_name,
+          app_url: app_url,
+          app_email: app_email
+        })
+
+      for config_result <- config_results do
+        case config_result do
+          {:error, msg} ->
+            Logger.info("Incoming request is invalid: #{msg}")
+            raise InvalidRequest, message: "Invalid Request"
+
+          _ ->
+            nil
+        end
       end
+    rescue
+      e in InvalidRequest ->
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{message: e.message})
+
+      _ ->
+        conn
+        |> put_status(:internal_server_error)
+        |> render("error.json", %{message: "Internal server error"})
+    else
+      _ ->
+        conn
+        |> put_status(:ok)
+        |> render("success.json", %{message: "Settings updated successfully"})
+    end
+  end
+
+  defp validate_update_request(params) do
+    app_name = ValidatorService.get_str(params["app_name"], "")
+    app_url = ValidatorService.get_str(params["app_url"], "")
+    app_email = ValidatorService.get_str(params["app_email"], "")
+
+    if ValidatorService.is_empty(app_name) do
+      raise InvalidRequest, message: "Application name is required"
     end
 
-    conn
-    |> put_status(:ok)
-    |> render("success.json", %{message: "Settings updated successfully"})
+    if ValidatorService.is_empty(app_url) do
+      raise InvalidRequest, message: "Application name is required"
+    end
+
+    if ValidatorService.is_empty(app_email) do
+      raise InvalidRequest, message: "Application name is required"
+    end
   end
 end
