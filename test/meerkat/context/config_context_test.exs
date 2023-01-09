@@ -9,6 +9,10 @@ defmodule Meerkat.Context.ConfigContextTest do
   use Meerkat.DataCase
   alias Meerkat.Context.ConfigContext, as: ConfigContext
 
+  setup do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Meerkat.Repo)
+  end
+
   describe "new_config/1" do
     # new_config/1
     test "new_config/1 test cases" do

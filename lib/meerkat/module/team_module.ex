@@ -17,7 +17,6 @@ defmodule Meerkat.Module.TeamModule do
   def create_team(data \\ %{}) do
     team =
       TeamContext.new_team(%{
-        slug: data[:slug],
         name: data[:name],
         description: data[:description]
       })
@@ -55,7 +54,6 @@ defmodule Meerkat.Module.TeamModule do
           _ ->
             new_team =
               TeamContext.new_team(%{
-                slug: ValidatorService.get_str(data[:slug], team.slug),
                 name: ValidatorService.get_str(data[:name], team.name),
                 description: ValidatorService.get_str(data[:description], team.description)
               })
@@ -99,23 +97,6 @@ defmodule Meerkat.Module.TeamModule do
 
       false ->
         {:error, "Invalid Team ID"}
-    end
-  end
-
-  @doc """
-  Get team by a slug
-  """
-  def get_team_by_slug(slug) do
-    team =
-      ValidatorService.get_str(slug, "")
-      |> TeamContext.get_team_by_slug()
-
-    case team do
-      nil ->
-        {:not_found, "Team with slug #{slug} not found"}
-
-      _ ->
-        {:ok, team}
     end
   end
 

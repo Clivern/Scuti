@@ -26,8 +26,8 @@ defmodule Meerkat.Model.Host do
   end
 
   @doc false
-  def changeset(state, attrs) do
-    state
+  def changeset(host, attrs) do
+    host
     |> cast(attrs, [
       :uuid,
       :team_id,

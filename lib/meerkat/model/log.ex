@@ -23,8 +23,8 @@ defmodule Meerkat.Model.Log do
   end
 
   @doc false
-  def changeset(project, attrs) do
-    project
+  def changeset(log, attrs) do
+    log
     |> cast(attrs, [
       :uuid,
       :user_id,

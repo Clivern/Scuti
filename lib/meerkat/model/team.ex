@@ -19,8 +19,8 @@ defmodule Meerkat.Model.Team do
   end
 
   @doc false
-  def changeset(state, attrs) do
-    state
+  def changeset(team, attrs) do
+    team
     |> cast(attrs, [
       :uuid,
       :name,

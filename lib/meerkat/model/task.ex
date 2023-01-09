@@ -21,8 +21,8 @@ defmodule Meerkat.Model.Task do
   end
 
   @doc false
-  def changeset(meta, attrs) do
-    meta
+  def changeset(task, attrs) do
+    task
     |> cast(attrs, [
       :uuid,
       :deployment_id,

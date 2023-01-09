@@ -19,8 +19,8 @@ defmodule Meerkat.Model.UserMeta do
   end
 
   @doc false
-  def changeset(user_meta, attrs) do
-    user_meta
+  def changeset(meta, attrs) do
+    meta
     |> cast(attrs, [
       :key,
       :value,

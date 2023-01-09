@@ -19,8 +19,8 @@ defmodule Meerkat.Model.DeploymentMeta do
   end
 
   @doc false
-  def changeset(meta, attrs) do
-    meta
+  def changeset(deployment, attrs) do
+    deployment
     |> cast(attrs, [
       :key,
       :value,

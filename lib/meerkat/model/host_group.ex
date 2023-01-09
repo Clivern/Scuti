@@ -21,8 +21,8 @@ defmodule Meerkat.Model.HostGroup do
   end
 
   @doc false
-  def changeset(lock, attrs) do
-    lock
+  def changeset(host_group, attrs) do
+    host_group
     |> cast(attrs, [
       :uuid,
       :team_id,

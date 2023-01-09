@@ -19,8 +19,8 @@ defmodule Meerkat.Model.UserSession do
   end
 
   @doc false
-  def changeset(user_meta, attrs) do
-    user_meta
+  def changeset(session, attrs) do
+    session
     |> cast(attrs, [
       :value,
       :expire_at,

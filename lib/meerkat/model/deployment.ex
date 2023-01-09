@@ -34,8 +34,8 @@ defmodule Meerkat.Model.Deployment do
   end
 
   @doc false
-  def changeset(state, attrs) do
-    state
+  def changeset(deployment, attrs) do
+    deployment
     |> cast(attrs, [
       :uuid,
       :team_id,

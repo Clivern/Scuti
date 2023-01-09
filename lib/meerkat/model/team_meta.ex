@@ -19,8 +19,8 @@ defmodule Meerkat.Model.TeamMeta do
   end
 
   @doc false
-  def changeset(lock_meta, attrs) do
-    lock_meta
+  def changeset(meta, attrs) do
+    meta
     |> cast(attrs, [
       :key,
       :value,
