@@ -9,6 +9,9 @@ defmodule ScutiWeb.SettingsController do
 
   use ScutiWeb, :controller
 
+  alias Scuti.Module.SettingsModule
+  alias Scuti.Service.ValidatorService
+
   require Logger
 
   plug :only_super_users, only: [:update]
@@ -22,7 +25,7 @@ defmodule ScutiWeb.SettingsController do
 
       conn
       |> put_status(:forbidden)
-      |> render("error.json", %{error: "Forbidden Access"})
+      |> render("error.json", %{message: "Forbidden Access"})
       |> halt()
     else
       # If user not super, return forbidden access
@@ -33,7 +36,7 @@ defmodule ScutiWeb.SettingsController do
 
         conn
         |> put_status(:forbidden)
-        |> render("error.json", %{error: "Forbidden Access"})
+        |> render("error.json", %{message: "Forbidden Access"})
         |> halt()
       else
         Logger.info(
@@ -48,9 +51,29 @@ defmodule ScutiWeb.SettingsController do
   @doc """
   Update Action Endpoint
   """
-  def update(conn, _params) do
+  def update(conn, params) do
+    config_results =
+      SettingsModule.update_configs(%{
+        app_name: ValidatorService.get_str(params["app_name"], ""),
+        app_url: ValidatorService.get_str(params["app_url"], ""),
+        app_email: ValidatorService.get_str(params["app_email"], "")
+      })
+
+    for config_result <- config_results do
+      case config_result do
+        {:error, msg} ->
+          conn
+          |> put_status(:bad_request)
+          |> render("error.json", %{message: msg})
+          |> halt()
+
+        _ ->
+          nil
+      end
+    end
+
     conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+    |> put_status(:ok)
+    |> render("success.json", %{message: "Settings updated successfully"})
   end
 end

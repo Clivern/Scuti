@@ -8,6 +8,7 @@ defmodule ScutiWeb.PageController do
   """
   use ScutiWeb, :controller
 
+  alias Scuti.Module.SettingsModule
   alias Scuti.Module.InstallModule
   alias Scuti.Service.AuthService
 
@@ -171,7 +172,10 @@ defmodule ScutiWeb.PageController do
     render(conn, "settings.html",
       data: %{
         is_logged: conn.assigns[:is_logged],
-        is_super: conn.assigns[:is_super]
+        is_super: conn.assigns[:is_super],
+        app_name: SettingsModule.get_config("app_name", ""),
+        app_url: SettingsModule.get_config("app_url", ""),
+        app_email: SettingsModule.get_config("app_email", "")
       }
     )
   end

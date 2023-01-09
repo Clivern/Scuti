@@ -28,7 +28,7 @@ defmodule ScutiWeb.HostController do
 
       conn
       |> put_status(:forbidden)
-      |> render("error.json", %{error: "Forbidden Access"})
+      |> render("error.json", %{message: "Forbidden Access"})
       |> halt()
     else
       # If user not super, return forbidden access
@@ -39,7 +39,7 @@ defmodule ScutiWeb.HostController do
 
         conn
         |> put_status(:forbidden)
-        |> render("error.json", %{error: "Forbidden Access"})
+        |> render("error.json", %{message: "Forbidden Access"})
         |> halt()
       else
         Logger.info(

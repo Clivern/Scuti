@@ -161,12 +161,11 @@ scuti_app.settings_screen = (Vue, axios, $) => {
                     inputs[item.name] = item.value;
                 });
 
-                axios.post(_form.attr('action'), inputs)
+                axios.put(_form.attr('action'), inputs)
                     .then((response) => {
                         if (response.status >= 200) {
                             toastr.clear();
                             toastr.info(response.data.successMessage);
-                            location.reload();
                         }
                     })
                     .catch((error) => {
@@ -181,10 +180,13 @@ scuti_app.settings_screen = (Vue, axios, $) => {
 
 }
 
+
 $(document).ready(() => {
     axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-Token': csrfToken,
+        'X-User-Token': Cookies.get('_token') || '',
+        'X-User-Id': Cookies.get('_uid') || ''
     };
 
     if (document.getElementById("app_install")) {
@@ -254,5 +256,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
-console.log("WHG");

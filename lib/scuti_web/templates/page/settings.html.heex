@@ -4,7 +4,7 @@
         ><span class="icon"><i class="fas fa-home"></i></span>
         <%= gettext "Home" %>
       </a>
-      <%= if @is_logged do %>
+      <%= if @data.is_logged do %>
         |
         <a href={Routes.page_path(@conn, :list_groups)}
           ><span class="icon"><i class="fas fa-layer-group"></i></span>
@@ -21,7 +21,7 @@
           <%= gettext "Deployments" %>
         </a>
       <% end %>
-      <%= if @is_super do %>
+      <%= if @data.is_super do %>
         |
         <a href={Routes.page_path(@conn, :list_teams)}
           ><span class="icon"><i class="fas fa-user-group"></i></span>
@@ -45,14 +45,14 @@
           <%= gettext "Live" %>
         </a>
       <% end %>
-      <%= if @is_logged do %>
+      <%= if @data.is_logged do %>
         |
         <a href={Routes.page_path(@conn, :logout)}
           ><span class="icon"><i class="fas fa-sign-out-alt"></i></span>
           <%= gettext "Logout" %>
         </a>
       <% end %>
-      <%= if !@is_logged do %>
+      <%= if !@data.is_logged do %>
         |
         <a href={Routes.page_path(@conn, :login)}
           ><span class="icon"><i class="fas fa-sign-in-alt"></i></span>
@@ -65,26 +65,26 @@
     <section>
       <div class="columns is-desktop is-centered">
         <div class="column"></div>
-        <div class="column">
+        <div class="column" id="app_settings">
           <form action={Routes.settings_path(@conn, :update)} method="post" v-on:submit.prevent="settingsAction">
             <div class="field">
               <label class="label">Application Name</label>
               <div class="control">
-                <input class="input" name="app_name" type="text" placeholder="Application Name" required>
+                <input class="input" name="app_name" type="text" placeholder="Application Name" value={@data.app_name} required="required">
               </div>
             </div>
             <br/>
             <div class="field">
               <label class="label">Application URL</label>
               <div class="control">
-                <input class="input" name="app_url" type="url" placeholder="Application URL" required>
+                <input class="input" name="app_url" type="url" placeholder="Application URL" value={@data.app_url} required="required">
               </div>
             </div>
             <br/>
             <div class="field">
               <label class="label">Application Email</label>
               <div class="control">
-                <input class="input" name="app_email" type="email" placeholder="Application Email" required>
+                <input class="input" name="app_email" type="email" placeholder="Application Email" value={@data.app_email} required="required">
               </div>
             </div>
             <br/>
