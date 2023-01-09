@@ -24,33 +24,19 @@ defmodule ScutiWeb.TeamController do
   defp only_super_users(conn, _opts) do
     Logger.info("Validate user permissions. RequestId=#{conn.assigns[:request_id]}")
 
-    # If user not authenticated, return forbidden access
-    if conn.assigns[:is_logged] == false do
-      Logger.info("User is not authenticated. RequestId=#{conn.assigns[:request_id]}")
+    if not conn.assigns[:is_super] do
+      Logger.info(
+        "User doesn't have the right access permissions. RequestId=#{conn.assigns[:request_id]}"
+      )
 
       conn
       |> put_status(:forbidden)
       |> render("error.json", %{message: "Forbidden Access"})
-      |> halt()
     else
-      # If user not super, return forbidden access
-      if conn.assigns[:user_role] != :super do
-        Logger.info(
-          "User doesn't have a super permission. RequestId=#{conn.assigns[:request_id]}"
-        )
+      Logger.info("User has the right access permissions. RequestId=#{conn.assigns[:request_id]}")
 
-        conn
-        |> put_status(:forbidden)
-        |> render("error.json", %{message: "Forbidden Access"})
-        |> halt()
-      else
-        Logger.info(
-          "User with id #{conn.assigns[:user_id]} can access this endpoint. RequestId=#{conn.assigns[:request_id]}"
-        )
-      end
+      conn
     end
-
-    conn
   end
 
   @doc """
