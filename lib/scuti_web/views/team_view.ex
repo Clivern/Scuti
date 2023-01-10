@@ -23,4 +23,15 @@ defmodule ScutiWeb.TeamView do
       updatedAt: team.updated_at
     }
   end
+
+  def render("index.json", %{team: team}) do
+    %{
+      id: team.id,
+      uuid: team.uuid,
+      name: team.name,
+      description: team.description,
+      createdAt: team.inserted_at,
+      updatedAt: team.updated_at
+    }
+  end
 end

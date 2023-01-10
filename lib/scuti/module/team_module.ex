@@ -105,23 +105,17 @@ defmodule Scuti.Module.TeamModule do
   Get team by an id
   """
   def get_team_by_id(id) do
-    case ValidatorService.validate_int(id) do
-      true ->
-        team =
-          id
-          |> ValidatorService.parse_int()
-          |> TeamContext.get_team_by_id()
+    team =
+      id
+      |> ValidatorService.parse_int()
+      |> TeamContext.get_team_by_id()
 
-        case team do
-          nil ->
-            {:not_found, "Team with ID #{id} not found"}
+    case team do
+      nil ->
+        {:not_found, "Team with ID #{id} not found"}
 
-          _ ->
-            {:ok, team}
-        end
-
-      false ->
-        {:error, "Invalid Team ID"}
+      _ ->
+        {:ok, team}
     end
   end
 

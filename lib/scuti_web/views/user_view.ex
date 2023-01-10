@@ -25,4 +25,17 @@ defmodule ScutiWeb.UserView do
       updatedAt: user.updated_at
     }
   end
+
+  def render("index.json", %{user: user}) do
+    %{
+      id: user.id,
+      uuid: user.uuid,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      apiKey: user.api_key,
+      createdAt: user.inserted_at,
+      updatedAt: user.updated_at
+    }
+  end
 end

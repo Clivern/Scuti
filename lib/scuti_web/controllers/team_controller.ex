@@ -15,6 +15,7 @@ defmodule ScutiWeb.TeamController do
   alias Scuti.Module.UserModule
   alias Scuti.Service.ValidatorService
   alias Scuti.Exception.InvalidRequest
+  alias Scuti.Exception.ResourceNotFound
 
   @default_list_limit "10"
   @default_list_offset "0"
@@ -100,10 +101,42 @@ defmodule ScutiWeb.TeamController do
   @doc """
   Index Action Endpoint
   """
-  def index(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def index(conn, %{"id" => id}) do
+    Logger.info("Get team with id #{id}. RequestId=#{conn.assigns[:request_id]}")
+
+    try do
+      if not ValidatorService.validate_int(id) do
+        raise InvalidRequest, message: "Invalid Request"
+      end
+
+      id = ValidatorService.get_int(id, 0)
+      result = TeamModule.get_team_by_id(id)
+
+      case result do
+        {:not_found, _} ->
+          raise ResourceNotFound, "Team with id #{id} not found"
+
+        {:ok, team} ->
+          conn
+          |> put_status(:ok)
+          |> render("index.json", %{team: team})
+      end
+    rescue
+      e in InvalidRequest ->
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{message: e.message})
+
+      e in ResourceNotFound ->
+        conn
+        |> put_status(:not_found)
+        |> render("error.json", %{message: e.message})
+
+      _ ->
+        conn
+        |> put_status(:internal_server_error)
+        |> render("error.json", %{message: "Internal server error"})
+    end
   end
 
   @doc """
