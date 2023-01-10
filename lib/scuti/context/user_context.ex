@@ -320,6 +320,17 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
+  Count team users
+  """
+  def count_team_users(team_id) do
+    from(u in UserTeam,
+      select: count(u.id),
+      where: u.team_id == ^team_id
+    )
+    |> Repo.one()
+  end
+
+  @doc """
   Get team users
   """
   def get_team_users(team_id) do

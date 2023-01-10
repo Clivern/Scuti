@@ -50,6 +50,8 @@ defmodule Scuti.Service.AuthService do
       user ->
         case verify_password(password, user.password_hash) do
           true ->
+            # Update last seen attr
+            UserContext.update_user(user, %{last_seen: DateTime.utc_now()})
             authenticate(user.id)
 
           false ->

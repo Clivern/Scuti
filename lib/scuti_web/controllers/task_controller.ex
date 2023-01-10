@@ -12,7 +12,6 @@ defmodule ScutiWeb.TaskController do
   require Logger
 
   alias Scuti.Module.TaskModule
-  alias Scuti.Service.ValidatorService
 
   # @default_list_limit "10"
   # @default_list_offset "0"

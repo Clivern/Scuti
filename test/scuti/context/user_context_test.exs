@@ -1023,6 +1023,56 @@ defmodule Scuti.Context.UserContextTest do
     end
   end
 
+  describe "count_team_users/1" do
+    test "test count_team_users" do
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_a",
+          description: "team_a"
+        })
+
+      {status_a, team_a} = TeamContext.create_team(attrs)
+
+      assert status_a == :ok
+      assert team_a.name == "team_a"
+      assert team_a.description == "team_a"
+      assert is_binary(team_a.uuid)
+
+      attrs =
+        TeamContext.new_team(%{
+          name: "team_b",
+          description: "team_b"
+        })
+
+      {status_b, team_b} = TeamContext.create_team(attrs)
+
+      assert status_b == :ok
+      assert team_b.name == "team_b"
+      assert team_b.description == "team_b"
+      assert is_binary(team_b.uuid)
+
+      attr =
+        UserContext.new_user(%{
+          email: "hello@clivern.com",
+          name: "Clivern",
+          password_hash: "27hd7wh2",
+          verified: true,
+          last_seen: DateTime.utc_now(),
+          role: "super",
+          api_key: "x-x-x-x-x"
+        })
+
+      {_, user} = UserContext.create_user(attr)
+
+      UserContext.add_user_to_team(user.id, team_a.id)
+      UserContext.add_user_to_team(user.id, team_b.id)
+
+      assert UserContext.count_team_users(team_a.id) == 1
+      assert UserContext.count_team_users(team_b.id) == 1
+      assert UserContext.count_team_users(100) == 0
+    end
+  end
+
   describe "validate_user_id/1" do
     test "test validate_user_id" do
       attr =

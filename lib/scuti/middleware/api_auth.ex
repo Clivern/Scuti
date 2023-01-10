@@ -78,7 +78,7 @@ defmodule Scuti.Middleware.APIAuthMiddleware do
                   {:ok, user} ->
                     conn
                     |> assign(:is_logged, true)
-                    |> assign(:is_super, true)
+                    |> assign(:is_super, String.to_atom(user.role) == :super)
                     |> assign(:user_role, String.to_atom(user.role))
                     |> assign(:user_id, user.id)
 

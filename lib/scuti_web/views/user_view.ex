@@ -13,11 +13,16 @@ defmodule ScutiWeb.UserView do
     %{successMessage: message}
   end
 
-  def render("token_success.json", %{message: message, token: token, user: user}) do
+  def render("create.json", %{user: user}) do
     %{
-      successMessage: message,
-      token: token,
-      user: user
+      id: user.id,
+      uuid: user.uuid,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      apiKey: user.api_key,
+      createdAt: user.inserted_at,
+      updatedAt: user.updated_at
     }
   end
 end
