@@ -9,11 +9,11 @@ defmodule ScutiWeb.SettingsController do
 
   use ScutiWeb, :controller
 
+  require Logger
+
   alias Scuti.Module.SettingsModule
   alias Scuti.Service.ValidatorService
   alias Scuti.Exception.InvalidRequest
-
-  require Logger
 
   plug :super_user, only: [:update]
 

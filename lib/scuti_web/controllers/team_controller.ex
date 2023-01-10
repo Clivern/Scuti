@@ -9,12 +9,12 @@ defmodule ScutiWeb.TeamController do
 
   use ScutiWeb, :controller
 
+  require Logger
+
   alias Scuti.Module.TeamModule
   alias Scuti.Module.UserModule
   alias Scuti.Service.ValidatorService
   alias Scuti.Exception.InvalidRequest
-
-  require Logger
 
   @default_list_limit "10"
   @default_list_offset "0"

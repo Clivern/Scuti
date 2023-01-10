@@ -9,10 +9,10 @@ defmodule ScutiWeb.TaskController do
 
   use ScutiWeb, :controller
 
-  alias Scuti.Module.TaskModule
-  # alias Scuti.Service.ValidatorService
-
   require Logger
+
+  alias Scuti.Module.TaskModule
+  alias Scuti.Service.ValidatorService
 
   # @default_list_limit "10"
   # @default_list_offset "0"

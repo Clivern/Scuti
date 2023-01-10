@@ -9,10 +9,10 @@ defmodule ScutiWeb.DeploymentController do
 
   use ScutiWeb, :controller
 
+  require Logger
+
   # alias Scuti.Module.DeploymentModule
   # alias Scuti.Service.ValidatorService
-
-  require Logger
 
   # @default_list_limit "10"
   # @default_list_offset "0"
