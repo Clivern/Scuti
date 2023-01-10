@@ -6,7 +6,9 @@ defmodule Scuti.Context.HostContext do
   @moduledoc """
   Host Context Module
   """
+
   import Ecto.Query
+
   alias Scuti.Repo
   alias Scuti.Model.{HostMeta, Host}
 

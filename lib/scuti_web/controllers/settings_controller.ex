@@ -15,9 +15,9 @@ defmodule ScutiWeb.SettingsController do
 
   require Logger
 
-  plug :only_super_users, only: [:update]
+  plug :super_user, only: [:update]
 
-  defp only_super_users(conn, _opts) do
+  defp super_user(conn, _opts) do
     Logger.info("Validate user permissions. RequestId=#{conn.assigns[:request_id]}")
 
     if not conn.assigns[:is_super] do

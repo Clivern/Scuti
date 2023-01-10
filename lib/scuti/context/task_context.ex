@@ -8,6 +8,7 @@ defmodule Scuti.Context.TaskContext do
   """
 
   import Ecto.Query
+
   alias Scuti.Repo
   alias Scuti.Model.{Task, TaskMeta}
 

@@ -17,9 +17,9 @@ defmodule ScutiWeb.UserController do
   @default_list_limit "10"
   @default_list_offset "0"
 
-  plug :only_super_users, only: [:list, :index, :create, :update, :delete]
+  plug :super_user, only: [:list, :index, :create, :update, :delete]
 
-  defp only_super_users(conn, _opts) do
+  defp super_user(conn, _opts) do
     Logger.info("Validate user permissions. RequestId=#{conn.assigns[:request_id]}")
 
     if not conn.assigns[:is_super] do

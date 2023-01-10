@@ -8,6 +8,7 @@ defmodule Scuti.Context.ConfigContext do
   """
 
   import Ecto.Query
+
   alias Scuti.Repo
   alias Scuti.Model.Config
 

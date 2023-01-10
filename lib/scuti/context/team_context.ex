@@ -8,6 +8,7 @@ defmodule Scuti.Context.TeamContext do
   """
 
   import Ecto.Query
+
   alias Scuti.Repo
   alias Scuti.Model.{Team, TeamMeta}
 

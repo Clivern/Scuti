@@ -8,6 +8,7 @@ defmodule Scuti.Context.LogContext do
   """
 
   import Ecto.Query
+
   alias Scuti.Repo
   alias Scuti.Model.{LogMeta, Log}
 

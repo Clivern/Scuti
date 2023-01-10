@@ -6,7 +6,9 @@ defmodule Scuti.Context.DeploymentContext do
   @moduledoc """
   Deployment Context Module
   """
+
   import Ecto.Query
+
   alias Scuti.Repo
   alias Scuti.Model.{DeploymentMeta, Deployment}
 

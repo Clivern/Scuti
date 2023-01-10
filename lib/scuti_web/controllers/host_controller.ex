@@ -17,9 +17,9 @@ defmodule ScutiWeb.HostController do
   # @default_list_limit "10"
   # @default_list_offset "0"
 
-  plug :any_user, only: [:list, :index, :create, :update, :delete]
+  plug :regular_user, only: [:list, :index, :create, :update, :delete]
 
-  defp any_user(conn, _opts) do
+  defp regular_user(conn, _opts) do
     Logger.info("Validate user permissions. RequestId=#{conn.assigns[:request_id]}")
 
     if not conn.assigns[:is_logged] do
