@@ -126,7 +126,8 @@ defmodule ScutiWeb.UserController do
         })
 
       case result do
-        {:error, _} ->
+        {:error, msg} ->
+          Logger.info("Incoming request is invalid: #{msg}")
           raise InvalidRequest, message: "Invalid Request"
 
         {:ok, user} ->

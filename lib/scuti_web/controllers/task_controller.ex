@@ -75,7 +75,7 @@ defmodule ScutiWeb.TaskController do
   @doc """
   Delete Action Endpoint
   """
-  def delete(conn, %{"hid" => id}) do
+  def delete(conn, %{"id" => id}) do
     Logger.info("Delete task with id #{id}. RequestId=#{conn.assigns[:request_id]}")
 
     result = TaskModule.delete_task(id)

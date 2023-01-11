@@ -18,7 +18,7 @@
     </p>
 </p>
 
-Scuti name after UY Scuti. it is a red supergiant star in the constellation Scutum. It is considered to be possibly one of the largest known stars and is also a pulsating variable star, with a volume nearly 5 billion times that of the Sun we all know.
+Scuti named after `UY Scuti`, The red supergiant star in the constellation Scutum. It is considered to be possibly one of the largest known stars and is also a pulsating variable star, with a volume nearly 5 billion times that of the sun.
 
 
 #### Development
