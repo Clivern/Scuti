@@ -147,4 +147,11 @@ defmodule Scuti.Module.UserModule do
   def validate_user_id(user_id) do
     UserContext.validate_user_id(user_id)
   end
+
+  @doc """
+  Count Team Users
+  """
+  def count_team_users(team_id) do
+    UserContext.count_team_users(team_id)
+  end
 end

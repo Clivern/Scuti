@@ -8,6 +8,8 @@ defmodule ScutiWeb.PageController do
   """
   use ScutiWeb, :controller
 
+  alias Scuti.Module.TeamModule
+  alias Scuti.Module.UserModule
   alias Scuti.Module.SettingsModule
   alias Scuti.Module.InstallModule
   alias Scuti.Service.AuthService
@@ -198,11 +200,29 @@ defmodule ScutiWeb.PageController do
         |> redirect(to: "/")
 
       true ->
+        users = UserModule.get_users(0, 1000)
+        teams = TeamModule.get_teams(0, 1000)
+
+        new_teams = []
+        new_teams = for team <- teams do
+          new_teams ++ %{
+            id: team.id,
+            uuid: team.uuid,
+            name: team.name,
+            description: team.description,
+            count: UserModule.count_team_users(team.id),
+            inserted_at: team.inserted_at,
+            updated_at: team.updated_at
+          }
+        end
+
         conn
         |> render("list_teams.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
+            is_super: conn.assigns[:is_super],
+            users: users,
+            teams: new_teams
           }
         )
     end
@@ -218,11 +238,14 @@ defmodule ScutiWeb.PageController do
         |> redirect(to: "/")
 
       true ->
+        users = UserModule.get_users(0, 1000)
+
         conn
         |> render("list_users.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
+            is_super: conn.assigns[:is_super],
+            users: users
           }
         )
     end

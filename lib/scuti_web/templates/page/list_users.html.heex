@@ -61,6 +61,92 @@
       <% end %>
   </div>
   <div class="list_users">
-    <br /><br /><br />
+
+    <br/>
+    <section>
+      <div class="columns is-desktop is-right">
+        <div class="column"></div>
+        <div class="column is-three-quarters" style="text-align: right;">
+          <button class="button is-warning is-small is-rounded modal-trigger" data-target="add-new-user">
+            <%= gettext "New User" %>
+          </button>
+        </div>
+        <div class="column"></div>
+      </div>
+    </section>
+    <br/>
+    <section>
+      <div class="columns is-desktop is-centered">
+        <div class="column"></div>
+        <div class="column is-three-quarters">
+          <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th style="text-align: center;"><%= gettext "Name" %></th>
+                <th style="text-align: center;"><%= gettext "Email" %></th>
+                <th style="text-align: center;"><%= gettext "Role" %></th>
+                <th style="text-align: center;"><%= gettext "Created at" %></th>
+                <th style="text-align: center;"><%= gettext "Actions" %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= for user <- @data.users do %>
+                <tr>
+                  <td><%= user.name %></td>
+                  <td><%= user.email %></td>
+                  <td><%= String.capitalize(user.role) %></td>
+                  <td><%= user.inserted_at %></td>
+                  <td>
+                    <button class="button is-info is-small is-rounded modal-trigger" data-target="edit-user" data-id={user.id} data-uuid={user.uuid}><%= gettext "Edit" %></button>
+                    -
+                    <button class="button is-danger is-small is-rounded" data-id={user.id} data-uuid={user.uuid}><%= gettext "Delete" %></button>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="column"></div>
+      </div>
+    </section>
+
+    <!-- Add User Modal -->
+    <div class="modal" id="add-new-user">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title"><%= gettext "New User" %></p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content -->
+        </section>
+        <footer class="modal-card-foot is-centered">
+          <button class="button is-success"><%= gettext "Save" %></button>
+          <button class="button"><%= gettext "Cancel" %></button>
+        </footer>
+      </div>
+    </div>
+    <!-- Add User Modal -->
+
+    <!-- Edit User Modal -->
+    <div class="modal" id="edit-user">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title"><%= gettext "Edit User" %></p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content -->
+        </section>
+        <footer class="modal-card-foot is-centered">
+          <button class="button is-success"><%= gettext "Save" %></button>
+          <button class="button"><%= gettext "Cancel" %></button>
+        </footer>
+      </div>
+    </div>
+    <!-- Edit User Modal -->
+
   </div>
 </div>

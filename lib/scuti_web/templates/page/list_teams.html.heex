@@ -61,6 +61,7 @@
       <% end %>
   </div>
   <div class="list_teams">
+
     <br/>
     <section>
       <div class="columns is-desktop is-right">
@@ -83,21 +84,23 @@
               <tr>
                 <th style="text-align: center;"><%= gettext "Team Name" %></th>
                 <th style="text-align: center;"><%= gettext "User Count" %></th>
-                <th style="text-align: center;"><%= gettext "Created At" %></th>
+                <th style="text-align: center;"><%= gettext "Created at" %></th>
                 <th style="text-align: center;"><%= gettext "Actions" %></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Clivern</td>
-                <td>3</td>
-                <td>2024-02-18 12:30:00</td>
-                <td>
-                  <button class="button is-info is-small is-rounded modal-trigger" data-target="edit-team"><%= gettext "Edit" %></button>
-                  -
-                  <button class="button is-danger is-small is-rounded"><%= gettext "Delete" %></button>
-                </td>
-              </tr>
+              <%= for team <- @data.teams do %>
+                <tr>
+                  <td><%= team.name %></td>
+                  <td><%= team.count %></td>
+                  <td><%= team.inserted_at %></td>
+                  <td>
+                    <button class="button is-info is-small is-rounded modal-trigger" data-target="edit-team" data-id={team.id} data-uuid={team.uuid}><%= gettext "Edit" %></button>
+                    -
+                    <button class="button is-danger is-small is-rounded" data-id={team.id} data-uuid={team.uuid}><%= gettext "Delete" %></button>
+                  </td>
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>
