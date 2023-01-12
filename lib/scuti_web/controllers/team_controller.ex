@@ -74,13 +74,13 @@ defmodule ScutiWeb.TeamController do
           description: description
         })
 
-      TeamModule.sync_team_members(members)
-
       case result do
         {:error, _} ->
           raise InvalidRequest, message: "Invalid Request"
 
         {:ok, team} ->
+          TeamModule.sync_team_members(team.id, members)
+
           conn
           |> put_status(:created)
           |> render("create.json", %{team: team})
@@ -188,11 +188,11 @@ defmodule ScutiWeb.TeamController do
 
     for member <- members do
       if not ValidatorService.validate_int(member) do
-        raise InvalidRequest, message: "Team members are invalid"
+        raise InvalidRequest, message: "Team members are invalid o"
       end
 
-      if UserModule.validate_user_id(member) do
-        raise InvalidRequest, message: "Team members are invalid"
+      if not UserModule.validate_user_id(member) do
+        raise InvalidRequest, message: "Team members are invalid op"
       end
     end
   end

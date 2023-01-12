@@ -181,6 +181,105 @@ scuti_app.settings_screen = (Vue, axios, $) => {
 
 }
 
+// Add User Modal
+scuti_app.add_user_modal = (Vue, axios, $) => {
+
+    console.log("users_screen");
+
+    return new Vue({
+        delimiters: ['${', '}'],
+        el: '#add_user_modal',
+        data() {
+            return {
+                isInProgress: false,
+            }
+        },
+        methods: {
+            addUserAction(event) {
+                event.preventDefault();
+                this.isInProgress = true;
+
+                let inputs = {};
+                let _self = $(event.target);
+                let _form = _self.closest("form");
+
+                _form.serializeArray().map((item, index) => {
+                    inputs[item.name] = item.value;
+                });
+
+                axios.post(_form.attr('action'), inputs)
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            toastr.clear();
+                            toastr.info(i18n_globals.new_user);
+                            location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        this.isInProgress = false;
+                        // Show error
+                        toastr.clear();
+                        toastr.error(error.response.data.errorMessage);
+                    });
+            },
+
+            closeModal(event) {
+                $("#add-new-user").removeClass("is-active");
+            }
+        }
+    });
+
+}
+
+// Add Team Modal
+scuti_app.add_team_modal = (Vue, axios, $) => {
+
+    return new Vue({
+        delimiters: ['${', '}'],
+        el: '#add_team_modal',
+        data() {
+            return {
+                isInProgress: false,
+            }
+        },
+        methods: {
+            addTeamAction(event) {
+                event.preventDefault();
+                this.isInProgress = true;
+
+                let inputs = {};
+                let _self = $(event.target);
+                let _form = _self.closest("form");
+
+                _form.serializeArray().map((item, index) => {
+                    inputs[item.name] = item.value;
+                });
+
+                inputs["members"] = $("[name='members']").val();
+
+                axios.post(_form.attr('action'), inputs)
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            toastr.clear();
+                            toastr.info(i18n_globals.new_team);
+                            location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        this.isInProgress = false;
+                        // Show error
+                        toastr.clear();
+                        toastr.error(error.response.data.errorMessage);
+                    });
+            },
+
+            closeModal(event) {
+                $("#add-new-team").removeClass("is-active");
+            }
+        }
+    });
+
+}
 
 $(document).ready(() => {
     axios.defaults.headers.common = {
@@ -208,6 +307,22 @@ $(document).ready(() => {
 
     if (document.getElementById("app_settings")) {
         scuti_app.settings_screen(
+            Vue,
+            axios,
+            $
+        );
+    }
+
+    if (document.getElementById("add_user_modal")) {
+        scuti_app.add_user_modal(
+            Vue,
+            axios,
+            $
+        );
+    }
+
+    if (document.getElementById("add_team_modal")) {
+        scuti_app.add_team_modal(
             Vue,
             axios,
             $

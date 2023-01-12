@@ -1,3 +1,9 @@
+<script type="text/javascript">
+  var i18n_globals = {
+    new_team: '<%= gettext "Team created successfully!" %>'
+  }
+</script>
+
 <div id="app">
   <div id="nav">
       <a href={Routes.page_path(@conn, :home)}
@@ -60,7 +66,7 @@
         </a>
       <% end %>
   </div>
-  <div class="list_teams">
+  <div class="app_teams">
 
     <br/>
     <section>
@@ -111,18 +117,45 @@
     <!-- Add Team Modal -->
     <div class="modal" id="add-new-team">
       <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title"><%= gettext "New Team" %></p>
-          <button class="delete" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-          <!-- Content ... -->
-        </section>
-        <footer class="modal-card-foot is-centered">
-          <button class="button is-success"><%= gettext "Save" %></button>
-          <button class="button"><%= gettext "Cancel" %></button>
-        </footer>
+      <div class="modal-card" id="add_team_modal">
+        <form action={Routes.team_path(@conn, :create)} method="post" v-on:submit.prevent="addTeamAction">
+          <header class="modal-card-head">
+            <p class="modal-card-title"><%= gettext "New Team" %></p>
+            <button class="delete" aria-label="close" v-on:click="closeModal"></button>
+          </header>
+          <section class="modal-card-body">
+            <div class="field">
+              <label class="label"><%= gettext "Name" %></label>
+              <div class="control">
+                <input class="input" name="name" type="text" placeholder="Team Name" required="required">
+              </div>
+            </div>
+            <br/>
+            <div class="field">
+              <label class="label"><%= gettext "Description" %></label>
+              <div class="control">
+                <textarea class="textarea" name="description" placeholder="Some information about the team" required="required"></textarea>
+              </div>
+            </div>
+            <br/>
+            <div class="field">
+              <label class="label"><%= gettext "Members" %></label>
+              <div class="control">
+                <div class="select is-multiple">
+                  <select multiple size="4" name="members" style="width: 40em;">
+                    <%= for user <- @data.users do %>
+                      <option value={user.id}><%= user.name %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot is-centered">
+            <button class="button is-success" type="submit"><%= gettext "Submit" %></button>
+            <button class="button" v-on:click="closeModal"><%= gettext "Cancel" %></button>
+          </footer>
+        </form>
       </div>
     </div>
     <!-- Add Team Modal -->

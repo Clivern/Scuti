@@ -204,17 +204,20 @@ defmodule ScutiWeb.PageController do
         teams = TeamModule.get_teams(0, 1000)
 
         new_teams = []
-        new_teams = for team <- teams do
-          new_teams ++ %{
-            id: team.id,
-            uuid: team.uuid,
-            name: team.name,
-            description: team.description,
-            count: UserModule.count_team_users(team.id),
-            inserted_at: team.inserted_at,
-            updated_at: team.updated_at
-          }
-        end
+
+        new_teams =
+          for team <- teams do
+            new_teams ++
+              %{
+                id: team.id,
+                uuid: team.uuid,
+                name: team.name,
+                description: team.description,
+                count: UserModule.count_team_users(team.id),
+                inserted_at: team.inserted_at,
+                updated_at: team.updated_at
+              }
+          end
 
         conn
         |> render("list_teams.html",
