@@ -13,29 +13,31 @@ defmodule ScutiWeb.HostGroupView do
     %{successMessage: message}
   end
 
-  def render("create.json", %{user: user}) do
+  def render("create.json", %{group: group}) do
     %{
-      id: user.id,
-      uuid: user.uuid,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      apiKey: user.api_key,
-      createdAt: user.inserted_at,
-      updatedAt: user.updated_at
+      id: group.id,
+      uuid: group.uuid,
+      teamId: group.team_id,
+      name: group.name,
+      apiKey: group.api_key,
+      labels: group.labels,
+      remoteJoin: group.remote_join,
+      createdAt: group.inserted_at,
+      updatedAt: group.updated_at
     }
   end
 
-  def render("index.json", %{user: user}) do
+  def render("index.json", %{group: group}) do
     %{
-      id: user.id,
-      uuid: user.uuid,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      apiKey: user.api_key,
-      createdAt: user.inserted_at,
-      updatedAt: user.updated_at
+      id: group.id,
+      uuid: group.uuid,
+      teamId: group.team_id,
+      name: group.name,
+      apiKey: group.api_key,
+      labels: group.labels,
+      remoteJoin: group.remote_join,
+      createdAt: group.inserted_at,
+      updatedAt: group.updated_at
     }
   end
 end
