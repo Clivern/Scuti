@@ -6,10 +6,10 @@ defmodule Scuti.Module.HostGroupModule do
   @moduledoc """
   HostGroup Module
   """
+
   alias Scuti.Context.TeamContext
   alias Scuti.Context.UserContext
   alias Scuti.Context.HostGroupContext
-  alias Scuti.Service.ValidatorService
 
   @doc """
   Create a group
@@ -42,5 +42,37 @@ defmodule Scuti.Module.HostGroupModule do
   """
   def get_groups_by_teams(teams_ids, offset, limit) do
     HostGroupContext.get_groups_by_teams(teams_ids, offset, limit)
+  end
+
+  @doc """
+  Get User Teams
+  """
+  def get_user_teams(user_id) do
+    teams = UserContext.get_user_teams(user_id)
+
+    result = []
+
+    for team <- teams do
+      result ++
+        %{
+          id: team.id,
+          uuid: team.uuid,
+          name: team.name
+        }
+    end
+  end
+
+  @doc """
+  Count host groups by team ids
+  """
+  def count_groups_by_teams(teams_ids) do
+    HostGroupContext.count_groups_by_teams(teams_ids)
+  end
+
+  @doc """
+  Validate Team ID
+  """
+  def validate_team_id(id) do
+    TeamContext.validate_team_id(id)
   end
 end

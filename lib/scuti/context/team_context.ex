@@ -51,6 +51,19 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
+  Validate Team ID
+  """
+  def validate_team_id(id) do
+    case get_team_by_id(id) do
+      nil ->
+        false
+
+      _ ->
+        true
+    end
+  end
+
+  @doc """
   Get team by uuid
   """
   def get_team_by_uuid(uuid) do

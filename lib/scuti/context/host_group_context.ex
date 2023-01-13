@@ -99,7 +99,7 @@ defmodule Scuti.Context.HostGroupContext do
   end
 
   @doc """
-  Retrieve host groups
+  Retrieve host groups by team ids
   """
   def get_groups_by_teams(teams_ids, offset, limit) do
     from(h in HostGroup,
@@ -108,6 +108,17 @@ defmodule Scuti.Context.HostGroupContext do
       offset: ^offset
     )
     |> Repo.all()
+  end
+
+  @doc """
+  Count host groups by team ids
+  """
+  def count_groups_by_teams(teams_ids) do
+    from(h in HostGroup,
+      select: count(h.id),
+      where: h.team_id in ^teams_ids
+    )
+    |> Repo.one()
   end
 
   @doc """

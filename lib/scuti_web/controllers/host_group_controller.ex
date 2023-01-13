@@ -13,6 +13,8 @@ defmodule ScutiWeb.HostGroupController do
 
   alias Scuti.Module.HostGroupModule
   alias Scuti.Service.ValidatorService
+  alias Scuti.Service.AuthService
+  alias Scuti.Exception.InvalidRequest
 
   @default_list_limit "10"
   @default_list_offset "0"
@@ -43,19 +45,66 @@ defmodule ScutiWeb.HostGroupController do
   def list(conn, params) do
     limit = ValidatorService.get_int(params["limit"], @default_list_limit)
     offset = ValidatorService.get_int(params["offset"], @default_list_offset)
+    user_teams = HostGroupModule.get_user_teams(conn.assigns[:user_id])
 
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+    teams_ids = []
+
+    teams_ids =
+      for user_team <- user_teams do
+        teams_ids ++ user_team.id
+      end
+
+    render(conn, "list.json", %{
+      groups: HostGroupModule.get_groups_by_teams(teams_ids, offset, limit),
+      metadata: %{
+        limit: limit,
+        offset: offset,
+        totalCount: HostGroupModule.count_groups_by_teams(teams_ids)
+      }
+    })
   end
 
   @doc """
   Create Action Endpoint
   """
-  def create(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def create(conn, params) do
+    try do
+      validate_create_request(params)
+
+      name = ValidatorService.get_str(params["name"], "")
+      labels = ValidatorService.get_str(params["labels"], "")
+      remote_join = ValidatorService.get_list(params["remote_join"], "disabled")
+      team_id = ValidatorService.get_int(params["team_id"], 0)
+
+      result =
+        HostGroupModule.create_group(%{
+          name: name,
+          api_key: AuthService.get_random_salt(),
+          team_id: team_id,
+          labels: labels,
+          remote_join: remote_join == "enabled"
+        })
+
+      case result do
+        {:error, _} ->
+          raise InvalidRequest, message: "Invalid Request"
+
+        {:ok, group} ->
+          conn
+          |> put_status(:created)
+          |> render("create.json", %{group: group})
+      end
+    rescue
+      e in InvalidRequest ->
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{message: e.message})
+
+      _ ->
+        conn
+        |> put_status(:internal_server_error)
+        |> render("error.json", %{message: "Internal server error"})
+    end
   end
 
   @doc """
@@ -83,5 +132,28 @@ defmodule ScutiWeb.HostGroupController do
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  end
+
+  defp validate_create_request(params) do
+    name = ValidatorService.get_str(params["name"], "")
+    remote_join = ValidatorService.get_str(params["remote_join"], "disabled")
+
+    if ValidatorService.is_empty(name) do
+      raise InvalidRequest, message: "Host group name is required"
+    end
+
+    if ValidatorService.is_empty(remote_join) do
+      raise InvalidRequest, message: "Remote join option is required"
+    end
+
+    if not ValidatorService.validate_int(params["team_id"]) do
+      raise InvalidRequest, message: "Team is required"
+    end
+
+    team_id = ValidatorService.get_int(params["team_id"], 0)
+
+    if not HostGroupModule.validate_team_id(team_id) do
+      raise InvalidRequest, message: "Team is required"
+    end
   end
 end

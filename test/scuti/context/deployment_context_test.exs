@@ -938,7 +938,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       {_, meta} = DeploymentContext.create_deployment_meta(meta)
 
       assert DeploymentContext.get_deployment_metas(deployment.id) == [meta]
-      assert DeploymentContext.get_deployment_metas(100000) == []
+      assert DeploymentContext.get_deployment_metas(100_000) == []
     end
   end
 end
