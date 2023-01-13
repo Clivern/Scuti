@@ -21,6 +21,7 @@ defmodule Scuti.Context.HostGroupContext do
       api_key: group.api_key,
       team_id: group.team_id,
       labels: group.labels,
+      remote_join: group.remote_join,
       uuid: Ecto.UUID.generate()
     }
   end
@@ -91,6 +92,18 @@ defmodule Scuti.Context.HostGroupContext do
   """
   def get_groups(offset, limit) do
     from(h in HostGroup,
+      limit: ^limit,
+      offset: ^offset
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Retrieve host groups
+  """
+  def get_groups_by_teams(teams_ids, offset, limit) do
+    from(h in HostGroup,
+      where: h.team_id in ^teams_ids,
       limit: ^limit,
       offset: ^offset
     )

@@ -11,6 +11,7 @@ defmodule Scuti.Repo.Migrations.CreateHostGroups do
       add :name, :string
       add :api_key, :string
       add :labels, :string
+      add :remote_join, :boolean, default: false
       add :team_id, references(:teams, on_delete: :delete_all)
 
       timestamps()

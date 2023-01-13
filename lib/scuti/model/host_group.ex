@@ -16,6 +16,7 @@ defmodule Scuti.Model.HostGroup do
     field :name, :string
     field :api_key, :string
     field :labels, :string
+    field :remote_join, :boolean, default: false
 
     timestamps()
   end
@@ -28,14 +29,16 @@ defmodule Scuti.Model.HostGroup do
       :team_id,
       :name,
       :api_key,
-      :labels
+      :labels,
+      :remote_join
     ])
     |> validate_required([
       :uuid,
       :team_id,
       :name,
       :api_key,
-      :labels
+      :labels,
+      :remote_join
     ])
   end
 end
