@@ -222,5 +222,9 @@ defmodule ScutiWeb.UserController do
     if ValidatorService.is_empty(password) do
       raise InvalidRequest, message: "User password is required"
     end
+
+    if UserModule.is_email_used(email) do
+      raise InvalidRequest, message: "Email is already used"
+    end
   end
 end

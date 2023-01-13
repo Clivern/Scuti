@@ -154,4 +154,19 @@ defmodule Scuti.Module.UserModule do
   def count_team_users(team_id) do
     UserContext.count_team_users(team_id)
   end
+
+  @doc """
+  Verify if email is used
+  """
+  def is_email_used(email) do
+    user = UserContext.get_user_by_email(email)
+
+    case user do
+      nil ->
+        false
+
+      _ ->
+        true
+    end
+  end
 end

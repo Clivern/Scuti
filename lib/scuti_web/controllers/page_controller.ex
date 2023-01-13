@@ -77,7 +77,7 @@ defmodule ScutiWeb.PageController do
     case is_installed do
       false ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/install")
 
       true ->
         conn

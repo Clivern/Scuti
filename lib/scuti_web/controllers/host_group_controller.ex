@@ -11,11 +11,11 @@ defmodule ScutiWeb.HostGroupController do
 
   require Logger
 
-  # alias Scuti.Module.HostGroupModule
-  # alias Scuti.Service.ValidatorService
+  alias Scuti.Module.HostGroupModule
+  alias Scuti.Service.ValidatorService
 
-  # @default_list_limit "10"
-  # @default_list_offset "0"
+  @default_list_limit "10"
+  @default_list_offset "0"
 
   plug :regular_user, only: [:list, :index, :create, :update, :delete]
 
@@ -40,7 +40,10 @@ defmodule ScutiWeb.HostGroupController do
   @doc """
   List Action Endpoint
   """
-  def list(conn, _params) do
+  def list(conn, params) do
+    limit = ValidatorService.get_int(params["limit"], @default_list_limit)
+    offset = ValidatorService.get_int(params["offset"], @default_list_offset)
+
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(200, Jason.encode!(%{status: "ok"}))
