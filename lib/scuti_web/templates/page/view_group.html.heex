@@ -1,6 +1,6 @@
 <script type="text/javascript">
   var i18n_globals = {
-    new_group: '<%= gettext "Host group created successfully!" %>'
+    new_host: '<%= gettext "Host created successfully!" %>'
   }
 </script>
 
@@ -61,15 +61,15 @@
         </a>
       <% end %>
   </div>
-  <div class="app_groups">
+  <div class="list_hosts">
 
     <br/>
     <section>
       <div class="columns is-desktop is-right">
         <div class="column"></div>
         <div class="column is-three-quarters" style="text-align: right;">
-          <button class="button is-warning is-small is-rounded modal-trigger" data-target="add-new-group">
-            <%= gettext "New Group" %>
+          <button class="button is-warning is-small is-rounded modal-trigger" data-target="add-new-host">
+            <%= gettext "New Host" %>
           </button>
         </div>
         <div class="column"></div>
@@ -84,25 +84,22 @@
             <thead>
               <tr>
                 <th style="text-align: center;"><%= gettext "Name" %></th>
-                <th style="text-align: center;"><%= gettext "Hosts" %></th>
                 <th style="text-align: center;"><%= gettext "Labels" %></th>
                 <th style="text-align: center;"><%= gettext "Created at" %></th>
                 <th style="text-align: center;"><%= gettext "Actions" %></th>
               </tr>
             </thead>
             <tbody>
-              <%= for group <- @data.groups do %>
+              <%= for host <- @data.hosts do %>
                 <tr>
-                  <td><%= group.name %></td>
-                  <td><%= group.host_count %></td>
-                  <td><%= group.labels %></td>
-                  <td><%= group.inserted_at %></td>
+                  <td><%= host.name %></td>
+                  <td><%= host.status %></td>
+                  <td><%= host.labels %></td>
+                  <td><%= host.inserted_at %></td>
                   <td>
-                    <a href={Routes.page_path(@conn, :view_group, group.id)} class="button is-warning is-small is-rounded modal-trigger" data-target="view-group" data-id={group.id} data-uuid={group.uuid}><%= gettext "View" %></a>
+                    <button class="button is-info is-small is-rounded modal-trigger" data-target="edit-host" data-id={host.id} data-uuid={host.uuid}><%= gettext "Edit" %></button>
                     -
-                    <button class="button is-info is-small is-rounded modal-trigger" data-target="edit-group" data-id={group.id} data-uuid={group.uuid}><%= gettext "Edit" %></button>
-                    -
-                    <button class="button is-danger is-small is-rounded" data-id={group.id} data-uuid={group.uuid}><%= gettext "Delete" %></button>
+                    <button class="button is-danger is-small is-rounded" data-id={host.id} data-uuid={host.uuid}><%= gettext "Delete" %></button>
                   </td>
                 </tr>
               <% end %>
@@ -113,52 +110,20 @@
       </div>
     </section>
 
-    <!-- Add Group Modal -->
-    <div class="modal" id="add-new-group">
+    <!-- Add Host Modal -->
+    <div class="modal" id="add-new-host">
       <div class="modal-background"></div>
-      <div class="modal-card" id="add_group_modal">
-        <form action={Routes.host_group_path(@conn, :create)} method="post" v-on:submit.prevent="addGroupAction">
+      <div class="modal-card" id="add_host_modal">
+        <form action={Routes.host_path(@conn, :create, @data.group.id)} method="post" v-on:submit.prevent="addHostAction">
           <header class="modal-card-head">
-            <p class="modal-card-title"><%= gettext "New Group" %></p>
+            <p class="modal-card-title"><%= gettext "New Host" %></p>
             <button class="delete" aria-label="close" v-on:click="closeModal"></button>
           </header>
           <section class="modal-card-body">
             <div class="field">
               <label class="label"><%= gettext "Name" %></label>
               <div class="control">
-                <input class="input" name="name" type="text" placeholder="Host group name" required="required">
-              </div>
-            </div>
-            <br/>
-            <div class="field">
-              <label class="label"><%= gettext "Labels" %></label>
-              <div class="control">
-                <input class="input" name="labels" type="text" placeholder="Host group labels" required="required">
-              </div>
-            </div>
-            <br/>
-            <div class="field">
-              <label class="label"><%= gettext "Remote Join" %></label>
-              <div class="control">
-                <div class="select">
-                  <select name="remoteJoin" style="width: 40em;" required="required">
-                    <option value="disabled" selected><%= gettext "Disabled" %></option>
-                    <option value="enabled"><%= gettext "Enabled" %></option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <br/>
-            <div class="field">
-              <label class="label"><%= gettext "Team" %></label>
-              <div class="control">
-                <div class="select">
-                  <select name="teamId" style="width: 40em;" required="required">
-                    <%= for team <- @data.user_teams do %>
-                      <option value={team.id}><%= team.name %></option>
-                    <% end %>
-                  </select>
-                </div>
+                <input class="input" name="name" type="text" placeholder="Host name" required="required">
               </div>
             </div>
           </section>
@@ -169,14 +134,14 @@
         </form>
       </div>
     </div>
-    <!-- Add Group Modal -->
+    <!-- Add Host Modal -->
 
-    <!-- Edit Group Modal -->
-    <div class="modal" id="edit-group">
+    <!-- Edit Host Modal -->
+    <div class="modal" id="edit-host">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title"><%= gettext "Edit Group" %></p>
+          <p class="modal-card-title"><%= gettext "Edit Host" %></p>
           <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
@@ -188,7 +153,7 @@
         </footer>
       </div>
     </div>
-    <!-- Edit Group Modal -->
+    <!-- Edit Host Modal -->
 
   </div>
 </div>

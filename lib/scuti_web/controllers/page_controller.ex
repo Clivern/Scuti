@@ -14,6 +14,7 @@ defmodule ScutiWeb.PageController do
   alias Scuti.Module.InstallModule
   alias Scuti.Service.AuthService
   alias Scuti.Module.HostGroupModule
+  alias Scuti.Module.HostModule
 
   @doc """
   Login Page
@@ -139,22 +140,34 @@ defmodule ScutiWeb.PageController do
   end
 
   @doc """
-  Hosts List Page
+  Host Groups View Page
   """
-  def list_hosts(conn, _params) do
+  def view_group(conn, %{"id" => id}) do
     case conn.assigns[:is_logged] do
       false ->
         conn
         |> redirect(to: "/")
 
       true ->
-        conn
-        |> render("list_hosts.html",
-          data: %{
-            is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
-          }
-        )
+        group = HostGroupModule.get_group_by_id(id)
+
+        case group do
+          nil ->
+            conn
+            |> redirect(to: "/404")
+          _ ->
+            hosts = HostModule.get_hosts_by_group(id, 0, 10000)
+
+            conn
+            |> render("view_group.html",
+              data: %{
+                is_logged: conn.assigns[:is_logged],
+                is_super: conn.assigns[:is_super],
+                group: group,
+                hosts: hosts
+              }
+            )
+        end
     end
   end
 
