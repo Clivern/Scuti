@@ -824,7 +824,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       {_, meta} = DeploymentContext.create_deployment_meta(meta)
 
       assert DeploymentContext.get_deployment_meta_by_id_key(deployment.id, "~meta_key~") == meta
-      assert DeploymentContext.get_deployment_meta_by_id_key(11, "~meta_key~") == nil
+      assert DeploymentContext.get_deployment_meta_by_id_key(100000, "~meta_key~") == nil
 
       assert DeploymentContext.get_deployment_meta_by_id_key(deployment.id, "~new_meta_key~") ==
                nil
@@ -883,7 +883,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       {_, meta} = DeploymentContext.create_deployment_meta(meta)
 
       assert DeploymentContext.get_deployment_meta_by_id_key(deployment.id, "~meta_key~") == meta
-      assert DeploymentContext.get_deployment_meta_by_id_key(11, "~meta_key~") == nil
+      assert DeploymentContext.get_deployment_meta_by_id_key(10000, "~meta_key~") == nil
 
       assert DeploymentContext.get_deployment_meta_by_id_key(deployment.id, "~new_meta_key~") ==
                nil
