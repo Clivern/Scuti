@@ -17,11 +17,6 @@
           <%= gettext "Host Groups" %>
         </a>
         |
-        <a href={Routes.page_path(@conn, :list_hosts)}
-          ><span class="icon"><i class="fas fa-server"></i></span>
-          <%= gettext "Hosts" %>
-        </a>
-        |
         <a href={Routes.page_path(@conn, :list_deployments)}
           ><span class="icon"><i class="fas fa-rocket"></i></span>
           <%= gettext "Deployments" %>

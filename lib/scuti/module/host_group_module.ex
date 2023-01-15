@@ -10,6 +10,7 @@ defmodule Scuti.Module.HostGroupModule do
   alias Scuti.Context.TeamContext
   alias Scuti.Context.UserContext
   alias Scuti.Context.HostGroupContext
+  alias Scuti.Context.HostContext
 
   @doc """
   Create a group
@@ -74,5 +75,12 @@ defmodule Scuti.Module.HostGroupModule do
   """
   def validate_team_id(id) do
     TeamContext.validate_team_id(id)
+  end
+
+  @doc """
+  Count Hosts by Host Group
+  """
+  def count_hosts_by_host_group(group_id) do
+    HostContext.count_hosts_by_host_group(group_id)
   end
 end

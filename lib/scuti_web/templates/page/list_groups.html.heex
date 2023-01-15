@@ -1,3 +1,9 @@
+<script type="text/javascript">
+  var i18n_globals = {
+    new_group: '<%= gettext "Host group created successfully!" %>'
+  }
+</script>
+
 <div id="app">
   <div id="nav">
       <a href={Routes.page_path(@conn, :home)}
@@ -9,11 +15,6 @@
         <a href={Routes.page_path(@conn, :list_groups)}
           ><span class="icon"><i class="fas fa-layer-group"></i></span>
           <%= gettext "Host Groups" %>
-        </a>
-        |
-        <a href={Routes.page_path(@conn, :list_hosts)}
-          ><span class="icon"><i class="fas fa-server"></i></span>
-          <%= gettext "Hosts" %>
         </a>
         |
         <a href={Routes.page_path(@conn, :list_deployments)}
@@ -60,7 +61,134 @@
         </a>
       <% end %>
   </div>
-  <div class="list_groups">
-    <br /><br /><br />
+  <div class="app_groups">
+
+    <br/>
+    <section>
+      <div class="columns is-desktop is-right">
+        <div class="column"></div>
+        <div class="column is-three-quarters" style="text-align: right;">
+          <button class="button is-warning is-small is-rounded modal-trigger" data-target="add-new-group">
+            <%= gettext "New Group" %>
+          </button>
+        </div>
+        <div class="column"></div>
+      </div>
+    </section>
+    <br/>
+    <section>
+      <div class="columns is-desktop is-centered">
+        <div class="column"></div>
+        <div class="column is-three-quarters">
+          <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th style="text-align: center;"><%= gettext "Name" %></th>
+                <th style="text-align: center;"><%= gettext "Hosts" %></th>
+                <th style="text-align: center;"><%= gettext "Labels" %></th>
+                <th style="text-align: center;"><%= gettext "Created at" %></th>
+                <th style="text-align: center;"><%= gettext "Actions" %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= for group <- @data.groups do %>
+                <tr>
+                  <td><%= group.name %></td>
+                  <td><%= group.host_count %></td>
+                  <td><%= group.labels %></td>
+                  <td><%= group.inserted_at %></td>
+                  <td>
+                    <button class="button is-warning is-small is-rounded modal-trigger" data-target="view-group" data-id={group.id} data-uuid={group.uuid}><%= gettext "View" %></button>
+                    -
+                    <button class="button is-info is-small is-rounded modal-trigger" data-target="edit-group" data-id={group.id} data-uuid={group.uuid}><%= gettext "Edit" %></button>
+                    -
+                    <button class="button is-danger is-small is-rounded" data-id={group.id} data-uuid={group.uuid}><%= gettext "Delete" %></button>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="column"></div>
+      </div>
+    </section>
+
+    <!-- Add Group Modal -->
+    <div class="modal" id="add-new-group">
+      <div class="modal-background"></div>
+      <div class="modal-card" id="add_group_modal">
+        <form action={Routes.host_group_path(@conn, :create)} method="post" v-on:submit.prevent="addGroupAction">
+          <header class="modal-card-head">
+            <p class="modal-card-title"><%= gettext "New Group" %></p>
+            <button class="delete" aria-label="close" v-on:click="closeModal"></button>
+          </header>
+          <section class="modal-card-body">
+            <div class="field">
+              <label class="label"><%= gettext "Name" %></label>
+              <div class="control">
+                <input class="input" name="name" type="text" placeholder="Host group name" required="required">
+              </div>
+            </div>
+            <br/>
+            <div class="field">
+              <label class="label"><%= gettext "Labels" %></label>
+              <div class="control">
+                <input class="input" name="labels" type="text" placeholder="Host group labels" required="required">
+              </div>
+            </div>
+            <br/>
+            <div class="field">
+              <label class="label"><%= gettext "Remote Join" %></label>
+              <div class="control">
+                <div class="select">
+                  <select name="remoteJoin" style="width: 40em;" required="required">
+                    <option value="disabled" selected><%= gettext "Disabled" %></option>
+                    <option value="enabled"><%= gettext "Enabled" %></option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <br/>
+            <div class="field">
+              <label class="label"><%= gettext "Team" %></label>
+              <div class="control">
+                <div class="select">
+                  <select name="teamId" style="width: 40em;" required="required">
+                    <%= for team <- @data.user_teams do %>
+                      <option value={team.id}><%= team.name %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot is-centered">
+            <button class="button is-success" type="submit"><%= gettext "Submit" %></button>
+            <button class="button" v-on:click="closeModal"><%= gettext "Cancel" %></button>
+          </footer>
+        </form>
+      </div>
+    </div>
+    <!-- Add Group Modal -->
+
+    <!-- Edit Group Modal -->
+    <div class="modal" id="edit-group">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title"><%= gettext "Edit Group" %></p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+        </section>
+        <footer class="modal-card-foot is-centered">
+          <button class="button is-success"><%= gettext "Save" %></button>
+          <button class="button"><%= gettext "Cancel" %></button>
+        </footer>
+      </div>
+    </div>
+    <!-- Edit Group Modal -->
+
   </div>
 </div>

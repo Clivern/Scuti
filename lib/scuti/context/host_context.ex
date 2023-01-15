@@ -114,6 +114,17 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
+  Count hosts by host group id
+  """
+  def count_hosts_by_host_group(host_group_id) do
+    from(h in Host,
+      select: count(h.id),
+      where: h.host_group_id == ^host_group_id
+    )
+    |> Repo.one()
+  end
+
+  @doc """
   Create a new host meta
   """
   def create_host_meta(attrs \\ %{}) do

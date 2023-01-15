@@ -13,6 +13,7 @@ defmodule ScutiWeb.PageController do
   alias Scuti.Module.SettingsModule
   alias Scuti.Module.InstallModule
   alias Scuti.Service.AuthService
+  alias Scuti.Module.HostGroupModule
 
   @doc """
   Login Page
@@ -100,11 +101,38 @@ defmodule ScutiWeb.PageController do
         |> redirect(to: "/")
 
       true ->
+        teams_ids = []
+        new_groups = []
+        user_teams = HostGroupModule.get_user_teams(conn.assigns[:user_id])
+
+        teams_ids =
+          for user_team <- user_teams do
+            teams_ids ++ user_team.id
+          end
+
+        groups = HostGroupModule.get_groups_by_teams(teams_ids, 0, 1000)
+
+        new_groups =
+          for group <- groups do
+            new_groups ++
+              %{
+                id: group.id,
+                uuid: group.uuid,
+                name: group.name,
+                host_count: HostGroupModule.count_hosts_by_host_group(group.id),
+                labels: group.labels,
+                inserted_at: group.inserted_at,
+                updated_at: group.updated_at
+              }
+          end
+
         conn
         |> render("list_groups.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
+            is_super: conn.assigns[:is_super],
+            groups: new_groups,
+            user_teams: user_teams
           }
         )
     end

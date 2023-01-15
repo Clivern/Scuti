@@ -16,7 +16,7 @@
           <%= gettext "New Project" %>
         </a>
       <% end %>
-      <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+      <%= if function_exported?(Routes, :live_dashboard_path, 2) and @data.is_super do %>
         |
         <a href={Routes.live_dashboard_path(@conn, :home)}
           ><span class="icon"><i class="fas fa-plus-square"></i></span>

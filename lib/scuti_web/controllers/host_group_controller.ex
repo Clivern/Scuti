@@ -73,14 +73,14 @@ defmodule ScutiWeb.HostGroupController do
 
       name = ValidatorService.get_str(params["name"], "")
       labels = ValidatorService.get_str(params["labels"], "")
-      remote_join = ValidatorService.get_list(params["remote_join"], "disabled")
-      team_id = ValidatorService.get_int(params["team_id"], 0)
+      remote_join = ValidatorService.get_list(params["remoteJoin"], "disabled")
+      team = ValidatorService.get_int(params["teamId"], 0)
 
       result =
         HostGroupModule.create_group(%{
           name: name,
           api_key: AuthService.get_random_salt(),
-          team_id: team_id,
+          team_id: team,
           labels: labels,
           remote_join: remote_join == "enabled"
         })
@@ -136,7 +136,7 @@ defmodule ScutiWeb.HostGroupController do
 
   defp validate_create_request(params) do
     name = ValidatorService.get_str(params["name"], "")
-    remote_join = ValidatorService.get_str(params["remote_join"], "disabled")
+    remote_join = ValidatorService.get_str(params["remoteJoin"], "disabled")
 
     if ValidatorService.is_empty(name) do
       raise InvalidRequest, message: "Host group name is required"
@@ -146,13 +146,13 @@ defmodule ScutiWeb.HostGroupController do
       raise InvalidRequest, message: "Remote join option is required"
     end
 
-    if not ValidatorService.validate_int(params["team_id"]) do
+    if not ValidatorService.validate_int(params["teamId"]) do
       raise InvalidRequest, message: "Team is required"
     end
 
-    team_id = ValidatorService.get_int(params["team_id"], 0)
+    team = ValidatorService.get_int(params["teamId"], 0)
 
-    if not HostGroupModule.validate_team_id(team_id) do
+    if not HostGroupModule.validate_team_id(team) do
       raise InvalidRequest, message: "Team is required"
     end
   end
