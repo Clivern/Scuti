@@ -25,6 +25,7 @@ defmodule Scuti.Context.HostContext do
       public_ips: host.public_ips,
       status: host.status,
       reported_at: host.reported_at,
+      secret_key: host.secret_key,
       uuid: Ecto.UUID.generate()
     }
   end

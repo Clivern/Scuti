@@ -19,6 +19,7 @@ defmodule Scuti.Model.Host do
     field :public_ips, :string
     field :labels, :string
     field :status, :string
+    field :secret_key, :string
     field :reported_at, :utc_datetime
 
     timestamps()
@@ -36,6 +37,7 @@ defmodule Scuti.Model.Host do
       :public_ips,
       :labels,
       :status,
+      :secret_key,
       :reported_at
     ])
     |> validate_required([
@@ -47,6 +49,7 @@ defmodule Scuti.Model.Host do
       :public_ips,
       :labels,
       :status,
+      :secret_key,
       :reported_at
     ])
   end

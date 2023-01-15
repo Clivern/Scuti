@@ -79,7 +79,7 @@ defmodule ScutiWeb.HostGroupController do
       result =
         HostGroupModule.create_group(%{
           name: name,
-          api_key: AuthService.get_random_salt(),
+          secret_key: AuthService.get_random_salt(),
           team_id: team,
           labels: labels,
           remote_join: remote_join == "enabled"

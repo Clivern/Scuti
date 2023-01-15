@@ -18,7 +18,7 @@ defmodule Scuti.Context.HostGroupContext do
   def new_group(group \\ %{}) do
     %{
       name: group.name,
-      api_key: group.api_key,
+      secret_key: group.secret_key,
       team_id: group.team_id,
       labels: group.labels,
       remote_join: group.remote_join,

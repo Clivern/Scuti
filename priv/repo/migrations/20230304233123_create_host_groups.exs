@@ -9,7 +9,7 @@ defmodule Scuti.Repo.Migrations.CreateHostGroups do
     create table(:host_groups) do
       add :uuid, :uuid
       add :name, :string
-      add :api_key, :string
+      add :secret_key, :string
       add :labels, :string
       add :remote_join, :boolean, default: false
       add :team_id, references(:teams, on_delete: :delete_all)
@@ -19,6 +19,6 @@ defmodule Scuti.Repo.Migrations.CreateHostGroups do
 
     create index(:host_groups, [:uuid])
     create index(:host_groups, [:team_id])
-    create index(:host_groups, [:api_key])
+    create index(:host_groups, [:secret_key])
   end
 end

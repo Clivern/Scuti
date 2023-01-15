@@ -19,7 +19,7 @@ defmodule Scuti.Module.HostGroupModule do
     group =
       HostGroupContext.new_group(%{
         name: data[:name],
-        api_key: data[:api_key],
+        secret_key: data[:secret_key],
         team_id: data[:team_id],
         labels: data[:labels],
         remote_join: data[:remote_join] || false

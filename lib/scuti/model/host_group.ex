@@ -14,7 +14,7 @@ defmodule Scuti.Model.HostGroup do
     field :uuid, Ecto.UUID
     field :team_id, :id
     field :name, :string
-    field :api_key, :string
+    field :secret_key, :string
     field :labels, :string
     field :remote_join, :boolean, default: false
 
@@ -28,7 +28,7 @@ defmodule Scuti.Model.HostGroup do
       :uuid,
       :team_id,
       :name,
-      :api_key,
+      :secret_key,
       :labels,
       :remote_join
     ])
@@ -36,7 +36,7 @@ defmodule Scuti.Model.HostGroup do
       :uuid,
       :team_id,
       :name,
-      :api_key,
+      :secret_key,
       :labels,
       :remote_join
     ])

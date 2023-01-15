@@ -22,14 +22,14 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: 1,
           labels: "name=infra",
           remote_join: false
         })
 
       assert group.name == "group_name"
-      assert group.api_key == "group_api_key"
+      assert group.secret_key == "group_api_key"
       assert group.team_id == 1
       assert group.labels == "name=infra"
     end
@@ -65,7 +65,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -75,7 +75,7 @@ defmodule Scuti.Context.HostGroupContextTest do
 
       assert status == :ok
       assert group.name == "group_name"
-      assert group.api_key == "group_api_key"
+      assert group.secret_key == "group_api_key"
       assert group.team_id == team.id
       assert group.labels == "name=infra"
     end
@@ -96,7 +96,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -124,7 +124,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -157,7 +157,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -187,7 +187,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -218,7 +218,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -249,7 +249,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -281,7 +281,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -320,7 +320,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -357,7 +357,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -404,7 +404,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false
@@ -445,7 +445,7 @@ defmodule Scuti.Context.HostGroupContextTest do
       group =
         HostGroupContext.new_group(%{
           name: "group_name",
-          api_key: "group_api_key",
+          secret_key: "group_api_key",
           team_id: team.id,
           labels: "name=infra",
           remote_join: false

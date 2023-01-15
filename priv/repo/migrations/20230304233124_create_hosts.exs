@@ -14,6 +14,7 @@ defmodule Scuti.Repo.Migrations.CreateHosts do
       add :public_ips, :string
       add :labels, :string
       add :status, :string
+      add :secret_key, :string
       add :team_id, references(:teams, on_delete: :delete_all)
       add :host_group_id, references(:host_groups, on_delete: :delete_all)
       add :reported_at, :utc_datetime
@@ -24,5 +25,6 @@ defmodule Scuti.Repo.Migrations.CreateHosts do
     create index(:hosts, [:uuid])
     create index(:hosts, [:team_id])
     create index(:hosts, [:host_group_id])
+    create index(:hosts, [:secret_key])
   end
 end
