@@ -10,8 +10,7 @@ defmodule Scuti.Repo.Migrations.CreateHosts do
       add :uuid, :uuid
       add :name, :string
       add :hostname, :string
-      add :private_ips, :string
-      add :public_ips, :string
+      add :agent_address, :string
       add :labels, :string
       add :status, :string
       add :secret_key, :string

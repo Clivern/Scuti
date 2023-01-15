@@ -25,8 +25,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: "~reported_at~",
           host_group_id: 2,
@@ -37,8 +36,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.reported_at == "~reported_at~"
     end
@@ -87,8 +85,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -100,8 +97,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.host_group_id == group.id
     end
@@ -135,8 +131,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -148,8 +143,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.host_group_id == group.id
 
@@ -185,8 +179,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -198,8 +191,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.host_group_id == group.id
 
@@ -235,8 +227,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -248,8 +239,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.host_group_id == group.id
 
@@ -285,8 +275,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -298,8 +287,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.host_group_id == group.id
 
@@ -337,8 +325,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -350,8 +337,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.host_group_id == group.id
 
@@ -387,8 +373,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -400,8 +385,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.host_group_id == group.id
 
@@ -438,8 +422,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -451,8 +434,7 @@ defmodule Scuti.Context.HostContextTest do
       assert host.name == "~name~"
       assert host.hostname == "~hostname~"
       assert host.labels == "~labels~"
-      assert host.private_ips == "~private_ips~"
-      assert host.public_ips == "~public_ips~"
+      assert host.agent_address == "~agent_address~"
       assert host.status == "~status~"
       assert host.host_group_id == group.id
 
@@ -490,8 +472,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -544,8 +525,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -600,8 +580,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -664,8 +643,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -724,8 +702,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,
@@ -780,8 +757,7 @@ defmodule Scuti.Context.HostContextTest do
           name: "~name~",
           hostname: "~hostname~",
           labels: "~labels~",
-          private_ips: "~private_ips~",
-          public_ips: "~public_ips~",
+          agent_address: "~agent_address~",
           status: "~status~",
           reported_at: DateTime.utc_now(),
           host_group_id: group.id,

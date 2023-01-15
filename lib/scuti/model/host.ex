@@ -15,8 +15,7 @@ defmodule Scuti.Model.Host do
     field :host_group_id, :id
     field :name, :string
     field :hostname, :string
-    field :private_ips, :string
-    field :public_ips, :string
+    field :agent_address, :string
     field :labels, :string
     field :status, :string
     field :secret_key, :string
@@ -33,8 +32,7 @@ defmodule Scuti.Model.Host do
       :host_group_id,
       :name,
       :hostname,
-      :private_ips,
-      :public_ips,
+      :agent_address,
       :labels,
       :status,
       :secret_key,
@@ -45,8 +43,7 @@ defmodule Scuti.Model.Host do
       :host_group_id,
       :name,
       :hostname,
-      :private_ips,
-      :public_ips,
+      :agent_address,
       :labels,
       :status,
       :secret_key,
