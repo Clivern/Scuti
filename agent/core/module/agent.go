@@ -4,6 +4,7 @@
 
 package module
 
+// Agent type
 type Agent struct {
 }
 
