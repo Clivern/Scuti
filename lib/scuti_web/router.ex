@@ -58,9 +58,9 @@ defmodule ScutiWeb.Router do
     post "/action/v1/install", MiscController, :install
     post "/action/v1/auth", MiscController, :auth
 
-    post "/action/v1/agent/join", AgentController, :join
-    post "/action/v1/agent/heartbeat", AgentController, :heartbeat
-    post "/action/v1/agent/report", AgentController, :report
+    post "/action/v1/agent/join/:group_uuid/:host_uuid", AgentController, :join
+    post "/action/v1/agent/heartbeat/:group_uuid/:host_uuid", AgentController, :heartbeat
+    post "/action/v1/agent/report/:group_uuid/:host_uuid", AgentController, :report
   end
 
   scope "/api/v1", ScutiWeb do
@@ -91,11 +91,11 @@ defmodule ScutiWeb.Router do
     delete "/hostGroup/:id", HostGroupController, :delete
 
     # Host CRUD
-    get "/hostGroup/:hgid/host", HostController, :list
-    post "/hostGroup/:hgid/host", HostController, :create
-    get "/hostGroup/:hgid/host/:hid", HostController, :index
-    put "/hostGroup/:hgid/host/:hid", HostController, :update
-    delete "/hostGroup/:hgid/host/:hid", HostController, :delete
+    get "/hostGroup/:group_id/host", HostController, :list
+    post "/hostGroup/:group_id/host", HostController, :create
+    get "/hostGroup/:group_id/host/:host_id", HostController, :index
+    put "/hostGroup/:group_id/host/:host_id", HostController, :update
+    delete "/hostGroup/:group_id/host/:host_id", HostController, :delete
 
     # Deployment CRUD
     get "/deployment", DeploymentController, :list

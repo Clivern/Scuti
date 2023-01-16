@@ -6,6 +6,10 @@ package module
 
 // Agent type
 type Agent struct {
+	ManagementAddress string
+	HostGroupUUID     string
+	HostGroupSecret   string
+	HostSecret        string
 }
 
 // NewAgent creates a new instance
@@ -25,5 +29,14 @@ func (a *Agent) Heartbeat() {
 
 // Report report local actions to the management server
 func (a *Agent) Report() {
+
+}
+
+// Encrypt report local actions to the management server
+func (a *Agent) Encrypt() {
+
+}
+
+func (a *Agent) Decrypt() {
 
 }

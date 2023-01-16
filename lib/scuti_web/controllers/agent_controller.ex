@@ -12,17 +12,34 @@ defmodule ScutiWeb.AgentController do
   @doc """
   Join Action Endpoint
 
-  {
-    group_uuid: ..
-    group_secret: ..
+  encrypt(encode({
     name: ..
     hostname: ..
     agent_address: ..
     labels: ..
-    secret_key: ..
-  }
+    agent_secret: ..
+  }), group_secret)
   """
-  def join(conn, _params) do
+  def join(conn, %{group_uuid: group_uuid, host_uuid: host_uuid}) do
+    IO.puts(group_uuid)
+    IO.puts(host_uuid)
+
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  end
+
+  @doc """
+  Validate Action Endpoint
+
+  encrypt(encode({
+    msg: random message
+  }), agent_secret)
+  """
+  def pong(conn, %{group_uuid: group_uuid, host_uuid: host_uuid}) do
+    IO.puts(group_uuid)
+    IO.puts(host_uuid)
+
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(200, Jason.encode!(%{status: "ok"}))
@@ -32,12 +49,13 @@ defmodule ScutiWeb.AgentController do
   Heartbeat Action Endpoint
 
   encrypt(encode({
-    group_uuid: ..
-    group_secret: ...
     status: up
   }), agent_secret)
   """
-  def heartbeat(conn, _params) do
+  def heartbeat(conn, %{group_uuid: group_uuid, host_uuid: host_uuid}) do
+    IO.puts(group_uuid)
+    IO.puts(host_uuid)
+
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(200, Jason.encode!(%{status: "ok"}))
@@ -47,12 +65,13 @@ defmodule ScutiWeb.AgentController do
   Report Action Endpoint
 
   encrypt(encode({
-    group_uuid: ..
-    group_secret: ..
     event: Agent will reboot the host
   }), agent_secret)
   """
-  def report(conn, _params) do
+  def report(conn, %{group_uuid: group_uuid, host_uuid: host_uuid}) do
+    IO.puts(group_uuid)
+    IO.puts(host_uuid)
+
     conn
     |> put_resp_content_type("application/json")
     |> send_resp(200, Jason.encode!(%{status: "ok"}))
