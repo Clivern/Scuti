@@ -55,12 +55,12 @@ defmodule ScutiWeb.Router do
     get "/_health", HealthController, :health
     get "/_ready", ReadyController, :ready
 
-    post "/action/install", MiscController, :install
-    post "/action/auth", MiscController, :auth
+    post "/action/v1/install", MiscController, :install
+    post "/action/v1/auth", MiscController, :auth
 
-    post "/action/agent/join", AgentController, :join
-    post "/action/agent/heartbeat", AgentController, :heartbeat
-    post "/action/agent/report", AgentController, :report
+    post "/action/v1/agent/join", AgentController, :join
+    post "/action/v1/agent/heartbeat", AgentController, :heartbeat
+    post "/action/v1/agent/report", AgentController, :report
   end
 
   scope "/api/v1", ScutiWeb do

@@ -30,6 +30,10 @@ agent:
   management:
     # Remote server endpoint
     address: ${SCUTI_AGENT_MANAGEMENT_ADDRESS:-http://localhost:4000}
+    # Host Group UUID
+    host_group_uuid: ${SCUTI_AGENT_HG_UUID:-TBA}
+    # Host Group Secret
+    host_group_secret: ${SCUTI_AGENT_HG_SECRET:-TBA}
 
   # Log configs
   log:

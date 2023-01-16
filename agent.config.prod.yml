@@ -1,35 +1,39 @@
 agent:
   # Agent name
   name: ${SCUTI_AGENT_NAME:-scuti}
+
   # Env mode (dev or prod)
   mode: ${SCUTI_AGENT_MODE:-dev}
-  # Hostname
-  hostname: ${SCUTI_AGENT_HOSTNAME:-127.0.0.1}
+
+  # Address
+  address: ${SCUTI_AGENT_ADDRESS:-http://127.0.0.1:8000}
+
   # Global timeout
   timeout: ${SCUTI_AGENT_TIMEOUT:-50}
 
   # Agent labels
   labels:
     - dc: ams-01
-    - team: milky_way
+    - team: scuti
     - service: payment01
 
-  # Agent telemetry configs
-  telemetry:
-    # Whether to enable or disable
-    status: ${SCUTI_AGENT_TELEMETRY_STATUS:-enabled}
-    # To expose on which port
-    port: ${SCUTI_AGENT_TELEMETRY_PORT:-8000}
-    # TLS configs
-    tls:
-      status: ${SCUTI_AGENT_TELEMETRY_TLS_STATUS:-off}
-      crt_path: ${SCUTI_AGENT_TELEMETRY_TLS_PEMPATH:-cert/server.crt}
-      key_path: ${SCUTI_AGENT_TELEMETRY_TLS_KEYPATH:-cert/server.key}
+  # To expose on which port
+  port: ${SCUTI_AGENT_PORT:-8000}
 
-  # Remote server configs
-  server:
+  # TLS configs
+  tls:
+    status: ${SCUTI_AGENT_TLS_STATUS:-off}
+    crt_path: ${SCUTI_AGENT_TLS_PEMPATH:-cert/server.crt}
+    key_path: ${SCUTI_AGENT_TLS_KEYPATH:-cert/server.key}
+
+  # Remote management server configs
+  management:
     # Remote server endpoint
-    endpoint: ${SCUTI_AGENT_SV_ENDPOINT:-http://localhost:8000/api/v1/heartbeat}
+    address: ${SCUTI_AGENT_MANAGEMENT_ADDRESS:-http://localhost:4000}
+    # Host Group UUID
+    host_group_uuid: ${SCUTI_AGENT_HG_UUID:-TBA}
+    # Host Group Secret
+    host_group_secret: ${SCUTI_AGENT_HG_SECRET:-TBA}
 
   # Log configs
   log:
