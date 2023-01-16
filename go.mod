@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/drone/envsubst v1.0.3
+	github.com/franela/goblin v0.0.0-20211003143422-0a4f594942bf
 	github.com/labstack/echo-contrib v0.15.0
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/satori/go.uuid v1.2.0

@@ -11,16 +11,16 @@ import (
 	"encoding/hex"
 )
 
-// HMAC encrypt base16
-func base16_encrypt(key string, data string) string {
+// Base16Encrypt HMAC encrypt base16
+func Base16Encrypt(key string, data string) string {
 	hash := hmac.New(sha256.New, []byte(key))
 	hash.Write([]byte(data))
 
 	return hex.EncodeToString(hash.Sum(nil))
 }
 
-// HMAC encrypt base64
-func base64_encrypt(key string, data string) string {
+// Base64Encrypt HMAC encrypt base64
+func Base64Encrypt(key string, data string) string {
 	hash := hmac.New(sha256.New, []byte(key))
 	hash.Write([]byte(data))
 
