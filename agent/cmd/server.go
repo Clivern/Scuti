@@ -28,7 +28,7 @@ import (
 )
 
 var agentCmd = &cobra.Command{
-	Use:   "start",
+	Use:   "server",
 	Short: "Start the scuti agent",
 	Run: func(cmd *cobra.Command, args []string) {
 		configUnparsed, err := ioutil.ReadFile(config)
@@ -124,63 +124,49 @@ var agentCmd = &cobra.Command{
 
 		viper.SetDefault("config", config)
 
-		if viper.GetString("agent.telemetry.status") == "enabled" {
+		// Run Worker
+		go controller.Worker()
 
-			log.WithFields(log.Fields{
-				"name": viper.GetString("agent.name"),
-			}).Info(`Starting the agent ...`)
+		e := echo.New()
 
-			// Run Worker
-			go controller.Worker()
+		if viper.GetString("agent.mode") == "dev" {
+			e.Debug = true
+		}
+		e.HideBanner = true
+		e.Use(middleware.LoggerWithConfig(defaultLogger))
+		e.Use(middleware.RequestID())
+		e.Use(middleware.BodyLimit("2M"))
+		e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
+			Timeout: time.Duration(viper.GetInt("agent.timeout")) * time.Second,
+		}))
 
-			e := echo.New()
+		p := prometheus.NewPrometheus(viper.GetString("agent.name"), nil)
 
-			if viper.GetString("agent.mode") == "dev" {
-				e.Debug = true
-			}
+		p.Use(e)
 
-			e.Use(middleware.LoggerWithConfig(defaultLogger))
-			e.Use(middleware.RequestID())
-			e.Use(middleware.BodyLimit("2M"))
-			e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
-				Timeout: time.Duration(viper.GetInt("agent.timeout")) * time.Second,
-			}))
+		e.GET("/favicon.ico", func(c echo.Context) error {
+			return c.String(http.StatusNoContent, "")
+		})
 
-			p := prometheus.NewPrometheus(viper.GetString("agent.name"), nil)
+		e.GET("/", controller.HealthAction)
+		e.POST("/api/v1/listen", controller.ListenAction)
 
-			p.Use(e)
+		var runerr error
 
-			e.GET("/favicon.ico", func(c echo.Context) error {
-				return c.String(http.StatusNoContent, "")
-			})
-
-			e.GET("/", controller.HealthAction)
-
-			var runerr error
-
-			if viper.GetBool("agent.telemetry.tls.status") {
-				runerr = e.StartTLS(
-					fmt.Sprintf(":%s", strconv.Itoa(viper.GetInt("agent.telemetry.port"))),
-					viper.GetString("agent.telemetry.tls.crt_path"),
-					viper.GetString("agent.telemetry.tls.key_path"),
-				)
-			} else {
-				runerr = e.Start(
-					fmt.Sprintf(":%s", strconv.Itoa(viper.GetInt("agent.telemetry.port"))),
-				)
-			}
-
-			if runerr != nil && runerr != http.ErrServerClosed {
-				panic(runerr.Error())
-			}
-
+		if viper.GetBool("agent.tls.status") {
+			runerr = e.StartTLS(
+				fmt.Sprintf(":%s", strconv.Itoa(viper.GetInt("agent.port"))),
+				viper.GetString("agent.tls.crt_path"),
+				viper.GetString("agent.tls.key_path"),
+			)
 		} else {
-			log.WithFields(log.Fields{
-				"name": viper.GetString("agent.name"),
-			}).Info(`Starting the agent`)
+			runerr = e.Start(
+				fmt.Sprintf(":%s", strconv.Itoa(viper.GetInt("agent.port"))),
+			)
+		}
 
-			// Run Worker
-			controller.Worker()
+		if runerr != nil && runerr != http.ErrServerClosed {
+			panic(runerr.Error())
 		}
 	},
 }

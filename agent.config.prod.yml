@@ -34,6 +34,8 @@ agent:
     host_group_uuid: ${SCUTI_AGENT_HG_UUID:-TBA}
     # Host Group Secret
     host_group_secret: ${SCUTI_AGENT_HG_SECRET:-TBA}
+    # Host Secret
+    host_secret: ${SCUTI_AGENT_H_SECRET:-TBA}
 
   # Log configs
   log:
