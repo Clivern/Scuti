@@ -38,8 +38,18 @@ defmodule Scuti.Module.HostGroupModule do
     end
   end
 
+  @doc """
+  Get Host Group by ID
+  """
   def get_group_by_id(id) do
     HostGroupContext.get_group_by_id(id)
+  end
+
+  @doc """
+  Get Host Group by UUID
+  """
+  def get_group_by_uuid(uuid) do
+    HostGroupContext.get_group_by_uuid(uuid)
   end
 
   @doc """

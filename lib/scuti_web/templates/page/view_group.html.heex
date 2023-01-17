@@ -62,7 +62,10 @@
       <% end %>
   </div>
   <div class="list_hosts">
-
+    <pre>
+    Group UUID: <%= @data.group.uuid %>
+    Group Secret: <%= @data.group.secret_key %>
+  </pre>
     <br/>
     <section>
       <div class="columns is-desktop is-right">
@@ -84,6 +87,7 @@
             <thead>
               <tr>
                 <th style="text-align: center;"><%= gettext "Name" %></th>
+                <th style="text-align: center;"><%= gettext "Status" %></th>
                 <th style="text-align: center;"><%= gettext "Labels" %></th>
                 <th style="text-align: center;"><%= gettext "Created at" %></th>
                 <th style="text-align: center;"><%= gettext "Actions" %></th>
@@ -92,7 +96,7 @@
             <tbody>
               <%= for host <- @data.hosts do %>
                 <tr>
-                  <td><%= host.name %></td>
+                  <td><%= host.name %> (<%= host.hostname %>)</td>
                   <td><%= host.status %></td>
                   <td><%= host.labels %></td>
                   <td><%= host.inserted_at %></td>
