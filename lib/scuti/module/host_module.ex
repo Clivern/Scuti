@@ -44,6 +44,36 @@ defmodule Scuti.Module.HostModule do
   end
 
   @doc """
+  Mark host as up
+  """
+  def mark_host_as_up(id) do
+    host = HostContext.get_host_by_id(id)
+
+    case host do
+      nil ->
+        {:not_found, "Host with ID #{id} not found"}
+
+      _ ->
+        new_host = %{
+          status: "up",
+          reported_at: DateTime.utc_now()
+        }
+
+        case HostContext.update_host(host, new_host) do
+          {:ok, host} ->
+            {:ok, host}
+
+          {:error, changeset} ->
+            messages =
+              changeset.errors()
+              |> Enum.map(fn {field, {message, _options}} -> "#{field}: #{message}" end)
+
+            {:error, Enum.at(messages, 0)}
+        end
+    end
+  end
+
+  @doc """
   Get hosts by a group
   """
   def get_hosts_by_group(group_id, offset, limit) do
@@ -55,5 +85,13 @@ defmodule Scuti.Module.HostModule do
   """
   def get_host_by_uuid(uuid) do
     HostContext.get_host_by_uuid(uuid)
+  end
+
+  @doc """
+  Get host as down if x seconds has passed and agent didn't send any
+  heartbeat
+  """
+  def mark_hosts_down(seconds) do
+    HostContext.mark_hosts_down(seconds)
   end
 end

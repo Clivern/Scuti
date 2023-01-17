@@ -102,6 +102,22 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
+  Get host as down if x seconds has passed and agent didn't send any
+  heartbeat
+  """
+  def mark_hosts_down(seconds) do
+    older_than_one_minute = DateTime.utc_now() |> DateTime.add(-seconds)
+
+    hosts_to_update = Repo.all(from h in Host, where: h.reported_at < ^older_than_one_minute)
+
+    Enum.each(hosts_to_update, fn host ->
+      host
+      |> Host.changeset(%{status: "down"})
+      |> Repo.update()
+    end)
+  end
+
+  @doc """
   Retrieve hosts by host group id
   """
   def get_hosts_by_host_group(host_group_id, offset, limit) do

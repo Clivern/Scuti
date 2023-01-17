@@ -62,10 +62,32 @@
       <% end %>
   </div>
   <div class="list_hosts">
-    <pre>
-    Group UUID: <%= @data.group.uuid %>
-    Group Secret: <%= @data.group.secret_key %>
-  </pre>
+    <br/>
+    <section>
+      <div class="columns is-desktop is-right">
+        <div class="column"></div>
+        <div class="column is-three-quarters" style="text-align: left;">
+          <div class="table-container">
+            <table class="table">
+              <tr>
+                <td>Host Group Name</td>
+                <td><%= @data.group.name %></td>
+              </tr>
+              <tr>
+                <td>Host Group UUID</td>
+                <td><%= @data.group.uuid %></td>
+              </tr>
+              <tr>
+                <td>Host Group Secret</td>
+                <td><%= @data.group.secret_key %></td>
+              </tr>
+            </table>
+            <hr/>
+          </div>
+        </div>
+        <div class="column"></div>
+      </div>
+    </section>
     <br/>
     <section>
       <div class="columns is-desktop is-right">
@@ -87,6 +109,7 @@
             <thead>
               <tr>
                 <th style="text-align: center;"><%= gettext "Name" %></th>
+                <th style="text-align: center;"><%= gettext "Hostname" %></th>
                 <th style="text-align: center;"><%= gettext "Status" %></th>
                 <th style="text-align: center;"><%= gettext "Labels" %></th>
                 <th style="text-align: center;"><%= gettext "Created at" %></th>
@@ -96,8 +119,19 @@
             <tbody>
               <%= for host <- @data.hosts do %>
                 <tr>
-                  <td><%= host.name %> (<%= host.hostname %>)</td>
-                  <td><%= host.status %></td>
+                  <td><%= host.name %></td>
+                  <td><%= host.hostname %></td>
+                  <td>
+                    <%= if host.status == "up" do %>
+                      <span class="tag is-success">UP</span>
+                    <% end %>
+                    <%= if host.status == "down" do %>
+                      <span class="tag is-danger">DOWN</span>
+                    <% end %>
+                    <%= if host.status == "unknown" do %>
+                      <span class="tag is-light">UNKNOWN</span>
+                    <% end %>
+                  </td>
                   <td><%= host.labels %></td>
                   <td><%= host.inserted_at %></td>
                   <td>
