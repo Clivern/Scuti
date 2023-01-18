@@ -67,3 +67,4 @@ sync
 
 config.test.yml
 coverage.html
+agent.config.dev.yml
