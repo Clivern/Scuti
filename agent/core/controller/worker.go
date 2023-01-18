@@ -28,6 +28,8 @@ func Worker() {
 	hostname, err := os.Hostname()
 
 	if err != nil {
+		hostname = viper.GetString("agent.name")
+
 		log.WithFields(log.Fields{
 			"error": err.Error(),
 		}).Error(`Failure to get hostname`)
@@ -37,7 +39,7 @@ func Worker() {
 		Name:         viper.GetString("agent.name"),
 		Hostname:     strings.ToLower(hostname),
 		AgentAddress: viper.GetString("agent.management.address"),
-		Labels:       "dc=ams1",
+		Labels:       viper.GetString("agent.labels"),
 		AgentSecret:  viper.GetString("agent.management.host_secret"),
 	})
 

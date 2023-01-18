@@ -12,10 +12,7 @@ agent:
   timeout: ${SCUTI_AGENT_TIMEOUT:-50}
 
   # Agent labels
-  labels:
-    - dc: ams-01
-    - team: scuti
-    - service: payment01
+  labels: dc=ams-01,team=scuti,service=payment01
 
   # To expose on which port
   port: ${SCUTI_AGENT_PORT:-8000}
