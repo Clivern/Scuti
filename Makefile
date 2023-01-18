@@ -1,1 +1,1 @@
-makefile.server
+makefile.agent

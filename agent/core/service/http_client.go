@@ -14,19 +14,17 @@ import (
 	"strings"
 )
 
-// httpClient struct
-type httpClient struct {
+// HttpClient struct
+type HttpClient struct {
 }
 
 // NewHTTPClient creates an instance of http client
-func NewHTTPClient() HTTPClient {
-	httpClient := &httpClient{}
-
-	return httpClient
+func NewHTTPClient() *HttpClient {
+	return &HttpClient{}
 }
 
 // Get http call
-func (h *httpClient) Get(ctx context.Context, endpoint string, parameters map[string]string, headers map[string]string) (*http.Response, error) {
+func (h *HttpClient) Get(ctx context.Context, endpoint string, parameters map[string]string, headers map[string]string) (*http.Response, error) {
 
 	endpoint, err := h.BuildParameters(endpoint, parameters)
 
@@ -54,7 +52,7 @@ func (h *httpClient) Get(ctx context.Context, endpoint string, parameters map[st
 }
 
 // Post http call
-func (h *httpClient) Post(ctx context.Context, endpoint string, data string, parameters map[string]string, headers map[string]string) (*http.Response, error) {
+func (h *HttpClient) Post(ctx context.Context, endpoint string, data string, parameters map[string]string, headers map[string]string) (*http.Response, error) {
 
 	endpoint, err := h.BuildParameters(endpoint, parameters)
 
@@ -82,7 +80,7 @@ func (h *httpClient) Post(ctx context.Context, endpoint string, data string, par
 }
 
 // Put http call
-func (h *httpClient) Put(ctx context.Context, endpoint string, data string, parameters map[string]string, headers map[string]string) (*http.Response, error) {
+func (h *HttpClient) Put(ctx context.Context, endpoint string, data string, parameters map[string]string, headers map[string]string) (*http.Response, error) {
 
 	endpoint, err := h.BuildParameters(endpoint, parameters)
 
@@ -110,7 +108,7 @@ func (h *httpClient) Put(ctx context.Context, endpoint string, data string, para
 }
 
 // Delete http call
-func (h *httpClient) Delete(ctx context.Context, endpoint string, parameters map[string]string, headers map[string]string) (*http.Response, error) {
+func (h *HttpClient) Delete(ctx context.Context, endpoint string, parameters map[string]string, headers map[string]string) (*http.Response, error) {
 
 	endpoint, err := h.BuildParameters(endpoint, parameters)
 
@@ -138,7 +136,7 @@ func (h *httpClient) Delete(ctx context.Context, endpoint string, parameters map
 }
 
 // BuildParameters add parameters to URL
-func (h *httpClient) BuildParameters(endpoint string, parameters map[string]string) (string, error) {
+func (h *HttpClient) BuildParameters(endpoint string, parameters map[string]string) (string, error) {
 	u, err := url.Parse(endpoint)
 
 	if err != nil {
@@ -156,7 +154,7 @@ func (h *httpClient) BuildParameters(endpoint string, parameters map[string]stri
 }
 
 // BuildData build body data
-func (h *httpClient) BuildData(parameters map[string]string) string {
+func (h *HttpClient) BuildData(parameters map[string]string) string {
 	var items []string
 
 	for k, v := range parameters {
@@ -167,7 +165,7 @@ func (h *httpClient) BuildData(parameters map[string]string) string {
 }
 
 // ToString response body to string
-func (h *httpClient) ToString(response *http.Response) (string, error) {
+func (h *HttpClient) ToString(response *http.Response) (string, error) {
 	defer response.Body.Close()
 
 	body, err := ioutil.ReadAll(response.Body)
@@ -180,6 +178,6 @@ func (h *httpClient) ToString(response *http.Response) (string, error) {
 }
 
 // GetStatusCode response status code
-func (h *httpClient) GetStatusCode(response *http.Response) int {
+func (h *HttpClient) GetStatusCode(response *http.Response) int {
 	return response.StatusCode
 }
