@@ -51,7 +51,7 @@ func NewAgent() *Agent {
 }
 
 // Join join the host group under the management server
-func (a *Agent) Join(request JoinRequest) {
+func (a *Agent) Join(request JoinRequest) error {
 	payload := fmt.Sprintf(
 		`{"name":"%s","hostname":"%s","agent_address":"%s","labels":"%s","agent_secret":"%s"}`,
 		request.Name,
