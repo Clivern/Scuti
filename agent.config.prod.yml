@@ -39,7 +39,7 @@ agent:
   # Log configs
   log:
     # Log level, it can be debug, info, warn, error, panic, fatal
-    level: ${SCUTI_AGENT_LOG_LEVEL:-debug}
+    level: ${SCUTI_AGENT_LOG_LEVEL:-info}
     # Output can be stdout or abs path to log file /var/logs/scuti.log
     output: ${SCUTI_AGENT_LOG_OUTPUT:-stdout}
     # Format can be json
