@@ -21,7 +21,7 @@ type Agent struct {
 	HostUUID          string
 	HostSecret        string
 
-	httpClient service.HttpClient
+	httpClient *service.HttpClient
 }
 
 // JoinRequest type
@@ -86,9 +86,10 @@ func (a *Agent) Join(request JoinRequest) error {
 	}
 
 	statusCode := a.httpClient.GetStatusCode(response)
+	textResponse, _ := a.httpClient.ToString(response)
 
-	if statusCode > 400 {
-		return fmt.Errorf("Management server responds with error, status code %d", statusCode)
+	if statusCode >= 400 {
+		return fmt.Errorf("Error response: %s, status code %d", textResponse, statusCode)
 	}
 
 	return nil
@@ -123,9 +124,10 @@ func (a *Agent) Heartbeat(request HeartbeatRequest) error {
 	}
 
 	statusCode := a.httpClient.GetStatusCode(response)
+	textResponse, _ := a.httpClient.ToString(response)
 
-	if statusCode > 400 {
-		return fmt.Errorf("Management server responds with error, status code %d", statusCode)
+	if statusCode >= 400 {
+		return fmt.Errorf("Error response: %s, status code %d", textResponse, statusCode)
 	}
 
 	return nil

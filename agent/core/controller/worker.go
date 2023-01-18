@@ -5,6 +5,8 @@
 package controller
 
 import (
+	"os"
+	"strings"
 	"time"
 
 	"github.com/clivern/scuti/agent/core/module"
@@ -25,21 +27,25 @@ func Worker() {
 
 	hostname, err := os.Hostname()
 
-	log.WithFields(log.Fields{
-		"error": err.Error(),
-	}).Error(`Failure to get hostname`)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err.Error(),
+		}).Error(`Failure to get hostname`)
+	}
 
 	err = agent.Join(module.JoinRequest{
 		Name:         viper.GetString("agent.name"),
-		Hostname:     hostname,
+		Hostname:     strings.ToLower(hostname),
 		AgentAddress: viper.GetString("agent.management.address"),
 		Labels:       "dc=ams1",
 		AgentSecret:  viper.GetString("agent.management.host_secret"),
 	})
 
-	log.WithFields(log.Fields{
-		"error": err.Error(),
-	}).Error(`Error raised during join`)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err.Error(),
+		}).Error(`Error raised during join`)
+	}
 
 	for {
 		time.Sleep(60 * time.Second)
@@ -50,8 +56,10 @@ func Worker() {
 
 		err = agent.Heartbeat(module.HeartbeatRequest{Status: "up"})
 
-		log.WithFields(log.Fields{
-			"error": err.Error(),
-		}).Error(`Error raised during hearbeat`)
+		if err != nil {
+			log.WithFields(log.Fields{
+				"error": err.Error(),
+			}).Error(`Error raised during hearbeat`)
+		}
 	}
 }

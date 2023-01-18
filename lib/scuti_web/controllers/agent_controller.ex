@@ -53,7 +53,7 @@ defmodule ScutiWeb.AgentController do
       webhook_token = EncryptService.base64(host_group.secret_key, encode(payload))
 
       if webhook_token != x_webhook_token do
-        raise InvalidRequest, "Invalid Request"
+        raise InvalidRequest, "Invalid Request 1"
       end
 
       host = HostModule.get_host_by_uuid(host_uuid)
@@ -77,13 +77,11 @@ defmodule ScutiWeb.AgentController do
           |> render("success.json", %{message: "Agent registered successfully!"})
 
         _ ->
-          nil
-      end
-
-      if host.host_group_id != host_group.id do
-        raise InvalidRequest, "Host UUID exists but belong to different host group"
-      else
-        raise InvalidRequest, "Host is already registered"
+          if host.host_group_id != host_group.id do
+            raise InvalidRequest, "Host UUID exists but belong to different host group"
+          else
+            raise InvalidRequest, "Host is already registered"
+          end
       end
     rescue
       e in InvalidRequest ->
@@ -182,14 +180,14 @@ defmodule ScutiWeb.AgentController do
          labels: labels,
          agent_secret: agent_secret
        }) do
-    "{'name':'#{name}','hostname':'#{hostname}','agent_address':'#{agent_address}','labels':'#{labels}','agent_secret':'#{agent_secret}'}"
+    ~c"{\"name\":\"#{name}\",\"hostname\":\"#{hostname}\",\"agent_address\":\"#{agent_address}\",\"labels\":\"#{labels}\",\"agent_secret\":\"#{agent_secret}\"}"
   end
 
   defp encode(%{status: status}) do
-    "{'status':'#{status}'}"
+    ~c"{\"status\":\"#{status}\"}"
   end
 
   defp encode(%{event: event}) do
-    "{'event':'#{event}'}"
+    ~c"{\"event\":\"#{event}\"}"
   end
 end
