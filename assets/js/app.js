@@ -46,7 +46,14 @@ window.liveSocket = liveSocket
 import socket from "./user_socket"
 import "./modals.js"
 
+
 var scuti_app = scuti_app || {};
+
+function show_notification(text) {
+    $("#toast_notification").removeClass("hide");
+    $("#toast_notification").addClass("show");
+    $("#toast_notification").find(".toast-body").text(text);
+}
 
 // Install Page
 scuti_app.install_screen = (Vue, axios, $) => {
@@ -75,16 +82,14 @@ scuti_app.install_screen = (Vue, axios, $) => {
                 axios.post(_form.attr('action'), inputs)
                     .then((response) => {
                         if (response.status >= 200) {
-                            toastr.clear();
-                            toastr.info(response.data.successMessage);
+                            show_notification(response.data.successMessage);
                             location.reload();
                         }
                     })
                     .catch((error) => {
                         this.isInProgress = false;
                         // Show error
-                        toastr.clear();
-                        toastr.error(error.response.data.errorMessage);
+                        show_notification(error.response.data.errorMessage);
                     });
             }
         }
@@ -119,8 +124,7 @@ scuti_app.login_screen = (Vue, axios, $) => {
                 axios.post(_form.attr('action'), inputs)
                     .then((response) => {
                         if (response.status >= 200) {
-                            toastr.clear();
-                            toastr.info(response.data.successMessage);
+                            show_notification(response.data.successMessage);
                             Cookies.set('_token', response.data.token);
                             Cookies.set('_uid', response.data.user);
                             location.reload();
@@ -129,8 +133,7 @@ scuti_app.login_screen = (Vue, axios, $) => {
                     .catch((error) => {
                         this.isInProgress = false;
                         // Show error
-                        toastr.clear();
-                        toastr.error(error.response.data.errorMessage);
+                        show_notification(error.response.data.errorMessage);
                     });
             }
         }
@@ -165,15 +168,13 @@ scuti_app.settings_screen = (Vue, axios, $) => {
                 axios.put(_form.attr('action'), inputs)
                     .then((response) => {
                         if (response.status >= 200) {
-                            toastr.clear();
-                            toastr.info(response.data.successMessage);
+                            show_notification(response.data.successMessage);
                         }
                     })
                     .catch((error) => {
                         this.isInProgress = false;
                         // Show error
-                        toastr.clear();
-                        toastr.error(error.response.data.errorMessage);
+                        show_notification(error.response.data.errorMessage);
                     });
             }
         }
@@ -210,16 +211,14 @@ scuti_app.add_user_modal = (Vue, axios, $) => {
                 axios.post(_form.attr('action'), inputs)
                     .then((response) => {
                         if (response.status >= 200) {
-                            toastr.clear();
-                            toastr.info(i18n_globals.new_user);
+                            show_notification(i18n_globals.new_user);
                             location.reload();
                         }
                     })
                     .catch((error) => {
                         this.isInProgress = false;
                         // Show error
-                        toastr.clear();
-                        toastr.error(error.response.data.errorMessage);
+                        show_notification(error.response.data.errorMessage);
                     });
             },
 
@@ -260,16 +259,14 @@ scuti_app.add_team_modal = (Vue, axios, $) => {
                 axios.post(_form.attr('action'), inputs)
                     .then((response) => {
                         if (response.status >= 200) {
-                            toastr.clear();
-                            toastr.info(i18n_globals.new_team);
+                            show_notification(i18n_globals.new_team);
                             location.reload();
                         }
                     })
                     .catch((error) => {
                         this.isInProgress = false;
                         // Show error
-                        toastr.clear();
-                        toastr.error(error.response.data.errorMessage);
+                        show_notification(error.response.data.errorMessage);
                     });
             },
 
@@ -308,16 +305,14 @@ scuti_app.add_group_modal = (Vue, axios, $) => {
                 axios.post(_form.attr('action'), inputs)
                     .then((response) => {
                         if (response.status >= 200) {
-                            toastr.clear();
-                            toastr.info(i18n_globals.new_group);
+                            show_notification(i18n_globals.new_group);
                             location.reload();
                         }
                     })
                     .catch((error) => {
                         this.isInProgress = false;
                         // Show error
-                        toastr.clear();
-                        toastr.error(error.response.data.errorMessage);
+                        show_notification(error.response.data.errorMessage);
                     });
             },
 
@@ -356,16 +351,14 @@ scuti_app.add_host_modal = (Vue, axios, $) => {
                 axios.post(_form.attr('action'), inputs)
                     .then((response) => {
                         if (response.status >= 200) {
-                            toastr.clear();
-                            toastr.info(i18n_globals.new_host);
+                            show_notification(i18n_globals.new_host);
                             location.reload();
                         }
                     })
                     .catch((error) => {
                         this.isInProgress = false;
                         // Show error
-                        toastr.clear();
-                        toastr.error(error.response.data.errorMessage);
+                        show_notification(error.response.data.errorMessage);
                     });
             },
 
@@ -441,3 +434,4 @@ $(document).ready(() => {
         );
     }
 });
+
