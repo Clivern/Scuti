@@ -108,13 +108,20 @@ defmodule Scuti.Context.HostContext do
   def mark_hosts_down(seconds) do
     older_than_one_minute = DateTime.utc_now() |> DateTime.add(-seconds)
 
-    hosts_to_update = Repo.all(from h in Host, where: h.reported_at < ^older_than_one_minute)
+    hosts_to_update =
+      Repo.all(
+        from h in Host,
+          where: h.status != "down",
+          where: h.reported_at < ^older_than_one_minute
+      )
 
     Enum.each(hosts_to_update, fn host ->
       host
       |> Host.changeset(%{status: "down"})
       |> Repo.update()
     end)
+
+    length(hosts_to_update)
   end
 
   @doc """

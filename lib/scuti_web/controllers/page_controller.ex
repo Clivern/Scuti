@@ -157,8 +157,6 @@ defmodule ScutiWeb.PageController do
             |> redirect(to: "/404")
 
           _ ->
-            HostModule.mark_hosts_down(120)
-
             hosts = HostModule.get_hosts_by_group(id, 0, 10000)
 
             conn

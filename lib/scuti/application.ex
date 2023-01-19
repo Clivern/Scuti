@@ -19,9 +19,9 @@ defmodule Scuti.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Scuti.PubSub},
       # Start the Endpoint (http/https)
-      ScutiWeb.Endpoint
+      ScutiWeb.Endpoint,
       # Start a worker by calling: Scuti.Worker.start_link(arg)
-      # {Scuti.Worker, arg}
+      {Scuti.Workers, %{}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
