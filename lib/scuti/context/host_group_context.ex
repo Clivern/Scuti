@@ -92,6 +92,7 @@ defmodule Scuti.Context.HostGroupContext do
   """
   def get_groups(offset, limit) do
     from(h in HostGroup,
+      order_by: [desc: h.inserted_at],
       limit: ^limit,
       offset: ^offset
     )
@@ -103,6 +104,7 @@ defmodule Scuti.Context.HostGroupContext do
   """
   def get_groups_by_teams(teams_ids, offset, limit) do
     from(h in HostGroup,
+      order_by: [desc: h.inserted_at],
       where: h.team_id in ^teams_ids,
       limit: ^limit,
       offset: ^offset
@@ -126,6 +128,7 @@ defmodule Scuti.Context.HostGroupContext do
   """
   def get_groups_by_team(team_id, offset, limit) do
     from(h in HostGroup,
+      order_by: [desc: h.inserted_at],
       where: h.team_id == ^team_id,
       limit: ^limit,
       offset: ^offset

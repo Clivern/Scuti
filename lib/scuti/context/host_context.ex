@@ -95,6 +95,7 @@ defmodule Scuti.Context.HostContext do
   """
   def get_hosts(offset, limit) do
     from(h in Host,
+      order_by: [desc: h.inserted_at],
       limit: ^limit,
       offset: ^offset
     )
@@ -129,6 +130,7 @@ defmodule Scuti.Context.HostContext do
   """
   def get_hosts_by_host_group(host_group_id, offset, limit) do
     from(h in Host,
+      order_by: [desc: h.inserted_at],
       where: h.host_group_id == ^host_group_id,
       limit: ^limit,
       offset: ^offset

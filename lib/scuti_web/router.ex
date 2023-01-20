@@ -32,6 +32,7 @@ defmodule ScutiWeb.Router do
 
     get "/install", PageController, :install
     get "/", PageController, :home
+    get "/404", PageController, :not_found
     get "/login", PageController, :login
     get "/logout", PageController, :logout
 

@@ -138,8 +138,6 @@ scuti_app.settings_screen = (Vue, axios, $) => {
 // Add User Modal
 scuti_app.add_user_modal = (Vue, axios, $) => {
 
-    console.log("users_screen");
-
     return new Vue({
         delimiters: ['${', '}'],
         el: '#add_user_modal',
@@ -165,7 +163,7 @@ scuti_app.add_user_modal = (Vue, axios, $) => {
                     .then((response) => {
                         if (response.status >= 200) {
                             show_notification(i18n_globals.new_user);
-                            setTimeout(() => { location.reload(); }, 5000);
+                            setTimeout(() => { location.reload(); }, 2000);
                         }
                     })
                     .catch((error) => {
@@ -173,10 +171,6 @@ scuti_app.add_user_modal = (Vue, axios, $) => {
                         // Show error
                         show_notification(error.response.data.errorMessage);
                     });
-            },
-
-            closeModal(event) {
-                $("#add-new-user").removeClass("is-active");
             }
         }
     });
@@ -213,7 +207,7 @@ scuti_app.add_team_modal = (Vue, axios, $) => {
                     .then((response) => {
                         if (response.status >= 200) {
                             show_notification(i18n_globals.new_team);
-                            setTimeout(() => { location.reload(); }, 5000);
+                            setTimeout(() => { location.reload(); }, 2000);
                         }
                     })
                     .catch((error) => {
@@ -221,10 +215,6 @@ scuti_app.add_team_modal = (Vue, axios, $) => {
                         // Show error
                         show_notification(error.response.data.errorMessage);
                     });
-            },
-
-            closeModal(event) {
-                $("#add-new-team").removeClass("is-active");
             }
         }
     });
@@ -259,7 +249,7 @@ scuti_app.add_group_modal = (Vue, axios, $) => {
                     .then((response) => {
                         if (response.status >= 200) {
                             show_notification(i18n_globals.new_group);
-                            setTimeout(() => { location.reload(); }, 5000);
+                            setTimeout(() => { location.reload(); }, 2000);
                         }
                     })
                     .catch((error) => {
@@ -267,10 +257,6 @@ scuti_app.add_group_modal = (Vue, axios, $) => {
                         // Show error
                         show_notification(error.response.data.errorMessage);
                     });
-            },
-
-            closeModal(event) {
-                $("#add-new-group").removeClass("is-active");
             }
         }
     });
@@ -313,10 +299,6 @@ scuti_app.add_host_modal = (Vue, axios, $) => {
                         // Show error
                         show_notification(error.response.data.errorMessage);
                     });
-            },
-
-            closeModal(event) {
-                $("#add-new-host").removeClass("is-active");
             }
         }
     });

@@ -97,6 +97,30 @@ defmodule ScutiWeb.PageController do
   end
 
   @doc """
+  Not Found Page
+  """
+  def not_found(conn, _params) do
+    is_installed = InstallModule.is_installed()
+
+    case is_installed do
+      false ->
+        conn
+        |> redirect(to: "/install")
+
+      true ->
+        conn
+        |> render("404.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
+          }
+        )
+    end
+  end
+
+  @doc """
   Dashboard Page
   """
   def dashboard(conn, _params) do

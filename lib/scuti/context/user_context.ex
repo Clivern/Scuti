@@ -127,6 +127,7 @@ defmodule Scuti.Context.UserContext do
   """
   def get_users(offset, limit) do
     from(u in User,
+      order_by: [desc: u.inserted_at],
       limit: ^limit,
       offset: ^offset
     )

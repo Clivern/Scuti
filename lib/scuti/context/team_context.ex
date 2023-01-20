@@ -102,6 +102,7 @@ defmodule Scuti.Context.TeamContext do
   """
   def get_teams(offset, limit) do
     from(t in Team,
+      order_by: [desc: t.inserted_at],
       limit: ^limit,
       offset: ^offset
     )
