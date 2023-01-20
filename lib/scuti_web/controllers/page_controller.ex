@@ -29,14 +29,16 @@ defmodule ScutiWeb.PageController do
 
       {_, true} ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/admin/dashboard")
 
       {true, _} ->
         conn
         |> render("login.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
           }
         )
     end
@@ -86,7 +88,53 @@ defmodule ScutiWeb.PageController do
         |> render("home.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
+          }
+        )
+    end
+  end
+
+  @doc """
+  Dashboard Page
+  """
+  def dashboard(conn, _params) do
+    case conn.assigns[:is_logged] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("dashboard.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
+          }
+        )
+    end
+  end
+
+  @doc """
+  Profile Page
+  """
+  def profile(conn, _params) do
+    case conn.assigns[:is_logged] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("profile.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
           }
         )
     end
@@ -132,6 +180,8 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email],
             groups: new_groups,
             user_teams: user_teams
           }
@@ -164,6 +214,8 @@ defmodule ScutiWeb.PageController do
               data: %{
                 is_logged: conn.assigns[:is_logged],
                 is_super: conn.assigns[:is_super],
+                user_name: conn.assigns[:user_name],
+                user_email: conn.assigns[:user_email],
                 group: group,
                 hosts: hosts
               }
@@ -186,7 +238,9 @@ defmodule ScutiWeb.PageController do
         |> render("list_deployments.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
           }
         )
     end
@@ -206,7 +260,9 @@ defmodule ScutiWeb.PageController do
         |> render("edit_deployment.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
           }
         )
     end
@@ -226,7 +282,9 @@ defmodule ScutiWeb.PageController do
         |> render("add_deployment.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super]
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
           }
         )
     end
@@ -266,6 +324,8 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email],
             users: users,
             teams: new_teams
           }
@@ -290,6 +350,8 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email],
             users: users
           }
         )
@@ -311,6 +373,8 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email],
             app_name: SettingsModule.get_config("app_name", ""),
             app_url: SettingsModule.get_config("app_url", ""),
             app_email: SettingsModule.get_config("app_email", "")

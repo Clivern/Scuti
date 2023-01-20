@@ -51,6 +51,8 @@ defmodule Scuti.Middleware.UIAuthMiddleware do
           |> assign(:user_role, :anonymous)
           |> assign(:is_super, false)
           |> assign(:user_id, nil)
+          |> assign(:user_name, nil)
+          |> assign(:user_email, nil)
 
         {true, session} ->
           conn =
@@ -61,6 +63,8 @@ defmodule Scuti.Middleware.UIAuthMiddleware do
                 |> assign(:is_super, String.to_atom(user.role) == :super)
                 |> assign(:user_role, String.to_atom(user.role))
                 |> assign(:user_id, session.user_id)
+                |> assign(:user_name, user.name)
+                |> assign(:user_email, user.email)
 
               {:not_found, _} ->
                 conn
@@ -68,6 +72,8 @@ defmodule Scuti.Middleware.UIAuthMiddleware do
                 |> assign(:is_super, false)
                 |> assign(:user_role, :anonymous)
                 |> assign(:user_id, nil)
+                |> assign(:user_name, nil)
+                |> assign(:user_email, nil)
             end
 
           conn

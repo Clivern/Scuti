@@ -35,6 +35,8 @@ defmodule ScutiWeb.Router do
     get "/login", PageController, :login
     get "/logout", PageController, :logout
 
+    get "/admin/dashboard", PageController, :dashboard
+    get "/admin/profile", PageController, :profile
     get "/admin/group", PageController, :list_groups
     get "/admin/group/:id", PageController, :view_group
 
