@@ -165,7 +165,7 @@ scuti_app.add_user_modal = (Vue, axios, $) => {
                     .then((response) => {
                         if (response.status >= 200) {
                             show_notification(i18n_globals.new_user);
-                            location.reload();
+                            setTimeout(() => { location.reload(); }, 5000);
                         }
                     })
                     .catch((error) => {
@@ -213,7 +213,7 @@ scuti_app.add_team_modal = (Vue, axios, $) => {
                     .then((response) => {
                         if (response.status >= 200) {
                             show_notification(i18n_globals.new_team);
-                            location.reload();
+                            setTimeout(() => { location.reload(); }, 5000);
                         }
                     })
                     .catch((error) => {
@@ -259,7 +259,7 @@ scuti_app.add_group_modal = (Vue, axios, $) => {
                     .then((response) => {
                         if (response.status >= 200) {
                             show_notification(i18n_globals.new_group);
-                            location.reload();
+                            setTimeout(() => { location.reload(); }, 5000);
                         }
                     })
                     .catch((error) => {
