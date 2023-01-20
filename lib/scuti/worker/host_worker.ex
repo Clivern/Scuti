@@ -30,11 +30,11 @@ defmodule Scuti.Worker.HostWorker do
 
     Logger.info("Host Worker Task Trigger 🔥")
 
-    Logger.info("Mark absent hosts for 2 minutes as DOWN")
+    Logger.info("Mark absent hosts for 2 minutes as DOWN 🔥")
 
     count = HostModule.mark_hosts_down(120)
 
-    Logger.info("Mark #{count} hosts as DOWN")
+    Logger.info("Mark #{count} hosts as DOWN 🔥")
 
     {:noreply, state}
   end
