@@ -417,4 +417,9 @@ $(document).ready(() => {
             $
         );
     }
+
+    if (document.querySelector("#hosts_chart")) {
+        let chart = new ApexCharts(document.querySelector("#hosts_chart"), hostsChart);
+        chart.render();
+    }
 });

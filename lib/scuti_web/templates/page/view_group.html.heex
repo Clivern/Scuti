@@ -254,7 +254,6 @@
 
                             <h5 class="mb-4">Group Secret</h5>
                             <p class="hp-p1-body mb-16"><%= @data.group.secret_key %></p>
-
                         </div>
                     </div>
                 </div>
@@ -295,13 +294,13 @@
                                           <td><span class="text-color-dark-0"><%= host.hostname %></span></td>
                                           <td>
                                             <%= if host.status == "up" do %>
-                                              <div class="badge bg-success-4 hp-bg-dark-success text-success border-success">UP</div>
+                                              <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "UP" %></div>
                                             <% end %>
                                             <%= if host.status == "down" do %>
-                                              <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger">DOWN</div>
+                                              <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger"><%= gettext "DOWN" %></div>
                                             <% end %>
                                             <%= if host.status == "unknown" do %>
-                                            <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning">UNKNOWN</div>
+                                            <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "UNKNOWN" %></div>
                                             <% end %>
                                           </td>
                                           <td><span class="text-color-dark-0"><%= host.labels %></span></td>
