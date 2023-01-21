@@ -10,7 +10,7 @@
             <img src="https://github.com/Clivern/Scuti/actions/workflows/server_ci.yml/badge.svg"/>
         </a>
         <a href="https://github.com/Clivern/Scuti/releases">
-            <img src="https://img.shields.io/badge/Version-0.5.2-1abc9c.svg">
+            <img src="https://img.shields.io/badge/Version-0.5.4-1abc9c.svg">
         </a>
         <a href="https://github.com/Clivern/Scuti/blob/master/LICENSE">
             <img src="https://img.shields.io/badge/LICENSE-MIT-orange.svg">
