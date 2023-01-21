@@ -30,8 +30,8 @@ defmodule Scuti.Repo.Migrations.CreateDeployments do
       add :schedule_type, :string
       add :schedule_time, :utc_datetime
 
-      add :status, :string
-      add :run_at, :utc_datetime
+      add :last_status, :string
+      add :last_run_at, :utc_datetime
       add :team_id, references(:teams, on_delete: :delete_all)
 
       timestamps()

@@ -37,8 +37,8 @@ defmodule Scuti.Model.Deployment do
     field :schedule_type, :string
     field :schedule_time, :utc_datetime
     # :pending || :running || :success || :failure
-    field :status, :string
-    field :run_at, :utc_datetime
+    field :last_status, :string
+    field :last_run_at, :utc_datetime
 
     timestamps()
   end
@@ -65,8 +65,8 @@ defmodule Scuti.Model.Deployment do
       :rollout_strategy_value,
       :schedule_type,
       :schedule_time,
-      :status,
-      :run_at
+      :last_status,
+      :last_run_at
     ])
     |> validate_required([
       :uuid,
@@ -87,8 +87,8 @@ defmodule Scuti.Model.Deployment do
       :rollout_strategy_value,
       :schedule_type,
       :schedule_time,
-      :status,
-      :run_at
+      :last_status,
+      :last_run_at
     ])
   end
 end

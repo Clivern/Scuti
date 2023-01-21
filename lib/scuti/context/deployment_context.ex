@@ -34,8 +34,8 @@ defmodule Scuti.Context.DeploymentContext do
       rollout_strategy_value: deployment.rollout_strategy_value,
       schedule_type: deployment.schedule_type,
       schedule_time: deployment.schedule_time,
-      status: deployment.status,
-      run_at: deployment.run_at,
+      last_status: deployment.last_status,
+      last_run_at: deployment.last_run_at,
       uuid: Ecto.UUID.generate()
     }
   end

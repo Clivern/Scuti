@@ -38,8 +38,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: "~schedule_time~",
-          status: "~status~",
-          run_at: "~run_at~"
+          last_status: "~last_status~",
+          last_run_at: "~last_run_at~"
         })
 
       assert deployment.team_id == 1
@@ -58,8 +58,8 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
       assert deployment.schedule_time == "~schedule_time~"
-      assert deployment.status == "~status~"
-      assert deployment.run_at == "~run_at~"
+      assert deployment.last_status == "~last_status~"
+      assert deployment.last_run_at == "~last_run_at~"
       assert is_binary(deployment.uuid)
     end
   end
@@ -110,8 +110,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -132,7 +132,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
-      assert deployment.status == "~status~"
+      assert deployment.last_status == "~last_status~"
       assert is_binary(deployment.uuid)
     end
   end
@@ -168,8 +168,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -190,7 +190,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
-      assert deployment.status == "~status~"
+      assert deployment.last_status == "~last_status~"
       assert is_binary(deployment.uuid)
 
       assert DeploymentContext.get_deployment_by_id(deployment.id) == deployment
@@ -228,8 +228,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -250,7 +250,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
-      assert deployment.status == "~status~"
+      assert deployment.last_status == "~last_status~"
       assert is_binary(deployment.uuid)
 
       assert DeploymentContext.get_deployment_by_uuid(deployment.uuid) == deployment
@@ -288,8 +288,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -310,7 +310,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
-      assert deployment.status == "~status~"
+      assert deployment.last_status == "~last_status~"
       assert is_binary(deployment.uuid)
 
       {status, _} =
@@ -330,7 +330,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy: "~new_rollout_strategy~",
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~new_schedule_type~",
-          status: "~new_status~"
+          last_status: "~new_status~"
         })
 
       assert status == :ok
@@ -386,8 +386,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -408,7 +408,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
-      assert deployment.status == "~status~"
+      assert deployment.last_status == "~last_status~"
       assert is_binary(deployment.uuid)
 
       assert DeploymentContext.get_deployment_by_id(deployment.id) == deployment
@@ -450,8 +450,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -472,7 +472,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
-      assert deployment.status == "~status~"
+      assert deployment.last_status == "~last_status~"
       assert is_binary(deployment.uuid)
 
       assert DeploymentContext.get_deployments() == [deployment]
@@ -514,8 +514,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -536,7 +536,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
-      assert deployment.status == "~status~"
+      assert deployment.last_status == "~last_status~"
       assert is_binary(deployment.uuid)
 
       assert DeploymentContext.get_deployments(0, 111) == [deployment]
@@ -579,8 +579,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -601,7 +601,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~rollout_strategy~"
       assert deployment.schedule_type == "~schedule_type~"
-      assert deployment.status == "~status~"
+      assert deployment.last_status == "~last_status~"
       assert is_binary(deployment.uuid)
 
       assert DeploymentContext.get_deployments_by_team(team.id, 0, 111) == [deployment]
@@ -645,8 +645,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -700,8 +700,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -755,8 +755,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -820,8 +820,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -880,8 +880,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
@@ -936,8 +936,8 @@ defmodule Scuti.Context.DeploymentContextTest do
           rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
-          status: "~status~",
-          run_at: DateTime.utc_now()
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
         })
 
       {status, deployment} = DeploymentContext.create_deployment(attr)
