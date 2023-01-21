@@ -35,7 +35,7 @@ defmodule ScutiWeb.ProfileController do
   Update Profile Endpoint
   """
   def update(conn, params) do
-    IO.inspect params
+    IO.inspect(params)
 
     conn
     |> put_status(:ok)

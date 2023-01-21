@@ -18,18 +18,25 @@ defmodule Scuti.Model.Deployment do
     field :host_groups_list, :string
     field :hosts_filter, :string
     field :host_groups_filter, :string
-    field :patch_type, :string # :upgrade || :dist_upgrade || :custom_patch
-    field :pkgs_to_upgrade, :string # ONLY IF patch_type IS :upgrade
-    field :pkgs_to_exclude, :string # ONLY IF patch_type IS :upgrade
+    # :upgrade || :dist_upgrade || :custom_patch
+    field :patch_type, :string
+    # ONLY IF patch_type IS :upgrade
+    field :pkgs_to_upgrade, :string
+    # ONLY IF patch_type IS :upgrade
+    field :pkgs_to_exclude, :string
     field :pre_patch_script, :string
     field :patch_script, :string
     field :post_patch_script, :string
-    field :post_patch_reboot_option, :string # :always || :only_if_needed
-    field :rollout_strategy, :string # {type: ":one_by_one || :all_at_once || :percent || :count", value: "10% || 20"}
+    # :always || :only_if_needed
+    field :post_patch_reboot_option, :string
+    # {type: ":one_by_one || :all_at_once || :percent || :count", value: "10% || 20"}
+    field :rollout_strategy, :string
     field :rollout_strategy_value, :string
-    field :schedule_type, :string # :once || :recursive
+    # :once || :recursive
+    field :schedule_type, :string
     field :schedule_time, :utc_datetime
-    field :status, :string # :pending || :running || :success || :failure
+    # :pending || :running || :success || :failure
+    field :status, :string
     field :run_at, :utc_datetime
 
     timestamps()
