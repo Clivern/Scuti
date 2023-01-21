@@ -351,7 +351,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.post_patch_reboot_option == "~new_post_patch_reboot_option~"
       assert deployment.rollout_strategy == "~new_rollout_strategy~"
       assert deployment.schedule_type == "~new_schedule_type~"
-      assert deployment.status == "~new_status~"
+      assert deployment.last_status == "~new_status~"
     end
   end
 
