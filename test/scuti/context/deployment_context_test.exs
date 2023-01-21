@@ -27,7 +27,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -35,6 +35,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: "~schedule_time~",
           status: "~status~",
@@ -47,7 +48,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -98,7 +99,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -106,6 +107,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -121,7 +123,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -155,7 +157,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -163,6 +165,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -178,7 +181,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -214,7 +217,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -222,6 +225,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -237,7 +241,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -273,7 +277,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -281,6 +285,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -296,7 +301,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -315,7 +320,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~new_host_groups_list~",
           hosts_filter: "~new_hosts_filter~",
           host_groups_filter: "~new_host_groups_filter~",
-          upgrade_type: "~new_upgrade_type~",
+          patch_type: "~new_patch_type~",
           pkgs_to_upgrade: "~new_pkgs_to_upgrade~",
           pkgs_to_exclude: "~new_pkgs_to_exclude~",
           pre_patch_script: "~new_pre_patch_script~",
@@ -323,6 +328,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~new_post_patch_script~",
           post_patch_reboot_option: "~new_post_patch_reboot_option~",
           rollout_strategy: "~new_rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~new_schedule_type~",
           status: "~new_status~"
         })
@@ -336,7 +342,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~new_host_groups_list~"
       assert deployment.hosts_filter == "~new_hosts_filter~"
       assert deployment.host_groups_filter == "~new_host_groups_filter~"
-      assert deployment.upgrade_type == "~new_upgrade_type~"
+      assert deployment.patch_type == "~new_patch_type~"
       assert deployment.pkgs_to_upgrade == "~new_pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~new_pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~new_pre_patch_script~"
@@ -369,7 +375,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -377,6 +383,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -392,7 +399,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -432,7 +439,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -440,6 +447,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -455,7 +463,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -495,7 +503,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -503,6 +511,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -518,7 +527,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -559,7 +568,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -567,6 +576,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -582,7 +592,7 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
-      assert deployment.upgrade_type == "~upgrade_type~"
+      assert deployment.patch_type == "~patch_type~"
       assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
       assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
       assert deployment.pre_patch_script == "~pre_patch_script~"
@@ -624,7 +634,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -632,6 +642,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -678,7 +689,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -686,6 +697,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -732,7 +744,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -740,6 +752,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -796,7 +809,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -804,6 +817,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -855,7 +869,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -863,6 +877,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",
@@ -910,7 +925,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
-          upgrade_type: "~upgrade_type~",
+          patch_type: "~patch_type~",
           pkgs_to_upgrade: "~pkgs_to_upgrade~",
           pkgs_to_exclude: "~pkgs_to_exclude~",
           pre_patch_script: "~pre_patch_script~",
@@ -918,6 +933,7 @@ defmodule Scuti.Context.DeploymentContextTest do
           post_patch_script: "~post_patch_script~",
           post_patch_reboot_option: "~post_patch_reboot_option~",
           rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
           schedule_type: "~schedule_type~",
           schedule_time: DateTime.utc_now(),
           status: "~status~",

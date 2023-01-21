@@ -13,7 +13,8 @@ defmodule Scuti.Workers do
   def init(_init_state) do
     children = [
       {Scuti.Worker.HostWorker, %{}},
-      {Scuti.Worker.DeploymentWorker, %{}}
+      {Scuti.Worker.DeploymentWorker, %{}},
+      {Scuti.Worker.TaskWorker, %{}}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

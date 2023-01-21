@@ -15,7 +15,7 @@ defmodule Scuti.Repo.Migrations.CreateDeployments do
       add :hosts_filter, :string
       add :host_groups_filter, :string
 
-      add :upgrade_type, :string
+      add :patch_type, :string
       add :pkgs_to_upgrade, :string
       add :pkgs_to_exclude, :string
 
@@ -25,6 +25,7 @@ defmodule Scuti.Repo.Migrations.CreateDeployments do
       add :post_patch_reboot_option, :string
 
       add :rollout_strategy, :string
+      add :rollout_strategy_value, :string
 
       add :schedule_type, :string
       add :schedule_time, :utc_datetime
