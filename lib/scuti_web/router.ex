@@ -113,6 +113,9 @@ defmodule ScutiWeb.Router do
     get "/task/:id", TaskController, :index
     put "/task/:id", TaskController, :update
     delete "/task/:id", TaskController, :delete
+
+    # Profile Endpoint
+    post "/profile", ProfileController, :update
   end
 
   # Enables LiveDashboard only for development

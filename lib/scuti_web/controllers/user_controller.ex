@@ -142,7 +142,6 @@ defmodule ScutiWeb.UserController do
         |> render("error.json", %{message: e.message})
 
       _ ->
-        IO.inspect "DH"
         conn
         |> put_status(:internal_server_error)
         |> render("error.json", %{message: "Internal server error"})
