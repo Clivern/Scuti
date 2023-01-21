@@ -29,8 +29,9 @@ defmodule Scuti.Model.Deployment do
     field :post_patch_script, :string
     # :always || :only_if_needed
     field :post_patch_reboot_option, :string
-    # {type: ":one_by_one || :all_at_once || :percent || :count", value: "10% || 20"}
+    # :one_by_one || :all_at_once || :percent || :count
     field :rollout_strategy, :string
+    # 10% || 20
     field :rollout_strategy_value, :string
     # :once || :recursive
     field :schedule_type, :string
