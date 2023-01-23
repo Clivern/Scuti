@@ -39,12 +39,12 @@ defmodule ScutiWeb.Router do
     get "/admin/dashboard", PageController, :dashboard
     get "/admin/profile", PageController, :profile
     get "/admin/group", PageController, :list_groups
-    get "/admin/group/:id", PageController, :view_group
+    get "/admin/group/:uuid", PageController, :view_group
 
     get "/admin/deployment", PageController, :list_deployments
     get "/admin/deployment/add", PageController, :add_deployment
-    get "/admin/deployment/edit/:id", PageController, :edit_deployment
-    get "/admin/deployment/view/:id", PageController, :view_deployment
+    get "/admin/deployment/edit/:uuid", PageController, :edit_deployment
+    get "/admin/deployment/view/:uuid", PageController, :view_deployment
 
     get "/admin/team", PageController, :list_teams
     get "/admin/user", PageController, :list_users
@@ -71,16 +71,16 @@ defmodule ScutiWeb.Router do
     # User CRUD
     get "/user", UserController, :list
     post "/user", UserController, :create
-    get "/user/:id", UserController, :index
-    put "/user/:id", UserController, :update
-    delete "/user/:id", UserController, :delete
+    get "/user/:uuid", UserController, :index
+    put "/user/:uuid", UserController, :update
+    delete "/user/:uuid", UserController, :delete
 
     # Team CRUD
     get "/team", TeamController, :list
     post "/team", TeamController, :create
-    get "/team/:id", TeamController, :index
-    put "/team/:id", TeamController, :update
-    delete "/team/:id", TeamController, :delete
+    get "/team/:uuid", TeamController, :index
+    put "/team/:uuid", TeamController, :update
+    delete "/team/:uuid", TeamController, :delete
 
     # Settings Endpoint
     put "/settings", SettingsController, :update
@@ -88,30 +88,30 @@ defmodule ScutiWeb.Router do
     # HostGroup CRUD
     get "/hostGroup", HostGroupController, :list
     post "/hostGroup", HostGroupController, :create
-    get "/hostGroup/:id", HostGroupController, :index
-    put "/hostGroup/:id", HostGroupController, :update
-    delete "/hostGroup/:id", HostGroupController, :delete
+    get "/hostGroup/:uuid", HostGroupController, :index
+    put "/hostGroup/:uuid", HostGroupController, :update
+    delete "/hostGroup/:uuid", HostGroupController, :delete
 
     # Host CRUD
-    get "/hostGroup/:group_id/host", HostController, :list
-    post "/hostGroup/:group_id/host", HostController, :create
-    get "/hostGroup/:group_id/host/:host_id", HostController, :index
-    put "/hostGroup/:group_id/host/:host_id", HostController, :update
-    delete "/hostGroup/:group_id/host/:host_id", HostController, :delete
+    get "/hostGroup/:group_uuid/host", HostController, :list
+    post "/hostGroup/:group_uuid/host", HostController, :create
+    get "/hostGroup/:group_uuid/host/:host_uuid", HostController, :index
+    put "/hostGroup/:group_uuid/host/:host_uuid", HostController, :update
+    delete "/hostGroup/:group_uuid/host/:host_uuid", HostController, :delete
 
     # Deployment CRUD
     get "/deployment", DeploymentController, :list
     post "/deployment", DeploymentController, :create
-    get "/deployment/:id", DeploymentController, :index
-    put "/deployment/:id", DeploymentController, :update
-    delete "/deployment/:id", DeploymentController, :delete
+    get "/deployment/:uuid", DeploymentController, :index
+    put "/deployment/:uuid", DeploymentController, :update
+    delete "/deployment/:uuid", DeploymentController, :delete
 
     # Task CRUD
     get "/task", TaskController, :list
     post "/task", TaskController, :create
-    get "/task/:id", TaskController, :index
-    put "/task/:id", TaskController, :update
-    delete "/task/:id", TaskController, :delete
+    get "/task/:uuid", TaskController, :index
+    put "/task/:uuid", TaskController, :update
+    delete "/task/:uuid", TaskController, :delete
 
     # Profile Endpoint
     post "/profile", ProfileController, :update

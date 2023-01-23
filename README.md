@@ -1,7 +1,7 @@
 <p align="center">
     <img alt="Scuti Logo" src="/assets/img/logo.png?v=0.5.4" width="150" />
     <h3 align="center">Scuti</h3>
-    <p align="center">A Lightweight and Reliable Patching Configuration System, Set up in Minutes.</p>
+    <p align="center">A Lightweight and Reliable Automated Patching System, Set up in Minutes.</p>
     <p align="center">
         <a href="https://github.com/Clivern/Scuti/actions/workflows/agent_ci.yml">
             <img src="https://github.com/Clivern/Scuti/actions/workflows/agent_ci.yml/badge.svg"/>
@@ -18,7 +18,9 @@
     </p>
 </p>
 
-Scuti named after `UY Scuti`, The red supergiant star in the constellation Scutum. It is considered to be possibly one of the largest known stars and is also a pulsating variable star, with a volume nearly 5 billion times that of the sun.
+`Scuti` automates the patching process for a group of virtual servers, handling updates ranging from basic operating system upgrades to customized scripts. The system offers various strategies for updating servers, including sequential updates, batch updates, or percentage-based updates to ensure optimal availability.
+
+`Scuti` named after `UY Scuti`, The red supergiant star in the constellation Scutum. It is considered to be possibly one of the largest known stars and is also a pulsating variable star, with a volume nearly 5 billion times that of the sun.
 
 
 #### Development
