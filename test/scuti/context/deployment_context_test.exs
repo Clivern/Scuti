@@ -614,6 +614,137 @@ defmodule Scuti.Context.DeploymentContextTest do
     end
   end
 
+  describe "get_deployments_by_teams/3" do
+    test "get_deployments_by_teams/3 test cases" do
+      attrs =
+        TeamContext.new_team(%{
+          name: "Team 2",
+          description: "Description 2"
+        })
+
+      {status, team} = TeamContext.create_team(attrs)
+
+      assert status == :ok
+
+      attr =
+        DeploymentContext.new_deployment(%{
+          team_id: team.id,
+          name: "~name~",
+          hosts_list: "~hosts_list~",
+          host_groups_list: "~host_groups_list~",
+          hosts_filter: "~hosts_filter~",
+          host_groups_filter: "~host_groups_filter~",
+          patch_type: "~patch_type~",
+          pkgs_to_upgrade: "~pkgs_to_upgrade~",
+          pkgs_to_exclude: "~pkgs_to_exclude~",
+          pre_patch_script: "~pre_patch_script~",
+          patch_script: "~patch_script~",
+          post_patch_script: "~post_patch_script~",
+          post_patch_reboot_option: "~post_patch_reboot_option~",
+          rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
+          schedule_type: "~schedule_type~",
+          schedule_time: DateTime.utc_now(),
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
+        })
+
+      {status, deployment} = DeploymentContext.create_deployment(attr)
+
+      assert status == :ok
+      assert deployment.team_id == team.id
+      assert deployment.name == "~name~"
+      assert deployment.hosts_list == "~hosts_list~"
+      assert deployment.host_groups_list == "~host_groups_list~"
+      assert deployment.hosts_filter == "~hosts_filter~"
+      assert deployment.host_groups_filter == "~host_groups_filter~"
+      assert deployment.patch_type == "~patch_type~"
+      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
+      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
+      assert deployment.pre_patch_script == "~pre_patch_script~"
+      assert deployment.patch_script == "~patch_script~"
+      assert deployment.post_patch_script == "~post_patch_script~"
+      assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
+      assert deployment.rollout_strategy == "~rollout_strategy~"
+      assert deployment.schedule_type == "~schedule_type~"
+      assert deployment.last_status == "~last_status~"
+      assert is_binary(deployment.uuid)
+
+      assert DeploymentContext.get_deployments_by_teams([team.id], 0, 111) == [deployment]
+      assert DeploymentContext.get_deployments_by_teams([team.id], 1, 111) == []
+      assert DeploymentContext.get_deployments_by_teams([10000], 0, 111) == []
+
+      DeploymentContext.delete_deployment(deployment)
+
+      assert DeploymentContext.get_deployments_by_teams([team.id], 0, 111) == []
+    end
+  end
+
+  describe "count_deployments_by_teams/3" do
+    test "count_deployments_by_teams/3 test cases" do
+      attrs =
+        TeamContext.new_team(%{
+          name: "Team 2",
+          description: "Description 2"
+        })
+
+      {status, team} = TeamContext.create_team(attrs)
+
+      assert status == :ok
+
+      attr =
+        DeploymentContext.new_deployment(%{
+          team_id: team.id,
+          name: "~name~",
+          hosts_list: "~hosts_list~",
+          host_groups_list: "~host_groups_list~",
+          hosts_filter: "~hosts_filter~",
+          host_groups_filter: "~host_groups_filter~",
+          patch_type: "~patch_type~",
+          pkgs_to_upgrade: "~pkgs_to_upgrade~",
+          pkgs_to_exclude: "~pkgs_to_exclude~",
+          pre_patch_script: "~pre_patch_script~",
+          patch_script: "~patch_script~",
+          post_patch_script: "~post_patch_script~",
+          post_patch_reboot_option: "~post_patch_reboot_option~",
+          rollout_strategy: "~rollout_strategy~",
+          rollout_strategy_value: "~rollout_strategy_value~",
+          schedule_type: "~schedule_type~",
+          schedule_time: DateTime.utc_now(),
+          last_status: "~last_status~",
+          last_run_at: DateTime.utc_now()
+        })
+
+      {status, deployment} = DeploymentContext.create_deployment(attr)
+
+      assert status == :ok
+      assert deployment.team_id == team.id
+      assert deployment.name == "~name~"
+      assert deployment.hosts_list == "~hosts_list~"
+      assert deployment.host_groups_list == "~host_groups_list~"
+      assert deployment.hosts_filter == "~hosts_filter~"
+      assert deployment.host_groups_filter == "~host_groups_filter~"
+      assert deployment.patch_type == "~patch_type~"
+      assert deployment.pkgs_to_upgrade == "~pkgs_to_upgrade~"
+      assert deployment.pkgs_to_exclude == "~pkgs_to_exclude~"
+      assert deployment.pre_patch_script == "~pre_patch_script~"
+      assert deployment.patch_script == "~patch_script~"
+      assert deployment.post_patch_script == "~post_patch_script~"
+      assert deployment.post_patch_reboot_option == "~post_patch_reboot_option~"
+      assert deployment.rollout_strategy == "~rollout_strategy~"
+      assert deployment.schedule_type == "~schedule_type~"
+      assert deployment.last_status == "~last_status~"
+      assert is_binary(deployment.uuid)
+
+      assert DeploymentContext.count_deployments_by_teams([team.id]) == 1
+      assert DeploymentContext.count_deployments_by_teams([10000]) == 0
+
+      DeploymentContext.delete_deployment(deployment)
+
+      assert DeploymentContext.count_deployments_by_teams([team.id]) == 0
+    end
+  end
+
   describe "create_deployment_meta/1" do
     test "create_deployment_meta/1 test cases" do
       attrs =

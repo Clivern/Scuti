@@ -72,8 +72,8 @@ defmodule Scuti.Context.DeploymentContext do
   """
   def get_deployment_by_uuid(uuid) do
     from(
-      h in Deployment,
-      where: h.uuid == ^uuid
+      d in Deployment,
+      where: d.uuid == ^uuid
     )
     |> Repo.one()
   end
@@ -105,7 +105,8 @@ defmodule Scuti.Context.DeploymentContext do
   Retrieve deployments
   """
   def get_deployments(offset, limit) do
-    from(h in Deployment,
+    from(d in Deployment,
+      order_by: [desc: d.inserted_at],
       limit: ^limit,
       offset: ^offset
     )
@@ -113,15 +114,39 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Retrieve deployment by team id
+  Retrieve deployments by team id
   """
   def get_deployments_by_team(team_id, offset, limit) do
-    from(h in Deployment,
-      where: h.team_id == ^team_id,
+    from(d in Deployment,
+      where: d.team_id == ^team_id,
       limit: ^limit,
       offset: ^offset
     )
     |> Repo.all()
+  end
+
+  @doc """
+  Retrieve deployments by team ids
+  """
+  def get_deployments_by_teams(teams_ids, offset, limit) do
+    from(d in Deployment,
+      order_by: [desc: d.inserted_at],
+      where: d.team_id in ^teams_ids,
+      limit: ^limit,
+      offset: ^offset
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Count deployments by team ids
+  """
+  def count_deployments_by_teams(teams_ids) do
+    from(d in Deployment,
+      select: count(d.id),
+      where: d.team_id in ^teams_ids
+    )
+    |> Repo.one()
   end
 
   @doc """
@@ -161,9 +186,9 @@ defmodule Scuti.Context.DeploymentContext do
   """
   def get_deployment_meta_by_id_key(deployment_id, meta_key) do
     from(
-      h in DeploymentMeta,
-      where: h.deployment_id == ^deployment_id,
-      where: h.key == ^meta_key
+      d in DeploymentMeta,
+      where: d.deployment_id == ^deployment_id,
+      where: d.key == ^meta_key
     )
     |> Repo.one()
   end
@@ -173,8 +198,8 @@ defmodule Scuti.Context.DeploymentContext do
   """
   def get_deployment_metas(deployment_id) do
     from(
-      h in DeploymentMeta,
-      where: h.deployment_id == ^deployment_id
+      d in DeploymentMeta,
+      where: d.deployment_id == ^deployment_id
     )
     |> Repo.all()
   end

@@ -15,6 +15,7 @@ defmodule ScutiWeb.PageController do
   alias Scuti.Service.AuthService
   alias Scuti.Module.HostGroupModule
   alias Scuti.Module.HostModule
+  alias Scuti.Module.DeploymentModule
 
   @doc """
   Login Page

@@ -69,7 +69,6 @@ defmodule ScutiWeb.MiscController do
         conn
         |> put_status(:bad_request)
         |> render("error.json", %{message: msg})
-        |> halt()
 
       _ ->
         conn
@@ -100,13 +99,11 @@ defmodule ScutiWeb.MiscController do
             user: session.user_id
           }
         )
-        |> halt()
 
       {:error, message} ->
         conn
         |> put_status(:bad_request)
         |> render("error.json", %{message: message})
-        |> halt()
     end
   end
 end
