@@ -316,6 +316,28 @@ defmodule ScutiWeb.PageController do
   end
 
   @doc """
+  Deployments View Page
+  """
+  def view_deployment(conn, _params) do
+    case conn.assigns[:is_logged] do
+      false ->
+        conn
+        |> redirect(to: "/")
+
+      true ->
+        conn
+        |> render("view_deployment.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email]
+          }
+        )
+    end
+  end
+
+  @doc """
   Teams List Page
   """
   def list_teams(conn, _params) do

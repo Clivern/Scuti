@@ -42,13 +42,12 @@ defmodule ScutiWeb.Router do
     get "/admin/group/:id", PageController, :view_group
 
     get "/admin/deployment", PageController, :list_deployments
-    get "/admin/deployment/edit/:id", PageController, :edit_deployment
     get "/admin/deployment/add", PageController, :add_deployment
+    get "/admin/deployment/edit/:id", PageController, :edit_deployment
+    get "/admin/deployment/view/:id", PageController, :view_deployment
 
     get "/admin/team", PageController, :list_teams
-
     get "/admin/user", PageController, :list_users
-
     get "/admin/settings", PageController, :settings
   end
 
