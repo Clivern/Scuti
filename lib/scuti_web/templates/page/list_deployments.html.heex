@@ -473,16 +473,16 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12" v-show="rolloutStrategy == 'percent'">
+                                    <div class="col-12" v-show="rolloutStrategy == 'count'">
                                         <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Rollout Strategy Value in Percent" %></label>
+                                            <label class="form-label"><%= gettext "Rollout Strategy Value" %></label>
                                             <input type="text" class="form-control" name="rollout_strategy_value">
                                         </div>
                                     </div>
 
-                                    <div class="col-12" v-show="rolloutStrategy == 'count'">
+                                    <div class="col-12" v-show="rolloutStrategy == 'percent'">
                                         <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Rollout Strategy Value" %></label>
+                                            <label class="form-label"><%= gettext "Rollout Strategy Value in Percent" %></label>
                                             <input type="text" class="form-control" name="rollout_strategy_value">
                                         </div>
                                     </div>

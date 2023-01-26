@@ -115,7 +115,7 @@ defmodule Scuti.Context.DeploymentContext do
                 from h in query, where: h.name == ^value
 
               _ ->
-                from h in query, where: like(h.labels, ^tag)
+                from h in query, where: like(h.labels, ^"%#{tag}%")
             end
           end)
 
@@ -137,7 +137,7 @@ defmodule Scuti.Context.DeploymentContext do
                 from h in query, where: h.hostname == ^value
 
               _ ->
-                from h in query, where: like(h.labels, ^tag)
+                from h in query, where: like(h.labels, ^"%#{tag}%")
             end
           end)
 
