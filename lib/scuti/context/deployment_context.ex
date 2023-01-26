@@ -19,8 +19,6 @@ defmodule Scuti.Context.DeploymentContext do
     %{
       team_id: deployment.team_id,
       name: deployment.name,
-      hosts_list: deployment.hosts_list,
-      host_groups_list: deployment.host_groups_list,
       hosts_filter: deployment.hosts_filter,
       host_groups_filter: deployment.host_groups_filter,
       patch_type: deployment.patch_type,

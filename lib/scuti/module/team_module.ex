@@ -164,4 +164,11 @@ defmodule Scuti.Module.TeamModule do
         {:error, "Invalid Team ID"}
     end
   end
+
+  @doc """
+  Validate Team ID
+  """
+  def validate_team_id(id) do
+    TeamContext.validate_team_id(id)
+  end
 end

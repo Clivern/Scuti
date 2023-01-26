@@ -16,12 +16,10 @@ defmodule Scuti.Model.Deployment do
     field :name, :string
 
     # Hosts Filters
-    field :hosts_list, :string
-    field :host_groups_list, :string
     field :hosts_filter, :string
     field :host_groups_filter, :string
 
-    # :upgrade || :dist_upgrade || :custom_patch
+    # :os_upgrade || :distribution_upgrade || :custom_system_patch
     field :patch_type, :string
     # ONLY IF patch_type IS :upgrade
     field :pkgs_to_upgrade, :string
@@ -31,7 +29,7 @@ defmodule Scuti.Model.Deployment do
     field :pre_patch_script, :string
     field :patch_script, :string
     field :post_patch_script, :string
-    # :always || :only_if_needed
+    # :always || :only_if_needed || :never
     field :post_patch_reboot_option, :string
 
     # :one_by_one || :all_at_once || :percent || :count
@@ -57,8 +55,6 @@ defmodule Scuti.Model.Deployment do
       :uuid,
       :team_id,
       :name,
-      :hosts_list,
-      :host_groups_list,
       :hosts_filter,
       :host_groups_filter,
       :patch_type,
@@ -79,19 +75,17 @@ defmodule Scuti.Model.Deployment do
       :uuid,
       :team_id,
       :name,
-      :hosts_list,
-      :host_groups_list,
-      :hosts_filter,
-      :host_groups_filter,
+      # :hosts_filter,
+      # :host_groups_filter,
       :patch_type,
-      :pkgs_to_upgrade,
-      :pkgs_to_exclude,
-      :pre_patch_script,
-      :patch_script,
-      :post_patch_script,
+      # :pkgs_to_upgrade,
+      # :pkgs_to_exclude,
+      # :pre_patch_script,
+      # :patch_script,
+      # :post_patch_script,
       :post_patch_reboot_option,
       :rollout_strategy,
-      :rollout_strategy_value,
+      # :rollout_strategy_value,
       :schedule_type,
       :schedule_time,
       :last_status,

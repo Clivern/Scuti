@@ -10,8 +10,6 @@ defmodule Scuti.Repo.Migrations.CreateDeployments do
       add :uuid, :uuid
       add :name, :string
 
-      add :hosts_list, :string
-      add :host_groups_list, :string
       add :hosts_filter, :string
       add :host_groups_filter, :string
 

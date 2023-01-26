@@ -346,6 +346,50 @@ scuti_app.add_host_modal = (Vue, axios, $) => {
 
 }
 
+// Add Host Modal
+scuti_app.add_deployment_modal = (Vue, axios, $) => {
+
+    return new Vue({
+        delimiters: ['${', '}'],
+        el: '#add_deployment_modal',
+        data() {
+            return {
+                isInProgress: false,
+                rolloutStrategy: 'one_by_one',
+                patchType: 'os_upgrade',
+            }
+        },
+        methods: {
+            addDeploymentAction(event) {
+                event.preventDefault();
+                this.isInProgress = true;
+
+                let inputs = {};
+                let _self = $(event.target);
+                let _form = _self.closest("form");
+
+                _form.serializeArray().map((item, index) => {
+                    inputs[item.name] = item.value;
+                });
+
+                axios.post(_form.attr('action'), inputs)
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            show_notification(i18n_globals.new_host);
+                            location.reload();
+                        }
+                    })
+                    .catch((error) => {
+                        this.isInProgress = false;
+                        // Show error
+                        show_notification(error.response.data.errorMessage);
+                    });
+            }
+        }
+    });
+
+}
+
 $(document).ready(() => {
     axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
@@ -412,6 +456,14 @@ $(document).ready(() => {
 
     if (document.getElementById("add_host_modal")) {
         scuti_app.add_host_modal(
+            Vue,
+            axios,
+            $
+        );
+    }
+
+    if (document.getElementById("add_deployment_modal")) {
+        scuti_app.add_deployment_modal(
             Vue,
             axios,
             $

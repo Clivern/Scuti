@@ -304,7 +304,7 @@
                                             <td><%= group.labels %></td>
                                             <td><%= group.inserted_at %></td>
                                             <td>
-                                                <a href={Routes.page_path(@conn, :view_group, group.id)} class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80" data-id={group.id} data-uuid={group.uuid}><%= gettext "View" %></a>
+                                                <a href={Routes.page_path(@conn, :view_group, group.uuid)} class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80" data-id={group.id} data-uuid={group.uuid}><%= gettext "View" %></a>
                                                 <button class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2" data-id={group.id} data-uuid={group.uuid}><%= gettext "Delete" %></button>
                                             </td>
                                         </tr>

@@ -217,14 +217,14 @@ defmodule ScutiWeb.PageController do
   @doc """
   Host Groups View Page
   """
-  def view_group(conn, %{"id" => id}) do
+  def view_group(conn, %{"uuid" => uuid}) do
     case conn.assigns[:is_logged] do
       false ->
         conn
         |> redirect(to: "/")
 
       true ->
-        group = HostGroupModule.get_group_by_id(id)
+        group = HostGroupModule.get_group_by_uuid(uuid)
 
         case group do
           nil ->
@@ -232,7 +232,7 @@ defmodule ScutiWeb.PageController do
             |> redirect(to: "/404")
 
           _ ->
-            hosts = HostModule.get_hosts_by_group(id, 0, 10000)
+            hosts = HostModule.get_hosts_by_group(group.id, 0, 10000)
 
             conn
             |> render("view_group.html",
@@ -259,13 +259,25 @@ defmodule ScutiWeb.PageController do
         |> redirect(to: "/")
 
       true ->
+        teams_ids = []
+        user_teams = HostGroupModule.get_user_teams(conn.assigns[:user_id])
+
+        teams_ids =
+          for user_team <- user_teams do
+            teams_ids ++ user_team.id
+          end
+
+        deployments = DeploymentModule.get_deployments_by_teams(teams_ids, 0, 1000)
+
         conn
         |> render("list_deployments.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
             user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
+            user_email: conn.assigns[:user_email],
+            deployments: deployments,
+            user_teams: user_teams
           }
         )
     end
@@ -274,7 +286,7 @@ defmodule ScutiWeb.PageController do
   @doc """
   Deployments Edit Page
   """
-  def edit_deployment(conn, _params) do
+  def edit_deployment(conn, %{uuid: _uuid}) do
     case conn.assigns[:is_logged] do
       false ->
         conn
@@ -318,22 +330,32 @@ defmodule ScutiWeb.PageController do
   @doc """
   Deployments View Page
   """
-  def view_deployment(conn, _params) do
+  def view_deployment(conn, %{"uuid" => uuid}) do
     case conn.assigns[:is_logged] do
       false ->
         conn
         |> redirect(to: "/")
 
       true ->
-        conn
-        |> render("view_deployment.html",
-          data: %{
-            is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super],
-            user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
-          }
-        )
+        deployment = DeploymentModule.get_deployment_by_uuid(uuid)
+
+        case deployment do
+          nil ->
+            conn
+            |> redirect(to: "/404")
+
+          _ ->
+            conn
+            |> render("view_deployment.html",
+              data: %{
+                is_logged: conn.assigns[:is_logged],
+                is_super: conn.assigns[:is_super],
+                user_name: conn.assigns[:user_name],
+                user_email: conn.assigns[:user_email],
+                deployment: deployment
+              }
+            )
+        end
     end
   end
 

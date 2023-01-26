@@ -57,7 +57,8 @@ defmodule Scuti.MixProject do
       {:gettext, "~> 0.22"},
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.5"},
-      {:bcrypt_elixir, "~> 3.0"}
+      {:bcrypt_elixir, "~> 3.0"},
+      {:date_time_parser, "~> 1.2"}
     ]
   end
 

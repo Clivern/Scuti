@@ -23,8 +23,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: 1,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -44,8 +42,6 @@ defmodule Scuti.Context.DeploymentContextTest do
 
       assert deployment.team_id == 1
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -95,8 +91,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -119,8 +113,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -153,8 +145,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -177,8 +167,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -213,8 +201,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -237,8 +223,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -273,8 +257,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -297,8 +279,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -316,8 +296,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       {status, _} =
         DeploymentContext.update_deployment(deployment, %{
           name: "~new_name~",
-          hosts_list: "~new_hosts_list~",
-          host_groups_list: "~new_host_groups_list~",
           hosts_filter: "~new_hosts_filter~",
           host_groups_filter: "~new_host_groups_filter~",
           patch_type: "~new_patch_type~",
@@ -338,8 +316,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       deployment = DeploymentContext.get_deployment_by_id(deployment.id)
 
       assert deployment.name == "~new_name~"
-      assert deployment.hosts_list == "~new_hosts_list~"
-      assert deployment.host_groups_list == "~new_host_groups_list~"
       assert deployment.hosts_filter == "~new_hosts_filter~"
       assert deployment.host_groups_filter == "~new_host_groups_filter~"
       assert deployment.patch_type == "~new_patch_type~"
@@ -371,8 +347,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -395,8 +369,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -435,8 +407,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -459,8 +429,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -499,8 +467,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -523,8 +489,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -564,8 +528,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -588,8 +550,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -630,8 +590,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -654,8 +612,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -696,8 +652,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -720,8 +674,6 @@ defmodule Scuti.Context.DeploymentContextTest do
       assert status == :ok
       assert deployment.team_id == team.id
       assert deployment.name == "~name~"
-      assert deployment.hosts_list == "~hosts_list~"
-      assert deployment.host_groups_list == "~host_groups_list~"
       assert deployment.hosts_filter == "~hosts_filter~"
       assert deployment.host_groups_filter == "~host_groups_filter~"
       assert deployment.patch_type == "~patch_type~"
@@ -761,8 +713,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -816,8 +766,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -871,8 +819,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -936,8 +882,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -996,8 +940,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
@@ -1052,8 +994,6 @@ defmodule Scuti.Context.DeploymentContextTest do
         DeploymentContext.new_deployment(%{
           team_id: team.id,
           name: "~name~",
-          hosts_list: "~hosts_list~",
-          host_groups_list: "~host_groups_list~",
           hosts_filter: "~hosts_filter~",
           host_groups_filter: "~host_groups_filter~",
           patch_type: "~patch_type~",
