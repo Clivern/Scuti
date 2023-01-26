@@ -21,6 +21,7 @@ defmodule Scuti.Context.TaskContext do
       result: task.result,
       status: task.status,
       deployment_id: task.deployment_id,
+      run_at: task.run_at,
       uuid: Ecto.UUID.generate()
     }
   end

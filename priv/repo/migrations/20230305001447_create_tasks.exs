@@ -11,6 +11,7 @@ defmodule Scuti.Repo.Migrations.CreateTasks do
       add :payload, :string
       add :result, :string
       add :status, :string
+      add :run_at, :utc_datetime
       add :deployment_id, references(:deployments, on_delete: :delete_all)
 
       timestamps()

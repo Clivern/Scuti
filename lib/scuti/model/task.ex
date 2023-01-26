@@ -16,6 +16,7 @@ defmodule Scuti.Model.Task do
     field :payload, :string
     field :result, :string
     field :status, :string
+    field :run_at, :utc_datetime
 
     timestamps()
   end
@@ -28,14 +29,16 @@ defmodule Scuti.Model.Task do
       :deployment_id,
       :payload,
       :result,
-      :status
+      :status,
+      :run_at
     ])
     |> validate_required([
       :uuid,
       :deployment_id,
       :payload,
       :result,
-      :status
+      :status,
+      :run_at
     ])
   end
 end
