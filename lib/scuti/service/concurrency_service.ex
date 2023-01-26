@@ -8,6 +8,5 @@ defmodule Scuti.Service.ConcurrencyService do
   """
 
   def launch() do
-
   end
 end
