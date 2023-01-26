@@ -94,7 +94,7 @@ defmodule ScutiWeb.DeploymentController do
 
       case result do
         {:error, msg} ->
-          IO.puts(msg)
+          Logger.info(msg)
           raise InvalidRequest, message: "Invalid Request"
 
         {:ok, deployment} ->

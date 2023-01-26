@@ -10,7 +10,7 @@ defmodule Scuti.Context.DeploymentContext do
   import Ecto.Query
 
   alias Scuti.Repo
-  alias Scuti.Model.{DeploymentMeta, Deployment}
+  alias Scuti.Model.{DeploymentMeta, Deployment, HostGroup, Host}
 
   @doc """
   Get a new deployment
@@ -74,6 +74,75 @@ defmodule Scuti.Context.DeploymentContext do
       where: d.uuid == ^uuid
     )
     |> Repo.one()
+  end
+
+  @doc """
+  Get deployment target hosts by id
+  """
+  def get_deployment_target_hosts(id, teams_ids) do
+    deployment = get_deployment_by_id(id)
+
+    case deployment do
+      nil ->
+        nil
+
+      _ ->
+        hosts_filter =
+          if deployment.hosts_filter == nil do
+            ""
+          else
+            deployment.hosts_filter
+          end
+
+        host_groups_filter =
+          if deployment.host_groups_filter == nil do
+            ""
+          else
+            deployment.host_groups_filter
+          end
+
+        # Get a list of host groups
+        host_group_query = from(h in HostGroup, where: h.team_id in ^teams_ids)
+
+        host_group_query =
+          Enum.reduce(String.split(host_groups_filter, ","), host_group_query, fn tag, query ->
+            items = String.split(tag, "=")
+            flag = Enum.at(items, 0)
+            value = Enum.at(items, 1)
+
+            case flag do
+              "name" ->
+                from h in query, where: h.name == ^value
+
+              _ ->
+                from h in query, where: like(h.labels, ^tag)
+            end
+          end)
+
+        host_groups_ids = Enum.map(host_group_query |> Repo.all(), fn obj -> obj.id end)
+
+        host_query = from(h in Host, where: h.host_group_id in ^host_groups_ids)
+
+        host_query =
+          Enum.reduce(String.split(hosts_filter, ","), host_query, fn tag, query ->
+            items = String.split(tag, "=")
+            flag = Enum.at(items, 0)
+            value = Enum.at(items, 1)
+
+            case flag do
+              "name" ->
+                from h in query, where: h.name == ^value
+
+              "hostname" ->
+                from h in query, where: h.hostname == ^value
+
+              _ ->
+                from h in query, where: like(h.labels, ^tag)
+            end
+          end)
+
+        host_query |> Repo.all()
+    end
   end
 
   @doc """

@@ -74,4 +74,11 @@ defmodule Scuti.Module.DeploymentModule do
   def get_deployment_by_uuid(uuid) do
     DeploymentContext.get_deployment_by_uuid(uuid)
   end
+
+  @doc """
+  Get deployment target hosts by ID
+  """
+  def get_deployment_target_hosts(id, teams_ids) do
+    DeploymentContext.get_deployment_target_hosts(id, teams_ids)
+  end
 end
