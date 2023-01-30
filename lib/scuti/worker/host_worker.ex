@@ -16,7 +16,7 @@ defmodule Scuti.Worker.HostWorker do
   ## Callbacks
   @impl true
   def init(state) do
-    Logger.info("Host Worker Started 🔥")
+    Logger.info("Host Worker Started")
 
     schedule_work()
 
@@ -28,13 +28,13 @@ defmodule Scuti.Worker.HostWorker do
     # Reschedule once more
     schedule_work()
 
-    Logger.info("Host Worker Task Trigger 🔥")
+    Logger.info("Host Worker Task Trigger")
 
-    Logger.info("Mark absent hosts for 2 minutes as DOWN 🔥")
+    Logger.info("Mark absent hosts for 2 minutes as DOWN")
 
     count = HostModule.mark_hosts_down(120)
 
-    Logger.info("Mark #{count} hosts as DOWN 🔥")
+    Logger.info("Mark #{count} hosts as DOWN")
 
     {:noreply, state}
   end

@@ -3,6 +3,6 @@
 # license that can be found in the LICENSE file.
 
 defmodule Scuti.Worker.AllAtOnceStrategy do
-  def handle(task, deployment) do
+  def handle(_task, _deployment) do
   end
 end

@@ -17,7 +17,7 @@ defmodule Scuti.Worker.DeploymentWorker do
   ## Callbacks
   @impl true
   def init(state) do
-    Logger.info("Deployment Worker Started 🔥")
+    Logger.info("Deployment Worker Started")
 
     schedule_work()
 
@@ -29,7 +29,7 @@ defmodule Scuti.Worker.DeploymentWorker do
     # Reschedule once more
     schedule_work()
 
-    Logger.info("Deployment Worker Task Trigger 🔥")
+    Logger.info("Deployment Worker Task Trigger")
 
     # once deployments
     deployments = DeploymentModule.get_pending_once_deployments()

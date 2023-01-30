@@ -15,7 +15,7 @@ defmodule Scuti.Model.Task do
     field :deployment_id, :id
     field :payload, :string
     field :result, :string
-    # :pending, running, success, failure
+    # :pending, running, success, failure, skipped
     field :status, :string
     field :run_at, :utc_datetime
 

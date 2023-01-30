@@ -37,6 +37,33 @@ defmodule Scuti.Module.TaskModule do
   end
 
   @doc """
+  Get task by ID
+  """
+  def get_task_by_id(id) do
+    TaskContext.get_task_by_id(id)
+  end
+
+  @doc """
+  Update task status
+  """
+  def update_task_status(id, status) do
+    task = get_task_by_id(id)
+
+    case task do
+      nil ->
+        {:error, "Task with id #{id} not found"}
+
+      _ ->
+        TaskContext.update_task(task, %{
+          status: status,
+          run_at: DateTime.utc_now()
+        })
+
+        {:ok, "Task with id #{id} updated successfully"}
+    end
+  end
+
+  @doc """
   Delete A Task
   """
   def delete_task(id) do
