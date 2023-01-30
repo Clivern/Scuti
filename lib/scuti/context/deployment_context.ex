@@ -79,7 +79,7 @@ defmodule Scuti.Context.DeploymentContext do
   @doc """
   Get deployment target hosts by id
   """
-  def get_deployment_target_hosts(id, teams_ids) do
+  def get_deployment_target_hosts(id) do
     deployment = get_deployment_by_id(id)
 
     case deployment do
@@ -102,7 +102,7 @@ defmodule Scuti.Context.DeploymentContext do
           end
 
         # Get a list of host groups
-        host_group_query = from(h in HostGroup, where: h.team_id in ^teams_ids)
+        host_group_query = from(h in HostGroup, where: h.team_id in ^[deployment.team_id])
 
         host_group_query =
           Enum.reduce(String.split(host_groups_filter, ","), host_group_query, fn tag, query ->
@@ -201,6 +201,18 @@ defmodule Scuti.Context.DeploymentContext do
       where: d.team_id in ^teams_ids,
       limit: ^limit,
       offset: ^offset
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Retrieve pending deployments
+  """
+  def get_pending_once_deployments() do
+    from(d in Deployment,
+      where: d.last_status == ^"unknown",
+      where: d.schedule_type == ^"once",
+      where: d.schedule_time < ^DateTime.utc_now()
     )
     |> Repo.all()
   end

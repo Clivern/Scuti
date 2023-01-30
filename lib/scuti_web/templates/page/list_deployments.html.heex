@@ -326,6 +326,9 @@
                                                 <%= if deployment.last_status == "unknown" do %>
                                                     <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "UNKNOWN" %></div>
                                                 <% end %>
+                                                <%= if deployment.last_status == "pending" do %>
+                                                    <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "PENDING" %></div>
+                                                <% end %>
                                             </td>
 
                                             <td><%= deployment.inserted_at %></td>
@@ -499,7 +502,7 @@
 
                                     <div class="col-12">
                                         <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Schedule Time" %></label>
+                                            <label class="form-label"><%= gettext "Schedule Time in UTC" %></label>
                                             <input type="datetime-local" class="form-control" name="schedule_time" required="required">
                                         </div>
                                     </div>

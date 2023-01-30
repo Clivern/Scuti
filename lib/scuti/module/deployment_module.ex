@@ -48,6 +48,26 @@ defmodule Scuti.Module.DeploymentModule do
   end
 
   @doc """
+  Update deployment status
+  """
+  def update_deployment_status(id, last_status) do
+    deployment = get_deployment_by_id(id)
+
+    case deployment do
+      nil ->
+        {:error, "Deployment with id #{id} not found"}
+
+      _ ->
+        DeploymentContext.update_deployment(deployment, %{
+          last_status: last_status,
+          last_run_at: DateTime.utc_now()
+        })
+
+        {:ok, "Deployment with id #{id} updated successfully"}
+    end
+  end
+
+  @doc """
   Get Deployments by Team List
   """
   def get_deployments_by_teams(teams_ids, offset, limit) do
@@ -78,7 +98,14 @@ defmodule Scuti.Module.DeploymentModule do
   @doc """
   Get deployment target hosts by ID
   """
-  def get_deployment_target_hosts(id, teams_ids) do
-    DeploymentContext.get_deployment_target_hosts(id, teams_ids)
+  def get_deployment_target_hosts(id) do
+    DeploymentContext.get_deployment_target_hosts(id)
+  end
+
+  @doc """
+  Retrieve pending deployments
+  """
+  def get_pending_once_deployments() do
+    DeploymentContext.get_pending_once_deployments()
   end
 end

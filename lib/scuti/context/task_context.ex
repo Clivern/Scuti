@@ -99,6 +99,16 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
+  Retrieve pending tasks
+  """
+  def get_pending_tasks() do
+    from(t in Task,
+      where: t.status == ^"pending"
+    )
+    |> Repo.all()
+  end
+
+  @doc """
   Create a new task meta
   """
   def create_task_meta(attrs \\ %{}) do

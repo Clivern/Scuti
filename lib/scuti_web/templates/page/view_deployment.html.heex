@@ -246,11 +246,29 @@
                 <div class="col-12">
                     <div class="card hp-card-2">
                         <div class="card-body">
-                            <h5 class="mb-4">Deployment Name</h5>
+                            <h5 class="mb-4"><%= gettext "Deployment Name" %></h5>
                             <p class="hp-p1-body mb-16"><%= @data.deployment.name %></p>
 
-                            <h5 class="mb-4">Deployment UUID</h5>
+                            <h5 class="mb-4"><%= gettext "Deployment UUID" %></h5>
                             <p class="hp-p1-body mb-16"><%= @data.deployment.uuid %></p>
+
+                            <h5 class="mb-4"><%= gettext "Deployment Host Group Filter" %></h5>
+                            <p class="hp-p1-body mb-16"><%= @data.deployment.host_groups_filter %></p>
+
+                            <h5 class="mb-4"><%= gettext "Deployment Host Filter" %></h5>
+                            <p class="hp-p1-body mb-16"><%= @data.deployment.hosts_filter %></p>
+
+                            <h5 class="mb-4"><%= gettext "Schedule Type" %></h5>
+                            <p class="hp-p1-body mb-16"><%= @data.deployment.schedule_type %></p>
+
+                            <h5 class="mb-4"><%= gettext "Schedule Time in UTC" %></h5>
+                            <p class="hp-p1-body mb-16"><%= @data.deployment.schedule_time %></p>
+
+                            <h5 class="mb-4"><%= gettext "Last Status" %></h5>
+                            <p class="hp-p1-body mb-16"><%= @data.deployment.last_status %></p>
+
+                            <h5 class="mb-4"><%= gettext "Last Run at in UTC" %></h5>
+                            <p class="hp-p1-body mb-16"><%= @data.deployment.last_run_at %></p>
                         </div>
                     </div>
                 </div>

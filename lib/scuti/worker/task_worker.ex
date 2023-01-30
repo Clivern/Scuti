@@ -7,6 +7,9 @@ defmodule Scuti.Worker.TaskWorker do
 
   require Logger
 
+  alias Scuti.Module.DeploymentModule
+  alias Scuti.Module.TaskModule
+
   def start_link(state) do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
@@ -23,12 +26,37 @@ defmodule Scuti.Worker.TaskWorker do
 
   @impl true
   def handle_info(:fire, state) do
-    # Reschedule once more
-    schedule_work()
-
     Logger.info("Task Worker Job Trigger 🔥")
 
-    IO.inspect(state)
+    tasks = TaskModule.get_pending_tasks()
+
+    pids =
+      for task <- tasks do
+        deployment = DeploymentModule.get_deployment_by_id(task.deployment_id)
+
+        pid = case deployment do
+          nil ->
+            # Delete Task
+            TaskModule.delete_task(task.id)
+
+          _ ->
+            pid = if deployment.rollout_strategy == "one_by_one" do
+              pid = spawn(fn -> Scuti.Worker.OneByOneStrategy.handle(task, deployment) end)
+              pid
+            end
+
+            pid
+        end
+        pid
+      end
+
+    # Block the process till all pids finish
+    for pid <- pids do
+      Scuti.Worker.WaitForProcess.is_alive?(pid)
+    end
+
+    # Reschedule once more
+    schedule_work()
 
     {:noreply, state}
   end

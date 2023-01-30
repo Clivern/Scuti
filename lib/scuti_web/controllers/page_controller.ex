@@ -339,16 +339,7 @@ defmodule ScutiWeb.PageController do
       true ->
         deployment = DeploymentModule.get_deployment_by_uuid(uuid)
 
-        user_teams = HostGroupModule.get_user_teams(conn.assigns[:user_id])
-
-        teams_ids = []
-
-        teams_ids =
-          for user_team <- user_teams do
-            teams_ids ++ user_team.id
-          end
-
-        hosts = DeploymentModule.get_deployment_target_hosts(deployment.id, teams_ids)
+        hosts = DeploymentModule.get_deployment_target_hosts(deployment.id)
 
         case deployment do
           nil ->

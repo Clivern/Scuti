@@ -7,6 +7,9 @@ defmodule Scuti.Worker.DeploymentWorker do
 
   require Logger
 
+  alias Scuti.Module.TaskModule
+  alias Scuti.Module.DeploymentModule
+
   def start_link(state) do
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
@@ -28,7 +31,38 @@ defmodule Scuti.Worker.DeploymentWorker do
 
     Logger.info("Deployment Worker Task Trigger 🔥")
 
-    IO.inspect(state)
+    # once deployments
+    deployments = DeploymentModule.get_pending_once_deployments()
+
+    IO.inspect(deployments)
+
+    for deployment <- deployments do
+      IO.inspect(deployment)
+
+      result =
+        TaskModule.create_task(%{
+          payload: %{},
+          result: %{},
+          status: "pending",
+          deployment_id: deployment.id
+        })
+
+      case result do
+        {:ok, task} ->
+          Logger.info("Task created with id #{task.id}")
+
+          case DeploymentModule.update_deployment_status(deployment.id, "pending") do
+            {:ok, msg} ->
+              Logger.info(msg)
+
+            {:error, msg} ->
+              Logger.error(msg)
+          end
+
+        {:error, msg} ->
+          Logger.error("Error while creating a task: #{msg}")
+      end
+    end
 
     {:noreply, state}
   end
