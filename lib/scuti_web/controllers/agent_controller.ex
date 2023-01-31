@@ -219,6 +219,7 @@ defmodule ScutiWeb.AgentController do
       case result do
         {:error, msg} ->
           Logger.error(msg)
+
           raise InternalError, "Something goes wrong while creating the record"
 
         {:ok, _} ->
