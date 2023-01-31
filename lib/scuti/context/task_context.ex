@@ -216,4 +216,28 @@ defmodule Scuti.Context.TaskContext do
     )
     |> Repo.all()
   end
+
+  @doc """
+  Count updated hosts
+  """
+  def count_updated_hosts(task_id) do
+    from(t in TaskLog,
+      select: count(t.id),
+      where: t.task_id == ^task_id,
+      where: t.type == ^"host_updated_successfully"
+    )
+    |> Repo.one()
+  end
+
+  @doc """
+  Count failed hosts
+  """
+  def count_failed_hosts(task_id) do
+    from(t in TaskLog,
+      select: count(t.id),
+      where: t.task_id == ^task_id,
+      where: t.type == ^"host_failed_to_update"
+    )
+    |> Repo.one()
+  end
 end

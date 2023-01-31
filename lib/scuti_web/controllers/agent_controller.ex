@@ -54,7 +54,7 @@ defmodule ScutiWeb.AgentController do
       webhook_token = EncryptService.base64(host_group.secret_key, encode(payload))
 
       if webhook_token != x_webhook_token do
-        raise InvalidRequest, "Invalid Request 1"
+        raise InvalidRequest, "Invalid Request"
       end
 
       host = HostModule.get_host_by_uuid(host_uuid)
@@ -129,7 +129,7 @@ defmodule ScutiWeb.AgentController do
       webhook_token = EncryptService.base64(host.secret_key, encode(payload))
 
       if webhook_token != x_webhook_token do
-        raise InvalidRequest, "Invalid Request-"
+        raise InvalidRequest, "Invalid Request"
       end
 
       result = HostModule.mark_host_as_up(host.id)
@@ -165,7 +165,8 @@ defmodule ScutiWeb.AgentController do
   Report Action Endpoint
 
   encrypt(encode({
-    event: Agent will reboot the host
+    type: ...
+    record: ....
   }), agent_secret)
   """
   def report(conn, params) do
@@ -180,7 +181,8 @@ defmodule ScutiWeb.AgentController do
     task_uuid = ValidatorService.get_str(params["task_uuid"], "")
 
     payload = %{
-      event: ValidatorService.get_str(params["event"], "")
+      type: ValidatorService.get_str(params["type"], ""),
+      record: ValidatorService.get_str(params["record"], "")
     }
 
     try do
@@ -203,24 +205,42 @@ defmodule ScutiWeb.AgentController do
       webhook_token = EncryptService.base64(host.secret_key, encode(payload))
 
       if webhook_token != x_webhook_token do
-        raise InvalidRequest, "Invalid Request-"
+        raise InvalidRequest, "Invalid Request"
       end
 
-      result = HostModule.mark_host_as_up(host.id)
+      result =
+        TaskModule.create_task_log(%{
+          host_id: host.id,
+          task_id: task.id,
+          type: payload.type,
+          record: payload.record
+        })
 
       case result do
-        {:not_found, msg} ->
-          Logger.info(msg)
-          raise InvalidRequest, "Host is not found"
-
         {:error, msg} ->
-          Logger.info(msg)
-          raise InternalError, "Something goes wrong while updating the host"
+          Logger.error(msg)
+          raise InternalError, "Something goes wrong while creating the record"
 
         {:ok, _} ->
-          conn
-          |> put_status(:ok)
-          |> render("success.json", %{message: "Agent reported successfully!"})
+          # Update Task Result
+          case TaskModule.get_task_result(task.id) do
+            {:error, msg} ->
+              Logger.error(msg)
+              raise InternalError, "Something goes wrong while updating task result"
+
+            {:ok, result} ->
+              Logger.info("Updating task result")
+
+              TaskModule.update_task_result(task.id, %{
+                total_hosts: result["total_hosts"],
+                updated_hosts: TaskModule.count_updated_hosts(task.id),
+                failed_hosts: TaskModule.count_failed_hosts(task.id)
+              })
+
+              conn
+              |> put_status(:ok)
+              |> render("success.json", %{message: "Record created successfully!"})
+          end
       end
     rescue
       e in InvalidRequest ->
@@ -249,7 +269,7 @@ defmodule ScutiWeb.AgentController do
     ~c"{\"status\":\"#{status}\"}"
   end
 
-  defp encode(%{event: event}) do
-    ~c"{\"event\":\"#{event}\"}"
+  defp encode(%{type: type, record: record}) do
+    ~c"{\"type\":\"#{type}\",\"record\":\"#{record}\"}"
   end
 end

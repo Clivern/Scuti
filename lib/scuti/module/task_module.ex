@@ -37,6 +37,31 @@ defmodule Scuti.Module.TaskModule do
   end
 
   @doc """
+  Create a task log
+  """
+  def create_task_log(data \\ %{}) do
+    task_log =
+      TaskContext.new_task_log(%{
+        host_id: data.host_id,
+        task_id: data.task_id,
+        type: data.type,
+        record: data.record
+      })
+
+    case TaskContext.create_task_log(task_log) do
+      {:ok, task_log} ->
+        {:ok, task_log}
+
+      {:error, changeset} ->
+        messages =
+          changeset.errors()
+          |> Enum.map(fn {field, {message, _options}} -> "#{field}: #{message}" end)
+
+        {:error, Enum.at(messages, 0)}
+    end
+  end
+
+  @doc """
   Get task by ID
   """
   def get_task_by_id(id) do
@@ -71,6 +96,47 @@ defmodule Scuti.Module.TaskModule do
   end
 
   @doc """
+  Get task result
+  """
+  def get_task_result(id) do
+    task = get_task_by_id(id)
+
+    case task do
+      nil ->
+        {:error, "Task with id #{id} not found"}
+
+      _ ->
+        result =
+          if task.result == nil or task.result == "" do
+            %{total_hosts: 0, updated_hosts: 0, failed_hosts: 0}
+          else
+            Jason.decode!(task.result)
+          end
+
+        {:ok, result}
+    end
+  end
+
+  @doc """
+  Update task result
+  """
+  def update_task_result(id, result) do
+    task = get_task_by_id(id)
+
+    case task do
+      nil ->
+        {:error, "Task with id #{id} not found"}
+
+      _ ->
+        TaskContext.update_task(task, %{
+          result: Jason.encode!(result)
+        })
+
+        {:ok, "Task with id #{id} updated successfully"}
+    end
+  end
+
+  @doc """
   Delete A Task
   """
   def delete_task(id) do
@@ -94,5 +160,19 @@ defmodule Scuti.Module.TaskModule do
   """
   def get_pending_tasks() do
     TaskContext.get_pending_tasks()
+  end
+
+  @doc """
+  Count updated hosts
+  """
+  def count_updated_hosts(task_id) do
+    TaskContext.count_updated_hosts(task_id)
+  end
+
+  @doc """
+  Count failed hosts
+  """
+  def count_failed_hosts(task_id) do
+    TaskContext.count_failed_hosts(task_id)
   end
 end

@@ -12,6 +12,39 @@ defmodule Scuti.Worker.OneByOneStrategy do
     # Get Target hosts
     hosts = DeploymentModule.get_deployment_target_hosts(deployment.id)
 
+    # Update Deployment status
+    case DeploymentModule.update_deployment_status(deployment.id, "running") do
+      {:ok, msg} ->
+        Logger.info(msg)
+
+      {:error, msg} ->
+        Logger.error(msg)
+    end
+
+    # Update Task Status
+    case TaskModule.update_task_status(task.id, "running") do
+      {:ok, msg} ->
+        Logger.info(msg)
+
+      {:error, msg} ->
+        Logger.error(msg)
+    end
+
+    # Update Task Result
+    case TaskModule.get_task_result(task.id) do
+      {:error, msg} ->
+        Logger.error(msg)
+
+      {:ok, result} ->
+        Logger.info("Updating task result")
+
+        TaskModule.update_task_result(task.id, %{
+          total_hosts: length(hosts),
+          updated_hosts: result["updated_hosts"],
+          failed_hosts: result["failed_hosts"]
+        })
+    end
+
     for host <- hosts do
       # Spawn a patch job process
       pid = spawn(Scuti.Worker.PatchTask, :run, [])
