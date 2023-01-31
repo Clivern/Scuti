@@ -226,6 +226,7 @@ defmodule ScutiWeb.AgentController do
           case TaskModule.get_task_result(task.id) do
             {:error, msg} ->
               Logger.error(msg)
+
               raise InternalError, "Something goes wrong while updating task result"
 
             {:ok, result} ->
