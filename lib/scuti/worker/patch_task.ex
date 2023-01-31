@@ -5,6 +5,9 @@
 defmodule Scuti.Worker.PatchTask do
   require Logger
 
+  alias Scuti.Module.TaskModule
+  alias Scuti.Service.EncryptService
+
   def run do
     Logger.info("PatchTask Process Started")
 
@@ -14,12 +17,35 @@ defmodule Scuti.Worker.PatchTask do
           "Received patch request with id #{msg.id}, task #{msg.task.id}, deployment #{msg.deployment.id}, host #{msg.host.id}"
         )
 
-        # --
+        payload = Jason.decode!(msg.task.payload)
+
+        body = %{
+          deployment_uuid: msg.deployment.uuid,
+          host_uuid: msg.host.uuid,
+          task_uuid: msg.task.uuid,
+          patch_type: payload["patch_type"],
+          pkgs_to_upgrade: payload["pkgs_to_upgrade"],
+          pkgs_to_exclude: payload["pkgs_to_exclude"],
+          pre_patch_script: payload["pre_patch_script"],
+          patch_script: payload["patch_script"],
+          post_patch_script: payload["post_patch_script"],
+          post_patch_reboot_option: payload["post_patch_reboot_option"]
+        }
+
+        headers = %{
+          "X-Webhook-Token": EncryptService.base64(msg.host.secret_key, encode(body))
+        }
+
+        # Send the request to the agent
         Logger.info("Send to remote agent #{msg.id}")
-        # --
-        Logger.info("Wait till the agent respond back #{msg.id}")
-        # --
-        Logger.info("Update the management database #{msg.id}")
+
+        case Req.post!(msg.host.agent_address, json: body, headers: headers).status do
+          200 ->
+            Logger.info("Host agent responded with 200 to #{msg.id}")
+
+          code ->
+            Logger.info("Host agent responded with #{code} to #{msg.id}")
+        end
 
         check(msg)
     end
@@ -28,12 +54,25 @@ defmodule Scuti.Worker.PatchTask do
   def check(msg) do
     Logger.info("Check task status #{msg.id}")
 
-    run_again = true
-
-    if run_again do
+    if !TaskModule.is_host_updated_successfully(msg.host.id, msg.task.id) and
+         !TaskModule.is_host_failed_to_update(msg.host.id, msg.task.id) do
       check(msg)
+      Process.sleep(30000)
     end
+  end
 
-    Process.sleep(30000)
+  defp encode(%{
+         deployment_uuid: deployment_uuid,
+         host_uuid: host_uuid,
+         task_uuid: task_uuid,
+         patch_type: patch_type,
+         pkgs_to_upgrade: pkgs_to_upgrade,
+         pkgs_to_exclude: pkgs_to_exclude,
+         pre_patch_script: pre_patch_script,
+         patch_script: patch_script,
+         post_patch_script: post_patch_script,
+         post_patch_reboot_option: post_patch_reboot_option
+       }) do
+    ~c"{\"deployment_uuid\":\"#{deployment_uuid}\",\"host_uuid\":\"#{host_uuid}\",\"task_uuid\":\"#{task_uuid}\",\"patch_type\":\"#{patch_type}\",\"pkgs_to_upgrade\":\"#{pkgs_to_upgrade}\",\"pkgs_to_exclude\":\"#{pkgs_to_exclude}\",\"pre_patch_script\":\"#{pre_patch_script}\",\"patch_script\":\"#{patch_script}\",\"post_patch_script\":\"#{post_patch_script}\",\"post_patch_reboot_option\":\"#{post_patch_reboot_option}\"}"
   end
 end

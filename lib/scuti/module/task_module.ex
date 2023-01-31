@@ -175,4 +175,18 @@ defmodule Scuti.Module.TaskModule do
   def count_failed_hosts(task_id) do
     TaskContext.count_failed_hosts(task_id)
   end
+
+  @doc """
+  Check if host updated successfully
+  """
+  def is_host_updated_successfully(host_id, task_id) do
+    TaskContext.is_host_updated_successfully(host_id, task_id)
+  end
+
+  @doc """
+  Check if host failed to update
+  """
+  def is_host_failed_to_update(host_id, task_id) do
+    TaskContext.is_host_failed_to_update(host_id, task_id)
+  end
 end

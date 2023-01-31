@@ -240,4 +240,30 @@ defmodule Scuti.Context.TaskContext do
     )
     |> Repo.one()
   end
+
+  @doc """
+  Check if host updated successfully
+  """
+  def is_host_updated_successfully(host_id, task_id) do
+    from(t in TaskLog,
+      select: count(t.id),
+      where: t.host_id == ^host_id,
+      where: t.task_id == ^task_id,
+      where: t.type == ^"host_updated_successfully"
+    )
+    |> Repo.one() > 0
+  end
+
+  @doc """
+  Check if host failed to update
+  """
+  def is_host_failed_to_update(host_id, task_id) do
+    from(t in TaskLog,
+      select: count(t.id),
+      where: t.host_id == ^host_id,
+      where: t.task_id == ^task_id,
+      where: t.type == ^"host_failed_to_update"
+    )
+    |> Repo.one() > 0
+  end
 end
