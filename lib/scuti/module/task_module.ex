@@ -44,6 +44,13 @@ defmodule Scuti.Module.TaskModule do
   end
 
   @doc """
+  Get task by UUID
+  """
+  def get_task_by_uuid(uuid) do
+    TaskContext.get_task_by_uuid(uuid)
+  end
+
+  @doc """
   Update task status
   """
   def update_task_status(id, status) do

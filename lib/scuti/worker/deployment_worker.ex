@@ -34,11 +34,7 @@ defmodule Scuti.Worker.DeploymentWorker do
     # once deployments
     deployments = DeploymentModule.get_pending_once_deployments()
 
-    IO.inspect(deployments)
-
     for deployment <- deployments do
-      IO.inspect(deployment)
-
       result =
         TaskModule.create_task(%{
           payload: %{},

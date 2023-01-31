@@ -62,7 +62,7 @@ defmodule ScutiWeb.Router do
 
     post "/action/v1/agent/join/:group_uuid/:host_uuid", AgentController, :join
     post "/action/v1/agent/heartbeat/:group_uuid/:host_uuid", AgentController, :heartbeat
-    post "/action/v1/agent/report/:group_uuid/:host_uuid", AgentController, :report
+    post "/action/v1/agent/report/:group_uuid/:host_uuid/:task_uuid", AgentController, :report
   end
 
   scope "/api/v1", ScutiWeb do

@@ -11,7 +11,9 @@ defmodule Scuti.Worker.WaitForProcess do
   def is_alive?(pid) do
     if alive?(pid) do
       Logger.info("Process is alive #{inspect(pid)}")
+
       Process.sleep(60000)
+
       is_alive?(pid)
     else
       Logger.info("Process is not alive anymore #{inspect(pid)}")
@@ -22,6 +24,7 @@ defmodule Scuti.Worker.WaitForProcess do
   Check is pid is alive
   """
   def alive?(pid) do
-    pid |> Process.alive?()
+    pid
+    |> Process.alive?()
   end
 end

@@ -10,7 +10,7 @@ defmodule Scuti.Context.TaskContext do
   import Ecto.Query
 
   alias Scuti.Repo
-  alias Scuti.Model.{Task, TaskMeta}
+  alias Scuti.Model.{Task, TaskMeta, TaskLog}
 
   @doc """
   Get a new task
@@ -22,6 +22,19 @@ defmodule Scuti.Context.TaskContext do
       status: task.status,
       deployment_id: task.deployment_id,
       run_at: task.run_at,
+      uuid: Ecto.UUID.generate()
+    }
+  end
+
+  @doc """
+  Get a new task log
+  """
+  def new_task_log(task_log \\ %{}) do
+    %{
+      host_id: task_log.host_id,
+      task_id: task_log.task_id,
+      type: task_log.type,
+      record: task_log.record,
       uuid: Ecto.UUID.generate()
     }
   end
@@ -47,6 +60,15 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
+  Create a new task log
+  """
+  def create_task_log(attrs \\ %{}) do
+    %TaskLog{}
+    |> TaskLog.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
   Retrieve a task by ID
   """
   def get_task_by_id(id) do
@@ -65,11 +87,43 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
+  Get task log by host id and task id
+  """
+  def get_task_log(host_id, task_id) do
+    from(
+      t in TaskLog,
+      where: t.host_id == ^host_id,
+      where: t.task_id == ^task_id
+    )
+    |> Repo.one()
+  end
+
+  @doc """
+  Get task logs by host id
+  """
+  def get_task_logs(task_id) do
+    from(
+      t in TaskLog,
+      where: t.task_id == ^task_id
+    )
+    |> Repo.all()
+  end
+
+  @doc """
   Update a task
   """
   def update_task(task, attrs) do
     task
     |> Task.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Update a task log
+  """
+  def update_task_log(task, attrs) do
+    task
+    |> TaskLog.changeset(attrs)
     |> Repo.update()
   end
 

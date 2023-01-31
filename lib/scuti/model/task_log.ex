@@ -2,21 +2,19 @@
 # Use of this source code is governed by the MIT
 # license that can be found in the LICENSE file.
 
-defmodule Scuti.Model.Log do
+defmodule Scuti.Model.TaskLog do
   @moduledoc """
-  Log Model
+  Task Log Model
   """
 
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "logs" do
+  schema "tasks_log" do
     field :uuid, Ecto.UUID
-    field :user_id, :id
-    field :team_id, :id
     field :host_id, :id
-    field :host_group_id, :id
-    field :deployment_id, :id
+    field :task_id, :id
+    field :type, :string
     field :record, :string
 
     timestamps()
@@ -27,15 +25,16 @@ defmodule Scuti.Model.Log do
     log
     |> cast(attrs, [
       :uuid,
-      :user_id,
-      :team_id,
       :host_id,
-      :host_group_id,
-      :deployment_id,
+      :task_id,
+      :type,
       :record
     ])
     |> validate_required([
       :uuid,
+      :host_id,
+      :task_id,
+      :type,
       :record
     ])
   end

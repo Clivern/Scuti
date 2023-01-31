@@ -10,20 +10,23 @@ defmodule Scuti.Worker.PatchTask do
 
     receive do
       msg ->
-        Logger.info("Received #{inspect(msg)}")
+        Logger.info(
+          "Received patch request with id #{msg.id}, task #{msg.task.id}, deployment #{msg.deployment.id}, host #{msg.host.id}"
+        )
+
         # --
-        Logger.info("Send to remote agent #{inspect(msg)}")
+        Logger.info("Send to remote agent #{msg.id}")
         # --
-        Logger.info("Wait till the agent respond back #{inspect(msg)}")
+        Logger.info("Wait till the agent respond back #{msg.id}")
         # --
-        Logger.info("Update the management database #{inspect(msg)}")
+        Logger.info("Update the management database #{msg.id}")
 
         check(msg)
     end
   end
 
   def check(msg) do
-    Logger.info("Check task status #{inspect(msg)}")
+    Logger.info("Check task status #{msg.id}")
 
     run_again = true
 
