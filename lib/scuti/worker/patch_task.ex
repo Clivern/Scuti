@@ -24,11 +24,11 @@ defmodule Scuti.Worker.PatchTask do
           host_uuid: msg.host.uuid,
           task_uuid: msg.task.uuid,
           patch_type: payload["patch_type"],
-          pkgs_to_upgrade: payload["pkgs_to_upgrade"],
-          pkgs_to_exclude: payload["pkgs_to_exclude"],
-          pre_patch_script: payload["pre_patch_script"],
-          patch_script: payload["patch_script"],
-          post_patch_script: payload["post_patch_script"],
+          pkgs_to_upgrade: payload["pkgs_to_upgrade"] || "",
+          pkgs_to_exclude: payload["pkgs_to_exclude"] || "",
+          pre_patch_script: payload["pre_patch_script"] || "",
+          patch_script: payload["patch_script"] || "",
+          post_patch_script: payload["post_patch_script"] || "",
           post_patch_reboot_option: payload["post_patch_reboot_option"]
         }
 
@@ -39,7 +39,7 @@ defmodule Scuti.Worker.PatchTask do
         # Send the request to the agent
         Logger.info("Send to remote agent #{msg.id}")
 
-        case Req.post!(msg.host.agent_address, json: body, headers: headers).status do
+        case Req.post!("#{msg.host.agent_address}/v1/listen", json: body, headers: headers).status do
           200 ->
             Logger.info("Host agent responded with 200 to #{msg.id}")
 
@@ -56,8 +56,9 @@ defmodule Scuti.Worker.PatchTask do
 
     if !TaskModule.is_host_updated_successfully(msg.host.id, msg.task.id) and
          !TaskModule.is_host_failed_to_update(msg.host.id, msg.task.id) do
-      check(msg)
       Process.sleep(30000)
+
+      check(msg)
     end
   end
 

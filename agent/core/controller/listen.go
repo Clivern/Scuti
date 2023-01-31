@@ -5,6 +5,8 @@
 package controller
 
 import (
+	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -15,6 +17,10 @@ import (
 func ListenAction(c echo.Context) error {
 
 	log.Info(`Incoming Request to Listen Action`)
+
+	data, _ := ioutil.ReadAll(c.Request().Body)
+
+	fmt.Println(data)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"status": "ok",

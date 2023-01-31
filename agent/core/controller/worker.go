@@ -38,7 +38,7 @@ func Worker() {
 	err = agent.Join(module.JoinRequest{
 		Name:         viper.GetString("agent.name"),
 		Hostname:     strings.ToLower(hostname),
-		AgentAddress: viper.GetString("agent.management.address"),
+		AgentAddress: viper.GetString("agent.address"),
 		Labels:       viper.GetString("agent.labels"),
 		AgentSecret:  viper.GetString("agent.management.host_secret"),
 	})
