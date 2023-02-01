@@ -26,6 +26,7 @@ agent:
   # Remote management server configs
   management:
     # Remote server endpoint
+    # From vagrant, you can reach management on http://10.0.2.2:4000
     address: ${SCUTI_AGENT_MANAGEMENT_ADDRESS:-http://localhost:4000}
     # Host Group UUID
     host_group_uuid: ${SCUTI_AGENT_HG_UUID:-TBA}

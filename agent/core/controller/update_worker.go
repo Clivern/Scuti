@@ -5,6 +5,7 @@
 package controller
 
 import (
+	"os"
 	"os/exec"
 
 	"github.com/clivern/scuti/agent/core/model"
@@ -24,7 +25,6 @@ func UpdateWorker(messages <-chan string) {
 		cmd.LoadFromJSON([]byte(message))
 
 		command := exec.Command(
-			"DEBIAN_FRONTEND=noninteractive",
 			"apt-get",
 			"-q",
 			"-y",
@@ -35,7 +35,9 @@ func UpdateWorker(messages <-chan string) {
 			"upgrade",
 		)
 
-		_, err := command.Output()
+		command.Env = append(os.Environ(), "DEBIAN_FRONTEND=noninteractive")
+
+		_, err := command.CombinedOutput()
 
 		if err == nil {
 			// Get last update date on debian based $ cat /var/log/apt/history.log | grep "End-Date:" | tail -1
