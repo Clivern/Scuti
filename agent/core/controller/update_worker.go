@@ -39,6 +39,9 @@ func UpdateWorker(messages <-chan string) {
 
 		if err == nil {
 			// Get last update date on debian based $ cat /var/log/apt/history.log | grep "End-Date:" | tail -1
+
+			log.Info(`Report back to management server`)
+
 			agent.Report(module.AgentEvent{
 				Type:     "host_updated_successfully",
 				Record:   "Host updated successfully",
@@ -48,6 +51,8 @@ func UpdateWorker(messages <-chan string) {
 			log.WithFields(log.Fields{
 				"err": err.Error(),
 			}).Error(`Local command error`)
+
+			log.Info(`Report back to management server`)
 
 			agent.Report(module.AgentEvent{
 				Type:     "host_failed_to_update",
