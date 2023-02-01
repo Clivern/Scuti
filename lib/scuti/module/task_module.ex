@@ -118,6 +118,29 @@ defmodule Scuti.Module.TaskModule do
   end
 
   @doc """
+  Sync task status
+  """
+  def sync_task_status(id) do
+    result = get_task_result(id)
+
+    case result do
+      {:ok, data} ->
+        if data["total_hosts"] == data["updated_hosts"] + data["failed_hosts"] and
+             data["failed_hosts"] > 0 do
+          update_task_status(id, "failure")
+        end
+
+        if data["total_hosts"] == data["updated_hosts"] + data["failed_hosts"] and
+             data["failed_hosts"] == 0 do
+          update_task_status(id, "success")
+        end
+
+      {:error, _} ->
+        nil
+    end
+  end
+
+  @doc """
   Update task result
   """
   def update_task_result(id, result) do

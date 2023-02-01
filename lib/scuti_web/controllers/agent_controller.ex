@@ -239,6 +239,8 @@ defmodule ScutiWeb.AgentController do
                 failed_hosts: TaskModule.count_failed_hosts(task.id)
               })
 
+              TaskModule.sync_task_status(task.id)
+
               conn
               |> put_status(:ok)
               |> render("success.json", %{message: "Record created successfully!"})
