@@ -124,8 +124,11 @@ var agentCmd = &cobra.Command{
 
 		viper.SetDefault("config", config)
 
+		messages := make(chan string, 500)
+
 		// Run Worker
-		go controller.Worker()
+		go controller.HeartbeatWorker()
+		go controller.UpdateWorker(messages)
 
 		e := echo.New()
 
@@ -149,7 +152,10 @@ var agentCmd = &cobra.Command{
 		})
 
 		e.GET("/", controller.HealthAction)
-		e.POST("/api/v1/listen", controller.ListenAction)
+
+		e.POST("/api/v1/listen", func(c echo.Context) error {
+			return controller.ListenAction(c, messages)
+		})
 
 		var runerr error
 

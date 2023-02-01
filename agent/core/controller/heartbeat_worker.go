@@ -15,15 +15,15 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Worker Function
-func Worker() {
+// HeartbeatWorker Function
+func HeartbeatWorker() {
 	time.Sleep(6 * time.Second)
 
 	agent := module.NewAgent()
 
 	log.WithFields(log.Fields{
 		"name": viper.GetString("agent.name"),
-	}).Info(`Worker is started ...`)
+	}).Info(`Heartbeat Worker is started ...`)
 
 	hostname, err := os.Hostname()
 

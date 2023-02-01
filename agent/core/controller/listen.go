@@ -16,7 +16,7 @@ import (
 )
 
 // ListenAction Controller
-func ListenAction(c echo.Context) error {
+func ListenAction(c echo.Context, messages chan<- string) error {
 
 	log.Info(`Incoming Request to Listen Action`)
 
@@ -42,18 +42,7 @@ func ListenAction(c echo.Context) error {
 		})
 	}
 
-	// Upgrade the system
-	err = agent.Report(module.AgentEvent{
-		Type:     "host_updated_successfully",
-		Record:   "Host updated successfully",
-		TaskUUID: cmd.TaskUUID,
-	})
-
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"errorMessage": "Internal server error",
-		})
-	}
+	messages <- string(data)
 
 	return c.JSON(http.StatusAccepted, map[string]interface{}{
 		"status": "ok",
