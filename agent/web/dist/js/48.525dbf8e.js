@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkweb"]=self["webpackChunkweb"]||[]).push([[48],{4048:function(e,t,l){l.r(t),l.d(t,{default:function(){return o}});var n=function(){var e=this,t=e._self._c;return t("div",{})},s=[],r={name:"HostGroupsEditPage",data(){return{loader:{isFullPage:!0,ref:null}}},methods:{loading(){this.loader.ref=this.$buefy.loading.open({container:this.loader.isFullPage?null:this.$refs.element.$el})}},mounted(){this.$emit("refresh-state"),this.loading()}},i=r,u=l(1001),a=(0,u.Z)(i,n,s,!1,null,"4092c4d3",null),o=a.exports}}]);
+//# sourceMappingURL=48.525dbf8e.js.map

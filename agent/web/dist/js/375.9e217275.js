@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkweb"]=self["webpackChunkweb"]||[]).push([[375],{375:function(e,t,l){l.r(t),l.d(t,{default:function(){return o}});var n=function(){var e=this,t=e._self._c;return t("div",{})},s=[],r={name:"UsersListPage",data(){return{loader:{isFullPage:!0,ref:null}}},methods:{loading(){this.loader.ref=this.$buefy.loading.open({container:this.loader.isFullPage?null:this.$refs.element.$el})}},mounted(){this.$emit("refresh-state"),this.loading()}},a=r,i=l(1001),u=(0,i.Z)(a,n,s,!1,null,"7a74d01b",null),o=u.exports}}]);
+//# sourceMappingURL=375.9e217275.js.map

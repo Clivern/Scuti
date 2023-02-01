@@ -1,0 +1,91 @@
+{
+    "app": {
+        "mode": "dev",
+        "port": "8001",
+        "domain": "http://127.0.0.1:8001",
+        "tls": {
+            "status": "off",
+            "pemPath": "/cert/server.pem",
+            "keyPath": "/cert/server.key"
+        }
+    },
+    "mock": [
+        {
+            "path": "/health",
+            "request": {
+                "method": "get",
+                "parameters": {}
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "{\"status\": \"ok\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
+        },
+        {
+            "path": "/ready",
+            "request": {
+                "method": "get",
+                "parameters": {}
+            },
+            "response": {
+                "statusCode": 500,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "{\"status\": \"ok\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
+        },
+        {
+            "path": "/action/auth",
+            "request": {
+                "method": "post",
+                "parameters": {}
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "{\"userId\": \"1\", \"sessionID\": \"1\", \"name\": \"Joe Doe\", \"email\": \"hello@clivern.com\", \"apiKey\": \"da39ba10-94ef-403f-9d21-109dc5b409cb\", \"userUUID\": \"da39ba10-94ef-403f-9d21-109dc5b409cb\", \"sessionUUID\": \"da39ba10-94ef-403f-9d21-109dc5b409cb\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
+        },
+        {
+            "path": "/action/install",
+            "request": {
+                "method": "post",
+                "parameters": {}
+            },
+            "response": {
+                "statusCode": 200,
+                "headers": [
+                    {"key": "Content-Type", "value": "application/json"}
+                ],
+                "body": "{\"successMessage\": \"Application installed successfully\"}"
+            },
+            "chaos": {
+                "latency": "0s",
+                "failRate": "0%"
+            }
+        }
+    ],
+    "log": {
+        "level": "info",
+        "output": "stdout",
+        "format": "json"
+    }
+}

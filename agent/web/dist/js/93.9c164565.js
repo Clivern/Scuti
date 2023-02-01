@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkweb"]=self["webpackChunkweb"]||[]).push([[93],{2093:function(e,t,l){l.r(t),l.d(t,{default:function(){return o}});var n=function(){var e=this,t=e._self._c;return t("div",{})},s=[],a={name:"DeploymentsEditPage",data(){return{loader:{isFullPage:!0,ref:null}}},methods:{loading(){this.loader.ref=this.$buefy.loading.open({container:this.loader.isFullPage?null:this.$refs.element.$el})}},mounted(){this.$emit("refresh-state"),this.loading()}},i=a,r=l(1001),u=(0,r.Z)(i,n,s,!1,null,"475fdb4a",null),o=u.exports}}]);
+//# sourceMappingURL=93.9c164565.js.map

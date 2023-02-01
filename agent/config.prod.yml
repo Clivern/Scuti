@@ -1,0 +1,86 @@
+# Server configs
+server:
+  # Server name
+  name: ${MANDRILL_SERVER_NAME:-mandrill}
+  # Env mode (dev or prod)
+  mode: ${MANDRILL_SERVER_MODE:-dev}
+  # HTTP port
+  port: ${MANDRILL_SERVER_PORT:-8000}
+  # Hostname
+  hostname: ${MANDRILL_SERVER_HOSTNAME:-127.0.0.1}
+  # TLS configs
+  tls:
+    status: ${MANDRILL_SERVER_TLS_STATUS:-off}
+    crt_path: ${MANDRILL_SERVER_TLS_PEMPATH:-cert/server.crt}
+    key_path: ${MANDRILL_SERVER_TLS_KEYPATH:-cert/server.key}
+
+  # Global timeout
+  timeout: ${MANDRILL_SERVER_TIMEOUT:-50}
+
+  # Application Database
+  database:
+      # Database driver (sqlite3, mysql)
+      driver: ${MANDRILL_SERVER_DATABASE_DRIVER:-sqlite3}
+      # Database Host
+      host: ${MANDRILL_SERVER_DATABASE_MYSQL_HOST:-localhost}
+      # Database Port
+      port: ${MANDRILL_SERVER_DATABASE_MYSQL_PORT:-3306}
+      # Database Name
+      name: ${MANDRILL_SERVER_DATABASE_MYSQL_DATABASE:-mandrill.db}
+      # Database Username
+      username: ${MANDRILL_SERVER_DATABASE_MYSQL_USERNAME:-root}
+      # Database Password
+      password: ${MANDRILL_SERVER_DATABASE_MYSQL_PASSWORD:-root}
+
+  # Log configs
+  log:
+    # Log level, it can be debug, info, warn, error, panic, fatal
+    level: ${MANDRILL_SERVER_LOG_LEVEL:-debug}
+    # Output can be stdout or abs path to log file /var/logs/mandrill.log
+    output: ${MANDRILL_SERVER_LOG_OUTPUT:-stdout}
+    # Format can be json
+    format: ${MANDRILL_SERVER_LOG_FORMAT:-json}
+
+agent:
+  # Agent name
+  name: ${MANDRILL_AGENT_NAME:-mandrill}
+  # Env mode (dev or prod)
+  mode: ${MANDRILL_AGENT_MODE:-dev}
+  # Hostname
+  hostname: ${MANDRILL_AGENT_HOSTNAME:-127.0.0.1}
+  # Configs cache file
+  cache_file: ${MANDRILL_AGENT_CACHE_FILE:-/tmp/mandrill.db}
+  # Global timeout
+  timeout: ${MANDRILL_AGENT_TIMEOUT:-50}
+
+  # Agent labels
+  labels:
+    - region: ams-01
+    - team: reds
+    - app: mandrill-agent
+
+  # Agent telemetry configs
+  telemetry:
+    # Whether to enable or disable
+    status: ${MANDRILL_AGENT_TELEMETRY_STATUS:-enabled}
+    # To expose on which port
+    port: ${MANDRILL_AGENT_TELEMETRY_PORT:-8000}
+    # TLS configs
+    tls:
+      status: ${MANDRILL_AGENT_TELEMETRY_TLS_STATUS:-off}
+      crt_path: ${MANDRILL_AGENT_TELEMETRY_TLS_PEMPATH:-cert/server.crt}
+      key_path: ${MANDRILL_AGENT_TELEMETRY_TLS_KEYPATH:-cert/server.key}
+
+  # Remote server configs
+  server:
+    # Remote server endpoint
+    endpoint: ${MANDRILL_AGENT_SV_ENDPOINT:-http://localhost:8000/api/v1/heartbeat}
+
+  # Log configs
+  log:
+    # Log level, it can be debug, info, warn, error, panic, fatal
+    level: ${MANDRILL_AGENT_LOG_LEVEL:-debug}
+    # Output can be stdout or abs path to log file /var/logs/mandrill.log
+    output: ${MANDRILL_AGENT_LOG_OUTPUT:-stdout}
+    # Format can be json
+    format: ${MANDRILL_AGENT_LOG_FORMAT:-json}
