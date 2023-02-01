@@ -16,6 +16,7 @@ defmodule ScutiWeb.PageController do
   alias Scuti.Module.HostGroupModule
   alias Scuti.Module.HostModule
   alias Scuti.Module.DeploymentModule
+  alias Scuti.Module.TaskModule
 
   @doc """
   Login Page
@@ -341,6 +342,32 @@ defmodule ScutiWeb.PageController do
 
         hosts = DeploymentModule.get_deployment_target_hosts(deployment.id)
 
+        tasks = TaskModule.get_deployment_tasks(deployment.id)
+
+        history =
+          for task <- tasks do
+            result = Jason.decode!(task.result)
+
+            total =
+              if result["total_hosts"] == 0 do
+                1
+              else
+                result["total_hosts"]
+              end
+
+            %{
+              id: task.id,
+              uuid: task.uuid,
+              total_hosts: result["total_hosts"],
+              updated_hosts: result["updated_hosts"],
+              failed_hosts: result["failed_hosts"],
+              progress:
+                Float.round((result["updated_hosts"] + result["failed_hosts"]) / total * 100, 0),
+              status: task.status,
+              run_at: task.run_at
+            }
+          end
+
         case deployment do
           nil ->
             conn
@@ -355,7 +382,8 @@ defmodule ScutiWeb.PageController do
                 user_name: conn.assigns[:user_name],
                 user_email: conn.assigns[:user_email],
                 deployment: deployment,
-                hosts: hosts
+                hosts: hosts,
+                history: history
               }
             )
         end

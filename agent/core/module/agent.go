@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/clivern/scuti/agent/core/model"
 	"github.com/clivern/scuti/agent/core/service"
 
 	"github.com/spf13/viper"
@@ -36,6 +37,12 @@ type JoinRequest struct {
 // HeartbeatRequest type
 type HeartbeatRequest struct {
 	Status string
+}
+
+type AgentEvent struct {
+	Type     string
+	Record   string
+	TaskUUID string
 }
 
 // NewAgent creates a new instance
@@ -134,8 +141,61 @@ func (a *Agent) Heartbeat(request HeartbeatRequest) error {
 }
 
 // Report report local actions to the management server
-func (a *Agent) Report() {
+func (a *Agent) Report(event AgentEvent) error {
+	payload := fmt.Sprintf(`{"type":"%s","record":"%s"}`, event.Type, event.Record)
 
+	webhookToken := a.Encrypt64(a.HostSecret, payload)
+
+	endpoint := fmt.Sprintf(
+		"%s/action/v1/agent/report/%s/%s/%s",
+		service.RemoveTrailingSlash(a.ManagementAddress),
+		a.HostGroupUUID,
+		a.HostUUID,
+		event.TaskUUID,
+	)
+
+	response, err := a.httpClient.Post(
+		context.TODO(),
+		endpoint,
+		payload,
+		map[string]string{},
+		map[string]string{
+			"Content-Type":    "application/json",
+			"X-Webhook-Token": webhookToken,
+		},
+	)
+
+	if err != nil {
+		return err
+	}
+
+	statusCode := a.httpClient.GetStatusCode(response)
+	textResponse, _ := a.httpClient.ToString(response)
+
+	if statusCode >= 400 {
+		return fmt.Errorf("Error response: %s, status code %d", textResponse, statusCode)
+	}
+
+	return nil
+}
+
+// ValidateManagementRequest validates incoming request
+func (a *Agent) ValidateManagementCommandRequest(cmd model.Command, token string) bool {
+	payload := fmt.Sprintf(
+		`{"deployment_uuid":"%s","host_uuid":"%s","task_uuid":"%s","patch_type":"%s","pkgs_to_upgrade":"%s","pkgs_to_exclude":"%s","pre_patch_script":"%s","patch_script":"%s","post_patch_script":"%s","post_patch_reboot_option":"%s"}`,
+		cmd.DeploymentUUID,
+		cmd.HostUUID,
+		cmd.TaskUUID,
+		cmd.PatchType,
+		cmd.PkgsToUpgrade,
+		cmd.PkgsToExclude,
+		cmd.PrePatchScript,
+		cmd.PatchScript,
+		cmd.PostPatchScript,
+		cmd.PostPatchRebootOption,
+	)
+
+	return a.Encrypt64(a.HostSecret, payload) == token
 }
 
 // Encrypt64 create encrypted version of a data

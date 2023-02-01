@@ -5,9 +5,11 @@
 package controller
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/clivern/scuti/agent/core/model"
+	"github.com/clivern/scuti/agent/core/module"
 
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
@@ -20,9 +22,40 @@ func ListenAction(c echo.Context) error {
 
 	data, _ := ioutil.ReadAll(c.Request().Body)
 
-	fmt.Println(data)
+	cmd := &model.Command{}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
+	err := cmd.LoadFromJSON(data)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"errorMessage": "Invalid request",
+		})
+	}
+
+	webhookToken := c.Request().Header.Get("X-Webhook-Token")
+
+	agent := module.NewAgent()
+
+	if !agent.ValidateManagementCommandRequest(*cmd, webhookToken) {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"errorMessage": "Invalid request",
+		})
+	}
+
+	// Upgrade the system
+	err = agent.Report(module.AgentEvent{
+		Type:     "host_updated_successfully",
+		Record:   "Host updated successfully",
+		TaskUUID: cmd.TaskUUID,
+	})
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errorMessage": "Internal server error",
+		})
+	}
+
+	return c.JSON(http.StatusAccepted, map[string]interface{}{
 		"status": "ok",
 	})
 }

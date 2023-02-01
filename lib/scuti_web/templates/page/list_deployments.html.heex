@@ -299,9 +299,7 @@
                                                     </div>
                                                 </a>
                                             </td>
-
                                             <td><%= deployment.name %></td>
-
                                             <td>
                                                 <%= if deployment.patch_type == "os_upgrade" do %>
                                                   <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "OS Upgrade" %></div>
@@ -315,7 +313,6 @@
                                                     <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "Custom System Patch" %></div>
                                                 <% end %>
                                             </td>
-
                                             <td>
                                                 <%= if deployment.last_status == "success" do %>
                                                   <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "SUCCESS" %></div>
@@ -326,13 +323,14 @@
                                                 <%= if deployment.last_status == "unknown" do %>
                                                     <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "UNKNOWN" %></div>
                                                 <% end %>
+                                                <%= if deployment.last_status == "running" do %>
+                                                    <div class="badge bg-info-4 hp-bg-dark-info text-info border-info"><%= gettext "RUNNING" %></div>
+                                                <% end %>
                                                 <%= if deployment.last_status == "pending" do %>
                                                     <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "PENDING" %></div>
                                                 <% end %>
                                             </td>
-
                                             <td><%= deployment.inserted_at %></td>
-
                                             <td>
                                                 <a href={Routes.page_path(@conn, :view_deployment, deployment.uuid)} class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80" data-id={deployment.id} data-uuid={deployment.uuid}><%= gettext "View" %></a>
                                                 <button class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2" data-id={deployment.id} data-uuid={deployment.uuid}><%= gettext "Delete" %></button>

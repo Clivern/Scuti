@@ -189,4 +189,11 @@ defmodule Scuti.Module.TaskModule do
   def is_host_failed_to_update(host_id, task_id) do
     TaskContext.is_host_failed_to_update(host_id, task_id)
   end
+
+  @doc """
+  Retrieve deployment tasks
+  """
+  def get_deployment_tasks(deployment_id) do
+    TaskContext.get_deployment_tasks(deployment_id)
+  end
 end

@@ -246,16 +246,16 @@
                 <div class="col-12">
                     <div class="card hp-card-2">
                         <div class="card-body">
-                            <h5 class="mb-4"><%= gettext "Deployment Name" %></h5>
+                            <h5 class="mb-4"><%= gettext "Name" %></h5>
                             <p class="hp-p1-body mb-16"><%= @data.deployment.name %></p>
 
-                            <h5 class="mb-4"><%= gettext "Deployment UUID" %></h5>
+                            <h5 class="mb-4"><%= gettext "UUID" %></h5>
                             <p class="hp-p1-body mb-16"><%= @data.deployment.uuid %></p>
 
-                            <h5 class="mb-4"><%= gettext "Deployment Host Group Filter" %></h5>
+                            <h5 class="mb-4"><%= gettext "Host Group Filter" %></h5>
                             <p class="hp-p1-body mb-16"><%= @data.deployment.host_groups_filter %></p>
 
-                            <h5 class="mb-4"><%= gettext "Deployment Host Filter" %></h5>
+                            <h5 class="mb-4"><%= gettext "Host Filter" %></h5>
                             <p class="hp-p1-body mb-16"><%= @data.deployment.hosts_filter %></p>
 
                             <h5 class="mb-4"><%= gettext "Schedule Type" %></h5>
@@ -323,6 +323,77 @@
                                           <td>
                                                 <button class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80" data-id={host.id} data-uuid={host.uuid}><%= gettext "Edit" %></button>
                                                 <button class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2" data-id={host.id} data-uuid={host.uuid}><%= gettext "Delete" %></button>
+                                          </td>
+                                        </tr>
+                                      <% end %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card hp-card-6 hp-order-table-card">
+                        <div class="card-body">
+                            <h5 class="mb-8"><%= gettext "History" %></h5>
+
+                            <div class="table-responsive">
+                                <table class="table align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                <span class="hp-badge-size fw-normal text-black-60 hp-text-color-dark-50 text-uppercase"><%= gettext "Total Hosts" %></span>
+                                            </th>
+                                            <th>
+                                                <span class="hp-badge-size fw-normal text-black-60 hp-text-color-dark-50 text-uppercase"><%= gettext "Hosts Updated" %></span>
+                                            </th>
+                                            <th>
+                                                <span class="hp-badge-size fw-normal text-black-60 hp-text-color-dark-50 text-uppercase"><%= gettext "Hosts Failed" %></span>
+                                            </th>
+                                            <th>
+                                                <span class="hp-badge-size fw-normal text-black-60 hp-text-color-dark-50 text-uppercase"><%= gettext "Progress" %></span>
+                                            </th>
+                                            <th>
+                                                <span class="hp-badge-size fw-normal text-black-60 hp-text-color-dark-50 text-uppercase"><%= gettext "Status" %></span>
+                                            </th>
+                                            <th>
+                                                <span class="hp-badge-size fw-normal text-black-60 hp-text-color-dark-50 text-uppercase"><%= gettext "Run at" %></span>
+                                            </th>
+                                            <th>
+                                                <span class="hp-badge-size fw-normal text-black-60 hp-text-color-dark-50 text-uppercase"><%= gettext "Actions" %></span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      <%= for record <- @data.history do %>
+                                        <tr>
+                                          <td><span class="text-color-dark-0">Task#<%= record.id %></span></td>
+                                          <td><span class="text-color-dark-0"><%= record.total_hosts %></span></td>
+                                          <td><span class="text-color-dark-0"><%= record.updated_hosts %></span></td>
+                                          <td><span class="text-color-dark-0"><%= record.failed_hosts %></span></td>
+                                          <td><span class="text-color-dark-0"><%= record.progress %>%</span></td>
+                                          <td>
+                                            <%= if record.status == "pending" do %>
+                                              <div class="badge bg-info-4 hp-bg-dark-info text-info border-info"><%= gettext "PENDING" %></div>
+                                            <% end %>
+                                            <%= if record.status == "running" do %>
+                                              <div class="badge bg-info-4 hp-bg-dark-info text-info border-info"><%= gettext "RUNNING" %></div>
+                                            <% end %>
+                                            <%= if record.status == "success" do %>
+                                            <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "SUCCESS" %></div>
+                                            <% end %>
+                                            <%= if record.status == "failure" do %>
+                                            <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger"><%= gettext "FAILURE" %></div>
+                                            <% end %>
+                                            <%= if record.status == "skipped" do %>
+                                            <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "SKIPPED" %></div>
+                                            <% end %>
+                                          </td>
+                                          <td><span class="text-color-dark-0"><%= record.run_at %></span></td>
+                                          <td>
+                                                <button class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2" data-id={record.id} data-uuid={record.uuid}><%= gettext "Delete" %></button>
                                           </td>
                                         </tr>
                                       <% end %>

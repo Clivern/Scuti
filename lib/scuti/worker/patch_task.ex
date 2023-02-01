@@ -39,8 +39,8 @@ defmodule Scuti.Worker.PatchTask do
         # Send the request to the agent
         Logger.info("Send to remote agent #{msg.id}")
 
-        case Req.post!("#{msg.host.agent_address}/v1/listen", json: body, headers: headers).status do
-          200 ->
+        case Req.post!("#{msg.host.agent_address}/api/v1/listen", json: body, headers: headers).status do
+          202 ->
             Logger.info("Host agent responded with 200 to #{msg.id}")
 
           code ->

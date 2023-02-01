@@ -157,7 +157,19 @@ defmodule Scuti.Context.TaskContext do
   """
   def get_pending_tasks() do
     from(t in Task,
+      order_by: [desc: t.inserted_at],
       where: t.status == ^"pending"
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Retrieve deployment tasks
+  """
+  def get_deployment_tasks(deployment_id) do
+    from(t in Task,
+      order_by: [desc: t.inserted_at],
+      where: t.deployment_id == ^deployment_id
     )
     |> Repo.all()
   end
