@@ -25,10 +25,6 @@
 
 #### Development
 
-```zsh
-$
-```
-
 To run `postgresql` with `docker` or `podman` for development
 
 ```zsh
@@ -59,8 +55,10 @@ $ psql -h 127.0.0.1 -U scuti -d scuti_dev -W
 
 #### Deployment
 
+To deploy with `docker-compose` after updating `docker-compose.yml` environmental variables.
+
 ```zsh
-$
+$ docker-compose up -d
 ```
 
 
