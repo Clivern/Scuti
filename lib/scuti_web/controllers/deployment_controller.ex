@@ -67,7 +67,7 @@ defmodule ScutiWeb.DeploymentController do
       schedule_type = ValidatorService.get_str(params["schedule_type"], "")
       schedule_time = ValidatorService.get_str(params["schedule_time"], "")
 
-      {_, dt} = DateTimeParser.parse(schedule_time)
+      {_, dt} = Timex.parse(schedule_time, "{ISO:Extended}")
 
       result =
         DeploymentModule.create_deployment(%{
