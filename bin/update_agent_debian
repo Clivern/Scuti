@@ -13,7 +13,7 @@ function scuti {
 
     mkdir -p /etc/scuti/tmp
     cd /etc/scuti/tmp
-    curl -sL https://github.com/Clivern/Scuti/releases/download/v0.5.7/Scuti-Agent_Linux_x86_64.tar.gz | tar xz
+    curl -sL https://github.com/Clivern/Scuti/releases/download/v0.5.9/Scuti-Agent_Linux_x86_64.tar.gz | tar xz
     mv /etc/scuti/tmp/Scuti-Agent /etc/scuti/scuti
     chmod +x /etc/scuti/scuti
 
