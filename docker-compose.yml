@@ -15,7 +15,7 @@ services:
       DB_HOSTNAME: db
       DB_DATABASE: scuti
       DB_PORT: 5432
-      DB_SSL: off
+      DB_SSL: null
       DB_CA_CERTFILE_PATH: null
     restart: unless-stopped
     ports:
