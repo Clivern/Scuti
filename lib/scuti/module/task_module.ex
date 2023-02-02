@@ -9,6 +9,7 @@ defmodule Scuti.Module.TaskModule do
 
   alias Scuti.Context.TaskContext
   alias Scuti.Service.ValidatorService
+  alias Scuti.Module.DeploymentModule
 
   @doc """
   Create a task
@@ -122,17 +123,20 @@ defmodule Scuti.Module.TaskModule do
   """
   def sync_task_status(id) do
     result = get_task_result(id)
+    task = get_task_by_id(id)
 
     case result do
       {:ok, data} ->
         if data["total_hosts"] == data["updated_hosts"] + data["failed_hosts"] and
              data["failed_hosts"] > 0 do
           update_task_status(id, "failure")
+          DeploymentModule.update_deployment_status(task.deployment_id, "failure")
         end
 
         if data["total_hosts"] == data["updated_hosts"] + data["failed_hosts"] and
              data["failed_hosts"] == 0 do
           update_task_status(id, "success")
+          DeploymentModule.update_deployment_status(task.deployment_id, "success")
         end
 
       {:error, _} ->

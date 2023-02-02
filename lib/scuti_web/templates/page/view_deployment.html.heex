@@ -265,7 +265,23 @@
                             <p class="hp-p1-body mb-16"><%= @data.deployment.schedule_time %></p>
 
                             <h5 class="mb-4"><%= gettext "Last Status" %></h5>
-                            <p class="hp-p1-body mb-16"><%= @data.deployment.last_status %></p>
+                            <p class="hp-p1-body mb-16">
+                                <%= if @data.deployment.last_status == "success" do %>
+                                  <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "SUCCESS" %></div>
+                                <% end %>
+                                <%= if @data.deployment.last_status == "failure" do %>
+                                  <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger"><%= gettext "FAILURE" %></div>
+                                <% end %>
+                                <%= if @data.deployment.last_status == "unknown" do %>
+                                    <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "UNKNOWN" %></div>
+                                <% end %>
+                                <%= if @data.deployment.last_status == "running" do %>
+                                    <div class="badge bg-info-4 hp-bg-dark-info text-info border-info"><%= gettext "RUNNING" %></div>
+                                <% end %>
+                                <%= if @data.deployment.last_status == "pending" do %>
+                                    <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "PENDING" %></div>
+                                <% end %>
+                            </p>
 
                             <h5 class="mb-4"><%= gettext "Last Run at in UTC" %></h5>
                             <p class="hp-p1-body mb-16"><%= @data.deployment.last_run_at %></p>
