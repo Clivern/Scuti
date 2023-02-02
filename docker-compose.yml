@@ -5,11 +5,18 @@ services:
     build:
       context: .
     environment:
-      PGUSER: root
-      PGPASSWORD: D1q9f0C2&PEW
-      PGDATABASE: scuti
-      PGPORT: 5432
-      PGHOST: db
+      APP_NAME: Scuti
+      APP_PORT: 4000
+      APP_SECRET: koPmu7TJCwD8mttV9vgWUeU7iuu/zTPOR3sX4UalM9KkYEVGPfyi0PeTVzu1TT8C
+      APP_HOST: localhost
+      APP_HTTP_SCHEMA: http
+      DB_USERNAME: root
+      DB_PASSWORD: D1q9f0C2&PEW
+      DB_HOSTNAME: db
+      DB_DATABASE: scuti
+      DB_PORT: 5432
+      DB_SSL: off
+      DB_CA_CERTFILE_PATH:
     restart: unless-stopped
     ports:
       - '4000:4000'
