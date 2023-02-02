@@ -58,8 +58,7 @@ defmodule Scuti.MixProject do
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.5"},
       {:bcrypt_elixir, "~> 3.0"},
-      {:req, "~> 0.4.0"},
-      {:timex, "~> 3.7"}
+      {:req, "~> 0.4.0"}
     ]
   end
 
