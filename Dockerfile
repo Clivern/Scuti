@@ -7,7 +7,7 @@ RUN mkdir /app
 COPY . /app
 WORKDIR /app
 
-RUN mix deps.get --only prod
+RUN mix deps.get
 
 RUN mix phx.digest
 
