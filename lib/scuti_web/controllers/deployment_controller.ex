@@ -67,7 +67,7 @@ defmodule ScutiWeb.DeploymentController do
       schedule_type = ValidatorService.get_str(params["schedule_type"], "")
       schedule_time = ValidatorService.get_str(params["schedule_time"], "")
 
-      {_, dt, _} =  DateTime.from_iso8601("#{schedule_time}:00+00:00")
+      {_, dt, _} = DateTime.from_iso8601("#{schedule_time}:00+00:00")
 
       result =
         DeploymentModule.create_deployment(%{
