@@ -7,8 +7,8 @@ RUN mkdir /app
 COPY . /app
 WORKDIR /app
 
-RUN mix local.hex --force
+RUN mix deps.get --only prod
 
-RUN mix do compile
+RUN mix phx.digest
 
 CMD ["/app/entrypoint.sh"]

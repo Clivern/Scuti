@@ -70,3 +70,5 @@ coverage.html
 agent.config.dev.yml
 
 .vagrant
+
+!.env.example

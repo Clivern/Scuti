@@ -15,7 +15,7 @@ defmodule ScutiWeb.ReadyController do
   Ready Endpoint
   """
   def ready(conn, _params) do
-    Logger.info("Application is ready. RequestId=#{conn.assigns[:request_id]}")
+    Logger.info("Application is ready")
 
     conn
     |> put_resp_content_type("application/json")

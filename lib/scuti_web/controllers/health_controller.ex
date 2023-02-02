@@ -15,7 +15,7 @@ defmodule ScutiWeb.HealthController do
   Health Endpoint
   """
   def health(conn, _params) do
-    Logger.info("Application is healthy. RequestId=#{conn.assigns[:request_id]}")
+    Logger.info("Application is healthy")
 
     conn
     |> put_resp_content_type("application/json")

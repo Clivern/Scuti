@@ -19,18 +19,16 @@ defmodule ScutiWeb.TaskController do
   plug :regular_user, only: [:list, :index, :create, :update, :delete]
 
   defp regular_user(conn, _opts) do
-    Logger.info("Validate user permissions. RequestId=#{conn.assigns[:request_id]}")
+    Logger.info("Validate user permissions")
 
     if not conn.assigns[:is_logged] do
-      Logger.info(
-        "User doesn't have the right access permissions. RequestId=#{conn.assigns[:request_id]}"
-      )
+      Logger.info("User doesn't have the right access permissions")
 
       conn
       |> put_status(:forbidden)
       |> render("error.json", %{message: "Forbidden Access"})
     else
-      Logger.info("User has the right access permissions. RequestId=#{conn.assigns[:request_id]}")
+      Logger.info("User has the right access permissions")
 
       conn
     end
@@ -76,7 +74,7 @@ defmodule ScutiWeb.TaskController do
   Delete Action Endpoint
   """
   def delete(conn, %{"id" => id}) do
-    Logger.info("Delete task with id #{id}. RequestId=#{conn.assigns[:request_id]}")
+    Logger.info("Delete task with id #{id}")
 
     result = TaskModule.delete_task(id)
 

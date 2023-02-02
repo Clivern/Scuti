@@ -26,18 +26,16 @@ defmodule ScutiWeb.UserController do
   plug :super_user, only: [:list, :index, :create, :update, :delete]
 
   defp super_user(conn, _opts) do
-    Logger.info("Validate user permissions. RequestId=#{conn.assigns[:request_id]}")
+    Logger.info("Validate user permissions")
 
     if not conn.assigns[:is_super] do
-      Logger.info(
-        "User doesn't have the right access permissions. RequestId=#{conn.assigns[:request_id]}"
-      )
+      Logger.info("User doesn't have the right access permissions")
 
       conn
       |> put_status(:forbidden)
       |> render("error.json", %{message: "Forbidden Access"})
     else
-      Logger.info("User has the right access permissions. RequestId=#{conn.assigns[:request_id]}")
+      Logger.info("User has the right access permissions")
 
       conn
     end
@@ -64,7 +62,7 @@ defmodule ScutiWeb.UserController do
   Index Action Endpoint
   """
   def index(conn, %{"id" => id}) do
-    Logger.info("Get user with id #{id}. RequestId=#{conn.assigns[:request_id]}")
+    Logger.info("Get user with id #{id}")
 
     try do
       if not ValidatorService.validate_int(id) do
@@ -161,7 +159,7 @@ defmodule ScutiWeb.UserController do
   Delete Action Endpoint
   """
   def delete(conn, %{"id" => id}) do
-    Logger.info("Delete user with id #{id}. RequestId=#{conn.assigns[:request_id]}")
+    Logger.info("Delete user with id #{id}")
 
     try do
       if not ValidatorService.validate_int(id) do
