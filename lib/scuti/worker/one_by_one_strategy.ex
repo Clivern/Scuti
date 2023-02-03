@@ -64,6 +64,7 @@ defmodule Scuti.Worker.OneByOneStrategy do
     if length(hosts) == 0 do
       Logger.info("Mark task with id #{task.id} as skipped")
       TaskModule.update_task_status(task.id, "skipped")
+      DeploymentModule.update_deployment_status(deployment.id, "skipped")
     end
   end
 end

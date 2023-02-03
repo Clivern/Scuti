@@ -281,6 +281,9 @@
                                 <%= if @data.deployment.last_status == "pending" do %>
                                     <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "PENDING" %></div>
                                 <% end %>
+                                <%= if @data.deployment.last_status == "skipped" do %>
+                                    <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "SKIPPED" %></div>
+                                <% end %>
                             </p>
 
                             <h5 class="mb-4"><%= gettext "Last Run at in UTC" %></h5>

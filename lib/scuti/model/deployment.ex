@@ -41,7 +41,7 @@ defmodule Scuti.Model.Deployment do
     field :schedule_type, :string
     field :schedule_time, :utc_datetime
 
-    # :unknown || :pending || :running || :success || :failure
+    # :unknown || :pending || :running || :success || :failure || :skipped
     field :last_status, :string
     field :last_run_at, :utc_datetime
 

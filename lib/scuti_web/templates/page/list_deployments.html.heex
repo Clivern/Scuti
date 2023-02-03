@@ -314,6 +314,9 @@
                                                 <% end %>
                                             </td>
                                             <td>
+                                                <%= if deployment.last_status == "skipped" do %>
+                                                  <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "SKIPPED" %></div>
+                                                <% end %>
                                                 <%= if deployment.last_status == "success" do %>
                                                   <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "SUCCESS" %></div>
                                                 <% end %>
