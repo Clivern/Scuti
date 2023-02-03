@@ -5,7 +5,7 @@
 defmodule Scuti.MixProject do
   use Mix.Project
 
-  @version "0.5.2"
+  @version "0.5.11"
 
   def get_version, do: @version
 
