@@ -89,11 +89,11 @@ defmodule ScutiWeb.SettingsController do
     end
 
     if ValidatorService.is_empty(app_url) do
-      raise InvalidRequest, message: "Application name is required"
+      raise InvalidRequest, message: "Application URL is required"
     end
 
     if ValidatorService.is_empty(app_email) do
-      raise InvalidRequest, message: "Application name is required"
+      raise InvalidRequest, message: "Application email is required"
     end
   end
 end
