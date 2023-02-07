@@ -103,14 +103,20 @@ defmodule Scuti.Middleware.APIAuthMiddleware do
             {:ok, user} ->
               conn
               |> assign(:is_logged, true)
+              |> assign(:is_super, String.to_atom(user.role) == :super)
               |> assign(:user_role, String.to_atom(user.role))
               |> assign(:user_id, user.id)
+              |> assign(:user_name, user.name)
+              |> assign(:user_email, user.email)
 
             _ ->
               conn
               |> assign(:is_logged, false)
               |> assign(:user_role, :anonymous)
+              |> assign(:is_super, false)
               |> assign(:user_id, nil)
+              |> assign(:user_name, nil)
+              |> assign(:user_email, nil)
           end
 
         conn
