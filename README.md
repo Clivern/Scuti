@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="Scuti Logo" src="/assets/img/logo.png?v=0.5.11" width="150" />
+    <img alt="Scuti Logo" src="/assets/img/logo.png?v=0.5.11" width="280" />
     <h3 align="center">Scuti</h3>
     <p align="center">A Lightweight and Reliable Automated Patching System, Set up in Minutes.</p>
     <p align="center">
