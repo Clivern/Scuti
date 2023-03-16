@@ -15,13 +15,9 @@
         <a href="https://hub.docker.com/r/clivern/scuti/tags">
             <img src="https://img.shields.io/badge/Docker-0.5.11-1abc9c.svg">
         </a>
-        <a href="https://github.com/Clivern/Scuti/actions/workflows/docker.yml">
-            <img src="https://github.com/Clivern/Scuti/actions/workflows/docker.yml/badge.svg">
-        </a>
         <a href="https://github.com/Clivern/Scuti/blob/main/LICENSE">
             <img src="https://img.shields.io/badge/LICENSE-MIT-orange.svg">
         </a>
-
     </p>
 </p>
 
