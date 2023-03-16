@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="Scuti Logo" src="/assets/img/logo.png?v=0.5.11" width="280" />
+    <img alt="Scuti Logo" src="/assets/img/logo.png?v=0.5.11" width="200" />
     <h3 align="center">Scuti</h3>
     <p align="center">A Lightweight and Reliable Automated Patching System, Set up in Minutes.</p>
     <p align="center">
@@ -12,54 +12,22 @@
         <a href="https://github.com/Clivern/Scuti/releases">
             <img src="https://img.shields.io/badge/Version-0.5.11-1abc9c.svg">
         </a>
-        <a href="https://github.com/Clivern/Scuti/blob/master/LICENSE">
+        <a href="https://hub.docker.com/r/clivern/scuti/tags">
+            <img src="https://img.shields.io/badge/Docker-0.5.11-1abc9c.svg">
+        </a>
+        <a href="https://github.com/Clivern/Scuti/actions/workflows/docker.yml">
+            <img src="https://github.com/Clivern/Scuti/actions/workflows/docker.yml/badge.svg">
+        </a>
+        <a href="https://github.com/Clivern/Scuti/blob/main/LICENSE">
             <img src="https://img.shields.io/badge/LICENSE-MIT-orange.svg">
         </a>
+
     </p>
 </p>
 
 `Scuti` automates the patching process for a group of virtual servers, handling updates ranging from basic operating system upgrades to customized scripts. The system offers various strategies for updating servers, including sequential updates, batch updates, or percentage-based updates to ensure optimal availability.
 
 `Scuti` named after `UY Scuti`, The red supergiant star in the constellation Scutum. It is considered to be possibly one of the largest known stars and is also a pulsating variable star, with a volume nearly 5 billion times that of the sun.
-
-
-#### Development
-
-To run `postgresql` with `docker` or `podman` for development
-
-```zsh
-$ docker run -itd \
-    -e POSTGRES_USER=scuti \
-    -e POSTGRES_PASSWORD=scuti \
-    -e POSTGRES_DB=scuti_dev \
-    -p 5432:5432 \
-    --name postgresql \
-    postgres:15.2
-```
-
-```zsh
-$ podman run -itd \
-    -e POSTGRES_USER=scuti \
-    -e POSTGRES_PASSWORD=scuti \
-    -e POSTGRES_DB=scuti_dev \
-    -p 5432:5432 \
-    --name postgresql \
-    postgres:15.2
-```
-
-```zsh
-# https://github.com/dbcli/pgcli
-$ psql -h 127.0.0.1 -U scuti -d scuti_dev -W
-```
-
-
-#### Deployment
-
-To deploy with `docker-compose` after updating `docker-compose.yml` environmental variables.
-
-```zsh
-$ docker-compose up -d
-```
 
 
 #### Versioning
