@@ -15,28 +15,28 @@ defmodule Scuti.Context.HostContext do
   @doc """
   Get a new host
   """
-  def new_host(host \\ %{}) do
+  def new_host(attrs \\ %{}) do
     %{
-      name: host.name,
-      hostname: host.hostname,
-      host_group_id: host.host_group_id,
-      labels: host.labels,
-      agent_address: host.agent_address,
-      status: host.status,
-      reported_at: host.reported_at,
-      secret_key: host.secret_key,
-      uuid: Ecto.UUID.generate()
+      name: attrs.name,
+      hostname: attrs.hostname,
+      host_group_id: attrs.host_group_id,
+      labels: attrs.labels,
+      agent_address: attrs.agent_address,
+      status: attrs.status,
+      reported_at: attrs.reported_at,
+      secret_key: attrs.secret_key,
+      uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
     }
   end
 
   @doc """
   Get a host meta
   """
-  def new_meta(meta \\ %{}) do
+  def new_meta(attrs \\ %{}) do
     %{
-      key: meta.key,
-      value: meta.value,
-      host_id: meta.host_id
+      key: attrs.key,
+      value: attrs.value,
+      host_id: attrs.host_id
     }
   end
 

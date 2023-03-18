@@ -15,38 +15,38 @@ defmodule Scuti.Context.UserContext do
   @doc """
   Get a new user
   """
-  def new_user(user \\ %{}) do
+  def new_user(attrs \\ %{}) do
     %{
-      email: user.email,
-      name: user.name,
-      password_hash: user.password_hash,
-      verified: user.verified,
-      last_seen: user.last_seen,
-      role: user.role,
-      api_key: user.api_key,
-      uuid: Ecto.UUID.generate()
+      email: attrs.email,
+      name: attrs.name,
+      password_hash: attrs.password_hash,
+      verified: attrs.verified,
+      last_seen: attrs.last_seen,
+      role: attrs.role,
+      api_key: attrs.api_key,
+      uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
     }
   end
 
   @doc """
   Get a user meta
   """
-  def new_meta(meta \\ %{}) do
+  def new_meta(attrs \\ %{}) do
     %{
-      key: meta.key,
-      value: meta.value,
-      user_id: meta.user_id
+      key: attrs.key,
+      value: attrs.value,
+      user_id: attrs.user_id
     }
   end
 
   @doc """
   Get a user session
   """
-  def new_session(session \\ %{}) do
+  def new_session(attrs \\ %{}) do
     %{
-      value: session.value,
-      expire_at: session.expire_at,
-      user_id: session.user_id
+      value: attrs.value,
+      expire_at: attrs.expire_at,
+      user_id: attrs.user_id
     }
   end
 

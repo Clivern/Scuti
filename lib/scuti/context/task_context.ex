@@ -15,27 +15,27 @@ defmodule Scuti.Context.TaskContext do
   @doc """
   Get a new task
   """
-  def new_task(task \\ %{}) do
+  def new_task(attrs \\ %{}) do
     %{
-      payload: task.payload,
-      result: task.result,
-      status: task.status,
-      deployment_id: task.deployment_id,
-      run_at: task.run_at,
-      uuid: Ecto.UUID.generate()
+      payload: attrs.payload,
+      result: attrs.result,
+      status: attrs.status,
+      deployment_id: attrs.deployment_id,
+      run_at: attrs.run_at,
+      uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
     }
   end
 
   @doc """
   Get a new task log
   """
-  def new_task_log(task_log \\ %{}) do
+  def new_task_log(attrs \\ %{}) do
     %{
-      host_id: task_log.host_id,
-      task_id: task_log.task_id,
-      type: task_log.type,
-      record: task_log.record,
-      uuid: Ecto.UUID.generate()
+      host_id: attrs.host_id,
+      task_id: attrs.task_id,
+      type: attrs.type,
+      record: attrs.record,
+      uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
     }
   end
 

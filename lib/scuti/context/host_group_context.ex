@@ -15,25 +15,25 @@ defmodule Scuti.Context.HostGroupContext do
   @doc """
   Get a new host group
   """
-  def new_group(group \\ %{}) do
+  def new_group(attrs \\ %{}) do
     %{
-      name: group.name,
-      secret_key: group.secret_key,
-      team_id: group.team_id,
-      labels: group.labels,
-      remote_join: group.remote_join,
-      uuid: Ecto.UUID.generate()
+      name: attrs.name,
+      secret_key: attrs.secret_key,
+      team_id: attrs.team_id,
+      labels: attrs.labels,
+      remote_join: attrs.remote_join,
+      uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
     }
   end
 
   @doc """
   Get a host group meta
   """
-  def new_meta(meta \\ %{}) do
+  def new_meta(attrs \\ %{}) do
     %{
-      key: meta.key,
-      value: meta.value,
-      host_group_id: meta.host_group_id
+      key: attrs.key,
+      value: attrs.value,
+      host_group_id: attrs.host_group_id
     }
   end
 

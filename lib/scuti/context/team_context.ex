@@ -15,22 +15,22 @@ defmodule Scuti.Context.TeamContext do
   @doc """
   Get a new team
   """
-  def new_team(team \\ %{}) do
+  def new_team(attrs \\ %{}) do
     %{
-      name: team.name,
-      description: team.description,
-      uuid: Ecto.UUID.generate()
+      name: attrs.name,
+      description: attrs.description,
+      uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
     }
   end
 
   @doc """
   Get a team meta
   """
-  def new_meta(meta \\ %{}) do
+  def new_meta(attrs \\ %{}) do
     %{
-      key: meta.key,
-      value: meta.value,
-      team_id: meta.team_id
+      key: attrs.key,
+      value: attrs.value,
+      team_id: attrs.team_id
     }
   end
 

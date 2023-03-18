@@ -6,7 +6,7 @@ defmodule Scuti.Service.ValidatorService do
   @moduledoc """
   Validator Service
   """
-  alias Lynx.Context.UserContext
+  alias Scuti.Context.UserContext
 
   def is_number?(value, err) do
     case is_number(value) do

@@ -15,37 +15,37 @@ defmodule Scuti.Context.DeploymentContext do
   @doc """
   Get a new deployment
   """
-  def new_deployment(deployment \\ %{}) do
+  def new_deployment(attrs \\ %{}) do
     %{
-      team_id: deployment.team_id,
-      name: deployment.name,
-      hosts_filter: deployment.hosts_filter,
-      host_groups_filter: deployment.host_groups_filter,
-      patch_type: deployment.patch_type,
-      pkgs_to_upgrade: deployment.pkgs_to_upgrade,
-      pkgs_to_exclude: deployment.pkgs_to_exclude,
-      pre_patch_script: deployment.pre_patch_script,
-      patch_script: deployment.patch_script,
-      post_patch_script: deployment.post_patch_script,
-      post_patch_reboot_option: deployment.post_patch_reboot_option,
-      rollout_strategy: deployment.rollout_strategy,
-      rollout_strategy_value: deployment.rollout_strategy_value,
-      schedule_type: deployment.schedule_type,
-      schedule_time: deployment.schedule_time,
-      last_status: deployment.last_status,
-      last_run_at: deployment.last_run_at,
-      uuid: Ecto.UUID.generate()
+      team_id: attrs.team_id,
+      name: attrs.name,
+      hosts_filter: attrs.hosts_filter,
+      host_groups_filter: attrs.host_groups_filter,
+      patch_type: attrs.patch_type,
+      pkgs_to_upgrade: attrs.pkgs_to_upgrade,
+      pkgs_to_exclude: attrs.pkgs_to_exclude,
+      pre_patch_script: attrs.pre_patch_script,
+      patch_script: attrs.patch_script,
+      post_patch_script: attrs.post_patch_script,
+      post_patch_reboot_option: attrs.post_patch_reboot_option,
+      rollout_strategy: attrs.rollout_strategy,
+      rollout_strategy_value: attrs.rollout_strategy_value,
+      schedule_type: attrs.schedule_type,
+      schedule_time: attrs.schedule_time,
+      last_status: attrs.last_status,
+      last_run_at: attrs.last_run_at,
+      uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
     }
   end
 
   @doc """
   Get a deployment meta
   """
-  def new_meta(meta \\ %{}) do
+  def new_meta(attrs \\ %{}) do
     %{
-      key: meta.key,
-      value: meta.value,
-      deployment_id: meta.deployment_id
+      key: attrs.key,
+      value: attrs.value,
+      deployment_id: attrs.deployment_id
     }
   end
 

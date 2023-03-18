@@ -15,11 +15,11 @@ defmodule Scuti.Context.ConfigContext do
   @doc """
   Get a new config
   """
-  def new_config(config \\ %{}) do
+  def new_config(attrs \\ %{}) do
     %{
-      name: config.name,
-      value: config.value,
-      uuid: Ecto.UUID.generate()
+      name: attrs.name,
+      value: attrs.value,
+      uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
     }
   end
 
