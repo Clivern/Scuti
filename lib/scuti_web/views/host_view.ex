@@ -31,7 +31,7 @@ defmodule ScutiWeb.HostView do
 
   # Format host
   defp render_host(host) do
-    {_, group} = HostGroupModule.get_group_by_id(host.host_group_id)
+    group = HostGroupModule.get_group_by_id(host.host_group_id)
 
     %{
       id: host.uuid,

@@ -22,11 +22,11 @@ defmodule ScutiWeb.HostController do
   @name_min_length 2
   @name_max_length 60
   @hostname_min_length 2
-  @hostname_max_length 250
+  @hostname_max_length 60
   @agent_address_min_length 2
-  @agent_address_max_length 250
+  @agent_address_max_length 60
   @secret_key_min_length 2
-  @secret_key_max_length 250
+  @secret_key_max_length 60
 
   plug :regular_user when action in [:list, :index, :create, :update, :delete]
   plug :host_access_check when action in [:index, :update, :delete]
@@ -249,7 +249,7 @@ defmodule ScutiWeb.HostController do
            ValidatorService.is_string?(params["agent_address"], errs.agent_address_required),
          {:ok, _} <- ValidatorService.is_string?(params["labels"], errs.labels_required),
          {:ok, _} <-
-           ValidatorService.is_string?(params["host_group_id"], errs.host_group_id_required),
+           ValidatorService.is_string?(params["group_uuid"], errs.host_group_id_required),
          {:ok, _} <- ValidatorService.is_string?(params["secret_key"], errs.secret_key_required),
          {:ok, _} <-
            ValidatorService.is_length_between?(
@@ -281,7 +281,7 @@ defmodule ScutiWeb.HostController do
            ),
          {:ok, _} <- ValidatorService.is_labels?(params["labels"], errs.labels_invalid),
          {:ok, _} <-
-           ValidatorService.is_uuid?(params["host_group_id"], errs.host_group_id_invalid) do
+           ValidatorService.is_uuid?(params["group_uuid"], errs.host_group_id_invalid) do
       {:ok, ""}
     else
       {:error, reason} -> {:error, reason}

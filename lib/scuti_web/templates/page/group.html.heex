@@ -303,13 +303,27 @@
                                       <tr v-for="host in hosts">
                                         <td style="text-align: center">${host.name}</td>
                                         <td style="text-align: center">${host.hostname}</td>
-                                        <td style="text-align: center">${host.status}</td>
+                                        <template v-if="host.status == 'offline'">
+                                            <td style="text-align: center">
+                                                <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger">OFFLINE</div>
+                                            </td>
+                                        </template>
+                                        <template v-if="host.status == 'online'">
+                                            <td style="text-align: center">
+                                                <div class="badge bg-success-4 hp-bg-dark-success text-success border-success">ONLINE</div>
+                                            </td>
+                                        </template>
+                                        <template v-if="host.status == 'unknown'">
+                                            <td style="text-align: center">
+                                                <div class="badge bg-light-4 hp-bg-dark-light text-dark border-light">UNKNOWN</div>
+                                            </td>
+                                        </template>
                                         <td style="text-align: center">${formatDatetime(host.createdAt)}</td>
-                                        <td>
+                                        <td style="text-align: center">
                                             <button @click="showHostInfoAction(host)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80" data-bs-toggle="modal" data-bs-target="#show_host_info_modal">
                                                 <%= gettext "Info" %>
                                             </button>
-                                            <button @click="deleteHostAction(host.group.id, host.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2">
+                                            <button @click="deleteHostAction(host.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2">
                                                 <%= gettext "Delete" %>
                                             </button>
                                         </td>
@@ -352,7 +366,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header py-16 px-24">
-                            <h5 class="modal-title" id="showTeamInfoLabel"><%= gettext "Team Info" %></h5>
+                            <h5 class="modal-title" id="showTeamInfoLabel"><%= gettext "Host Info" %></h5>
                             <button type="button" class="btn-close hp-bg-none d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
                                 <i class="ri-close-line hp-text-color-dark-0 lh-1" style="font-size: 24px;"></i>
                             </button>
@@ -411,13 +425,13 @@
                                             <div class="col-12">
                                                 <div class="mb-24">
                                                     <label class="form-label"><%= gettext "Agent Address" %></label>
-                                                    <input type="text" class="form-control" name="agent_address" required="required"  minlength="2" maxlength="60">
+                                                    <input type="url" class="form-control" name="agent_address" required="required"  minlength="2" maxlength="60">
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="mb-24">
                                                     <label class="form-label"><%= gettext "Labels" %></label>
-                                                    <textarea name="labels" class="form-control" required="required"  minlength="2" maxlength="250"></textarea>
+                                                    <textarea name="labels" class="form-control" required="required"  minlength="2" maxlength="200"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -435,23 +449,21 @@
                                 </form>
                           </div>
                           <div class="tab-pane fade" id="rjoin" role="tabpanel" aria-labelledby="rjoin-tab">
-                            <p class="hp-p1-body mb-0">
-<pre>agent:
+<pre style="margin: 20px">agent:
 #...
   # Remote management server configs
   management:
     # Management server address
-    address: ${SCUTI_AGENT_MANAGEMENT_ADDRESS:-http://localhost:4000}
+    address: http://localhost:4000
     # Host Group UUID
-    host_group_uuid: ${SCUTI_AGENT_HG_UUID:-TBA}
+    host_group_uuid: TBA
     # Host UUID
-    host_uuid: ${SCUTI_AGENT_H_UUID:-TBA}
+    host_uuid: TBA
     # Host Group Secret
-    host_group_secret: ${SCUTI_AGENT_HG_SECRET:-TBA}
+    host_group_secret: TBA
     # Host Secret
-    host_secret: ${SCUTI_AGENT_H_SECRET:-TBA}
+    host_secret: TBA
 #....</pre>
-                            </p>
                           </div>
                         </div>
                     </div>

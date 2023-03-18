@@ -972,15 +972,15 @@ scuti_app.hosts_list = (Vue, axios, $) => {
             }
         },
         methods: {
-            showGroupInfoAction(host) {
-                $("div#show_host_info_modal").text(host.name);
+            showHostInfoAction(host) {
+                $("div#team_info_modal_content").text(host.name);
             },
 
             formatDatetime(datatime) {
                 return format_datetime(datatime);
             },
 
-            deleteGroupAction(id) {
+            deleteHostAction(id) {
                 if (confirm(_globals.delete_host_alert) != true) {
                     return;
                 }
@@ -1043,13 +1043,14 @@ scuti_app.add_host_modal = (Vue, axios, $) => {
 
     return new Vue({
         delimiters: ['${', '}'],
-        el: '#add_host_modal',
+        el: '#mentry',
         data() {
             return {
                 isInProgress: false
             }
         },
         mounted() {
+            $('input[name="secret_key"]').val(crypto.randomUUID());
         },
         methods: {
             addHostAction(event) {

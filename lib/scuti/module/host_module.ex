@@ -26,11 +26,6 @@ defmodule Scuti.Module.HostModule do
         secret_key: data[:secret_key]
       })
 
-    host =
-      if data[:uuid] != nil do
-        %{host | uuid: data[:uuid]}
-      end
-
     case HostContext.create_host(host) do
       {:ok, host} ->
         {:ok, host}
