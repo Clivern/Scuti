@@ -13,10 +13,7 @@ defmodule ScutiWeb.TaskController do
 
   alias Scuti.Module.TaskModule
 
-  # @default_list_limit "10"
-  # @default_list_offset "0"
-
-  plug :regular_user, only: [:list, :index, :create, :update, :delete]
+  plug :regular_user when action in [:index]
 
   defp regular_user(conn, _opts) do
     Logger.info("Validate user permissions")
@@ -27,6 +24,7 @@ defmodule ScutiWeb.TaskController do
       conn
       |> put_status(:forbidden)
       |> render("error.json", %{message: "Forbidden Access"})
+      |> halt
     else
       Logger.info("User has the right access permissions")
 
@@ -35,63 +33,19 @@ defmodule ScutiWeb.TaskController do
   end
 
   @doc """
-  List Action Endpoint
-  """
-  def list(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
-  end
-
-  @doc """
-  Create Action Endpoint
-  """
-  def create(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
-  end
-
-  @doc """
   Index Action Endpoint
   """
-  def index(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
-  end
-
-  @doc """
-  Update Action Endpoint
-  """
-  def update(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
-  end
-
-  @doc """
-  Delete Action Endpoint
-  """
-  def delete(conn, %{"id" => id}) do
-    Logger.info("Delete task with id #{id}")
-
-    result = TaskModule.delete_task(id)
-
-    case result do
+  def index(conn, %{"uuid" => uuid}) do
+    case TaskModule.get_task_by_uuid(uuid) do
       {:not_found, msg} ->
         conn
         |> put_status(:not_found)
-        |> render("error.json", %{error: msg})
+        |> render("error.json", %{message: msg})
 
-      {:ok, _} ->
+      {:ok, task} ->
         conn
-        |> send_resp(:no_content, "")
-
-      {:error, msg} ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", %{error: msg})
+        |> put_status(:ok)
+        |> render("index.json", %{task: task})
     end
   end
 end

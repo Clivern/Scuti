@@ -8,4 +8,8 @@ defmodule ScutiWeb.ProfileView do
   def render("success.json", %{message: message}) do
     %{successMessage: message}
   end
+
+  def render("error.json", %{message: message}) do
+    %{errorMessage: message}
+  end
 end

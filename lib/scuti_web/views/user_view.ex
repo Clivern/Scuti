@@ -5,35 +5,35 @@
 defmodule ScutiWeb.UserView do
   use ScutiWeb, :view
 
+  # Render users list
+  def render("list.json", %{users: users, metadata: metadata}) do
+    %{
+      users: Enum.map(users, &render_user/1),
+      _metadata: %{
+        limit: metadata.limit,
+        offset: metadata.offset,
+        totalCount: metadata.totalCount
+      }
+    }
+  end
+
+  # Render user
+  def render("index.json", %{user: user}) do
+    render_user(user)
+  end
+
+  # Render errors
   def render("error.json", %{message: message}) do
     %{errorMessage: message}
   end
 
-  def render("success.json", %{message: message}) do
-    %{successMessage: message}
-  end
-
-  def render("create.json", %{user: user}) do
+  # Format user
+  defp render_user(user) do
     %{
-      id: user.id,
-      uuid: user.uuid,
-      name: user.name,
+      id: user.uuid,
       email: user.email,
-      role: user.role,
-      apiKey: user.api_key,
-      createdAt: user.inserted_at,
-      updatedAt: user.updated_at
-    }
-  end
-
-  def render("index.json", %{user: user}) do
-    %{
-      id: user.id,
-      uuid: user.uuid,
       name: user.name,
-      email: user.email,
       role: user.role,
-      apiKey: user.api_key,
       createdAt: user.inserted_at,
       updatedAt: user.updated_at
     }

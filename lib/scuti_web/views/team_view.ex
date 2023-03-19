@@ -5,31 +5,40 @@
 defmodule ScutiWeb.TeamView do
   use ScutiWeb, :view
 
+  alias Scuti.Module.UserModule
+  alias Scuti.Module.TeamModule
+
+  # Render teams list
+  def render("list.json", %{teams: teams, metadata: metadata}) do
+    %{
+      teams: Enum.map(teams, &render_team/1),
+      _metadata: %{
+        limit: metadata.limit,
+        offset: metadata.offset,
+        totalCount: metadata.totalCount
+      }
+    }
+  end
+
+  # Render team
+  def render("index.json", %{team: team}) do
+    render_team(team)
+  end
+
+  # Render errors
   def render("error.json", %{message: message}) do
     %{errorMessage: message}
   end
 
-  def render("success.json", %{message: message}) do
-    %{successMessage: message}
-  end
-
-  def render("create.json", %{team: team}) do
+  # Format team
+  defp render_team(team) do
     %{
-      id: team.id,
-      uuid: team.uuid,
+      id: team.uuid,
       name: team.name,
+      slug: team.slug,
+      usersCount: UserModule.count_team_users(team.id),
       description: team.description,
-      createdAt: team.inserted_at,
-      updatedAt: team.updated_at
-    }
-  end
-
-  def render("index.json", %{team: team}) do
-    %{
-      id: team.id,
-      uuid: team.uuid,
-      name: team.name,
-      description: team.description,
+      members: TeamModule.get_team_members(team.id),
       createdAt: team.inserted_at,
       updatedAt: team.updated_at
     }
