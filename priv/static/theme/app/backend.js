@@ -984,7 +984,7 @@ scuti_app.hosts_list = (Vue, axios, $) => {
         },
         methods: {
             showHostInfoAction(host) {
-                $("div#team_info_modal_content").text(host.name);
+                $("div#host_info_modal_content").text(host.name);
             },
 
             formatDatetime(datatime) {
