@@ -8,16 +8,29 @@ defmodule Scuti.Module.UserModule do
   """
 
   alias Scuti.Context.UserContext
-  alias Scuti.Service.ValidatorService
   alias Scuti.Service.AuthService
+  alias Scuti.Module.SettingsModule
 
   @doc """
   Get User By ID
   """
-  def get_user_by_id(user_id) do
-    case UserContext.get_user_by_id(user_id) do
+  def get_user_by_id(id) do
+    case UserContext.get_user_by_id(id) do
       nil ->
         {:not_found, nil}
+
+      user ->
+        {:ok, user}
+    end
+  end
+
+  @doc """
+  Get user by UUID
+  """
+  def get_user_by_uuid(uuid) do
+    case UserContext.get_user_by_uuid(uuid) do
+      nil ->
+        {:not_found, "Team with ID #{uuid} not found"}
 
       user ->
         {:ok, user}
@@ -42,11 +55,8 @@ defmodule Scuti.Module.UserModule do
   Create User
   """
   def create_user(params \\ %{}) do
-    hash =
-      AuthService.hash_password(
-        params[:password],
-        params[:app_key]
-      )
+    app_key = SettingsModule.get_config("app_key", "")
+    hash = AuthService.hash_password(params[:password], app_key)
 
     user =
       UserContext.new_user(%{
@@ -76,68 +86,57 @@ defmodule Scuti.Module.UserModule do
   Update User
   """
   def update_user(params \\ %{}) do
-    id = params[:id]
+    user = UserContext.get_user_by_uuid(params[:uuid])
 
-    case ValidatorService.validate_int(id) do
-      true ->
-        user =
-          id
-          |> ValidatorService.parse_int()
-          |> UserContext.get_user_by_id()
+    case user do
+      nil ->
+        {:not_found, "User with ID #{params[:uuid]} not found"}
 
-        case user do
-          nil ->
-            {:not_found, "User with ID #{id} not found"}
+      _ ->
+        new_user =
+          if params[:password] == nil or params[:password] == "" do
+            %{
+              email: params[:email] || user.email,
+              name: params[:name] || user.name,
+              role: params[:role] || user.role
+            }
+          else
+            app_key = SettingsModule.get_config("app_key", "")
+            hash = AuthService.hash_password(params[:password], app_key)
 
-          _ ->
-            new_user =
-              UserContext.new_user(%{
-                email: ValidatorService.get_str(params[:email], user.email),
-                name: ValidatorService.get_str(params[:name], user.name),
-                api_key: ValidatorService.get_str(params[:api_key], user.api_key),
-                role: ValidatorService.get_str(params[:role], user.role)
-              })
+            %{
+              email: params[:email] || user.email,
+              name: params[:name] || user.name,
+              role: params[:role] || user.role,
+              password_hash: hash
+            }
+          end
 
-            case UserContext.update_user(user, new_user) do
-              {:ok, user} ->
-                {:ok, user}
+        case UserContext.update_user(user, new_user) do
+          {:ok, user} ->
+            {:ok, user}
 
-              {:error, changeset} ->
-                messages =
-                  changeset.errors()
-                  |> Enum.map(fn {field, {message, _options}} -> "#{field}: #{message}" end)
+          {:error, changeset} ->
+            messages =
+              changeset.errors()
+              |> Enum.map(fn {field, {message, _options}} -> "#{field}: #{message}" end)
 
-                {:error, Enum.at(messages, 0)}
-            end
+            {:error, Enum.at(messages, 0)}
         end
-
-      false ->
-        {:error, "Invalid User ID"}
     end
   end
 
   @doc """
-  Delete User
+  Delete User by UUID
   """
-  def delete_user(id) do
-    case ValidatorService.validate_int(id) do
-      true ->
-        user =
-          id
-          |> ValidatorService.parse_int()
-          |> UserContext.get_user_by_id()
+  def delete_user_by_uuid(uuid) do
+    case UserContext.get_user_by_uuid(uuid) do
+      nil ->
+        {:not_found, "User with ID #{uuid} not found"}
 
-        case user do
-          nil ->
-            {:not_found, "User with ID #{id} not found"}
-
-          _ ->
-            UserContext.delete_user(user)
-            {:ok, "User with ID #{id} deleted successfully"}
-        end
-
-      false ->
-        {:error, "Invalid User ID"}
+      user ->
+        UserContext.delete_user(user)
+        {:ok, "User with ID #{uuid} deleted successfully"}
     end
   end
 
@@ -159,9 +158,7 @@ defmodule Scuti.Module.UserModule do
   Verify if email is used
   """
   def is_email_used(email) do
-    user = UserContext.get_user_by_email(email)
-
-    case user do
+    case UserContext.get_user_by_email(email) do
       nil ->
         false
 

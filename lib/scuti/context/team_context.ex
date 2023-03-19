@@ -44,6 +44,32 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
+  Get Team ID with UUID
+  """
+  def get_team_id_with_uuid(uuid) do
+    case get_team_by_uuid(uuid) do
+      nil ->
+        nil
+
+      team ->
+        team.id
+    end
+  end
+
+  @doc """
+  Get Team UUID with ID
+  """
+  def get_team_uuid_with_id(id) do
+    case get_team_by_id(id) do
+      nil ->
+        nil
+
+      team ->
+        team.uuid
+    end
+  end
+
+  @doc """
   Retrieve a team by ID
   """
   def get_team_by_id(id) do
@@ -64,6 +90,19 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
+  Validate Team UUID
+  """
+  def validate_team_uuid(uuid) do
+    case get_team_by_uuid(uuid) do
+      nil ->
+        false
+
+      _ ->
+        true
+    end
+  end
+
+  @doc """
   Get team by uuid
   """
   def get_team_by_uuid(uuid) do
@@ -71,6 +110,7 @@ defmodule Scuti.Context.TeamContext do
       t in Team,
       where: t.uuid == ^uuid
     )
+    |> limit(1)
     |> Repo.one()
   end
 
@@ -103,6 +143,19 @@ defmodule Scuti.Context.TeamContext do
   def get_teams(offset, limit) do
     from(t in Team,
       order_by: [desc: t.inserted_at],
+      limit: ^limit,
+      offset: ^offset
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Retrieve teams
+  """
+  def get_teams(teams_ids, offset, limit) do
+    from(t in Team,
+      order_by: [desc: t.inserted_at],
+      where: t.id in ^teams_ids,
       limit: ^limit,
       offset: ^offset
     )

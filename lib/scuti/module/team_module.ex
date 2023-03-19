@@ -9,7 +9,6 @@ defmodule Scuti.Module.TeamModule do
 
   alias Scuti.Context.TeamContext
   alias Scuti.Context.UserContext
-  alias Scuti.Service.ValidatorService
 
   @doc """
   Create a team
@@ -45,14 +44,21 @@ defmodule Scuti.Module.TeamModule do
         current_members ++ member.id
       end
 
+    future_members_ids = []
+
+    future_members_ids =
+      for member <- future_members do
+        future_members_ids ++ get_user_id_with_uuid(member)
+      end
+
     # @TODO: Track errors
     for member <- current_members do
-      if member not in future_members do
+      if member not in future_members_ids do
         UserContext.remove_user_from_team(member, team_id)
       end
     end
 
-    for member <- future_members do
+    for member <- future_members_ids do
       if member not in current_members do
         UserContext.add_user_to_team(member, team_id)
       end
@@ -60,44 +66,44 @@ defmodule Scuti.Module.TeamModule do
   end
 
   @doc """
+  Get team members
+  """
+  def get_team_members(team_id) do
+    current_members = []
+
+    current_members =
+      for member <- UserContext.get_team_users(team_id) do
+        current_members ++ member.uuid
+      end
+
+    current_members
+  end
+
+  @doc """
   Update a team
   """
   def update_team(data \\ %{}) do
-    id = data[:id]
+    case TeamContext.get_team_by_uuid(data[:uuid]) do
+      nil ->
+        {:not_found, "Team with ID #{data[:uuid]} not found"}
 
-    case ValidatorService.validate_int(id) do
-      true ->
-        team =
-          id
-          |> ValidatorService.parse_int()
-          |> TeamContext.get_team_by_id()
+      team ->
+        new_team = %{
+          name: data[:name] || team.name,
+          description: data[:description] || team.description
+        }
 
-        case team do
-          nil ->
-            {:not_found, "Team with ID #{id} not found"}
+        case TeamContext.update_team(team, new_team) do
+          {:ok, team} ->
+            {:ok, team}
 
-          _ ->
-            new_team =
-              TeamContext.new_team(%{
-                name: ValidatorService.get_str(data[:name], team.name),
-                description: ValidatorService.get_str(data[:description], team.description)
-              })
+          {:error, changeset} ->
+            messages =
+              changeset.errors()
+              |> Enum.map(fn {field, {message, _options}} -> "#{field}: #{message}" end)
 
-            case TeamContext.update_team(team, new_team) do
-              {:ok, team} ->
-                {:ok, team}
-
-              {:error, changeset} ->
-                messages =
-                  changeset.errors()
-                  |> Enum.map(fn {field, {message, _options}} -> "#{field}: #{message}" end)
-
-                {:error, Enum.at(messages, 0)}
-            end
+            {:error, Enum.at(messages, 0)}
         end
-
-      false ->
-        {:error, "Invalid Team ID"}
     end
   end
 
@@ -105,25 +111,40 @@ defmodule Scuti.Module.TeamModule do
   Get team by an id
   """
   def get_team_by_id(id) do
-    team =
-      id
-      |> ValidatorService.parse_int()
-      |> TeamContext.get_team_by_id()
-
-    case team do
+    case TeamContext.get_team_by_id(id) do
       nil ->
         {:not_found, "Team with ID #{id} not found"}
 
-      _ ->
+      team ->
         {:ok, team}
     end
   end
 
   @doc """
-  Count Users
+  Get team by UUID
+  """
+  def get_team_by_uuid(uuid) do
+    case TeamContext.get_team_by_uuid(uuid) do
+      nil ->
+        {:not_found, "Team with ID #{uuid} not found"}
+
+      team ->
+        {:ok, team}
+    end
+  end
+
+  @doc """
+  Count Teams
   """
   def count_teams() do
     TeamContext.count_teams()
+  end
+
+  @doc """
+  Count Teams
+  """
+  def count_teams(user_id) do
+    length(get_user_teams(user_id))
   end
 
   @doc """
@@ -141,27 +162,32 @@ defmodule Scuti.Module.TeamModule do
   end
 
   @doc """
-  Delete A Team
+  Get teams
   """
-  def delete_team(id) do
-    case ValidatorService.validate_int(id) do
-      true ->
-        team =
-          id
-          |> ValidatorService.parse_int()
-          |> TeamContext.get_team_by_id()
+  def get_teams(user_id, offset, limit) do
+    user_teams = get_user_teams(user_id)
 
-        case team do
-          nil ->
-            {:not_found, "Team with ID #{id} not found"}
+    teams_ids = []
 
-          _ ->
-            TeamContext.delete_team(team)
-            {:ok, "Team with ID #{id} deleted successfully"}
-        end
+    teams_ids =
+      for user_team <- user_teams do
+        teams_ids ++ user_team.id
+      end
 
-      false ->
-        {:error, "Invalid Team ID"}
+    TeamContext.get_teams(teams_ids, offset, limit)
+  end
+
+  @doc """
+  Delete a Team by UUID
+  """
+  def delete_team_by_uuid(uuid) do
+    case TeamContext.get_team_by_uuid(uuid) do
+      nil ->
+        {:not_found, "Team with ID #{uuid} not found"}
+
+      team ->
+        TeamContext.delete_team(team)
+        {:ok, "Team with ID #{uuid} deleted successfully"}
     end
   end
 
@@ -170,5 +196,33 @@ defmodule Scuti.Module.TeamModule do
   """
   def validate_team_id(id) do
     TeamContext.validate_team_id(id)
+  end
+
+  @doc """
+  Validate Team UUID
+  """
+  def validate_team_uuid(uuid) do
+    TeamContext.validate_team_uuid(uuid)
+  end
+
+  @doc """
+  Get Team ID with UUID
+  """
+  def get_team_id_with_uuid(uuid) do
+    TeamContext.get_team_id_with_uuid(uuid)
+  end
+
+  @doc """
+  Get Team UUID with ID
+  """
+  def get_team_uuid_with_id(id) do
+    TeamContext.get_team_uuid_with_id(id)
+  end
+
+  @doc """
+  Get User ID with UUID
+  """
+  def get_user_id_with_uuid(uuid) do
+    UserContext.get_user_id_with_uuid(uuid)
   end
 end

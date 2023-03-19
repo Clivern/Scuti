@@ -9,21 +9,19 @@ defmodule ScutiWeb.UserController do
 
   use ScutiWeb, :controller
 
+  alias Scuti.Module.UserModule
+  alias Scuti.Service.ValidatorService
+  alias Scuti.Service.AuthService
+
   require Logger
 
-  alias Scuti.Module.UserModule
-  alias Scuti.Module.SettingsModule
-  alias Scuti.Service.ValidatorService
-  alias Scuti.Exception.InvalidRequest
-  alias Scuti.Service.AuthService
-  alias Scuti.Exception.ResourceNotFound
-  alias Scuti.Exception.InvalidRequest
-  alias Scuti.Exception.InternalError
+  @name_min_length 2
+  @name_max_length 60
 
-  @default_list_limit "10"
-  @default_list_offset "0"
+  @default_list_limit 10
+  @default_list_offset 0
 
-  plug :super_user, only: [:list, :index, :create, :update, :delete]
+  plug :super_user when action in [:list, :index, :create, :update, :delete]
 
   defp super_user(conn, _opts) do
     Logger.info("Validate user permissions")
@@ -34,6 +32,7 @@ defmodule ScutiWeb.UserController do
       conn
       |> put_status(:forbidden)
       |> render("error.json", %{message: "Forbidden Access"})
+      |> halt
     else
       Logger.info("User has the right access permissions")
 
@@ -45,8 +44,8 @@ defmodule ScutiWeb.UserController do
   List Action Endpoint
   """
   def list(conn, params) do
-    limit = ValidatorService.get_int(params["limit"], @default_list_limit)
-    offset = ValidatorService.get_int(params["offset"], @default_list_offset)
+    limit = params["limit"] || @default_list_limit
+    offset = params["offset"] || @default_list_offset
 
     render(conn, "list.json", %{
       users: UserModule.get_users(offset, limit),
@@ -61,41 +60,17 @@ defmodule ScutiWeb.UserController do
   @doc """
   Index Action Endpoint
   """
-  def index(conn, %{"id" => id}) do
-    Logger.info("Get user with id #{id}")
-
-    try do
-      if not ValidatorService.validate_int(id) do
-        raise InvalidRequest, message: "Invalid Request"
-      end
-
-      id = ValidatorService.get_int(id, 0)
-      result = UserModule.get_user_by_id(id)
-
-      case result do
-        {:not_found, _} ->
-          raise ResourceNotFound, "User with id #{id} not found"
-
-        {:ok, user} ->
-          conn
-          |> put_status(:ok)
-          |> render("index.json", %{user: user})
-      end
-    rescue
-      e in InvalidRequest ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", %{message: e.message})
-
-      e in ResourceNotFound ->
+  def index(conn, %{"uuid" => uuid}) do
+    case UserModule.get_user_by_uuid(uuid) do
+      {:not_found, msg} ->
         conn
         |> put_status(:not_found)
-        |> render("error.json", %{message: e.message})
+        |> render("error.json", %{message: msg})
 
-      _ ->
+      {:ok, user} ->
         conn
-        |> put_status(:internal_server_error)
-        |> render("error.json", %{message: "Internal server error"})
+        |> put_status(:ok)
+        |> render("index.json", %{user: user})
     end
   end
 
@@ -103,126 +78,205 @@ defmodule ScutiWeb.UserController do
   Create Action Endpoint
   """
   def create(conn, params) do
-    try do
-      validate_create_request(params)
+    case validate_create_request(params) do
+      {:ok, _} ->
+        result =
+          UserModule.create_user(%{
+            name: params["name"],
+            email: params["email"],
+            api_key: AuthService.get_random_salt(),
+            role: params["role"],
+            password: params["password"]
+          })
 
-      email = ValidatorService.get_str(params["email"], "")
-      name = ValidatorService.get_str(params["name"], "")
-      role = ValidatorService.get_str(params["role"], "")
-      password = ValidatorService.get_str(params["password"], "")
-      api_key = AuthService.get_random_salt()
-      app_key = SettingsModule.get_config("app_key", "")
+        case result do
+          {:error, msg} ->
+            Logger.info("Incoming request is invalid: #{msg}")
 
-      result =
-        UserModule.create_user(%{
-          name: name,
-          email: email,
-          api_key: api_key,
-          role: role,
-          password: password,
-          app_key: app_key
-        })
+            conn
+            |> put_status(:bad_request)
+            |> render("error.json", %{message: "Invalid Request"})
 
-      case result do
-        {:error, msg} ->
-          Logger.info("Incoming request is invalid: #{msg}")
-          raise InvalidRequest, message: "Invalid Request"
+          {:ok, user} ->
+            conn
+            |> put_status(:created)
+            |> render("index.json", %{user: user})
+        end
 
-        {:ok, user} ->
-          conn
-          |> put_status(:created)
-          |> render("create.json", %{user: user})
-      end
-    rescue
-      e in InvalidRequest ->
+      {:error, reason} ->
         conn
         |> put_status(:bad_request)
-        |> render("error.json", %{message: e.message})
-
-      _ ->
-        conn
-        |> put_status(:internal_server_error)
-        |> render("error.json", %{message: "Internal server error"})
+        |> render("error.json", %{message: reason})
     end
   end
 
   @doc """
   Update Action Endpoint
   """
-  def update(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def update(conn, params) do
+    case validate_update_request(params, params["uuid"]) do
+      {:ok, _} ->
+        result =
+          UserModule.update_user(%{
+            uuid: params["uuid"],
+            name: params["name"],
+            email: params["email"],
+            role: params["role"],
+            password: params["password"]
+          })
+
+        case result do
+          {:error, msg} ->
+            Logger.info("Incoming request is invalid: #{msg}")
+
+            conn
+            |> put_status(:bad_request)
+            |> render("error.json", %{message: "Invalid Request"})
+
+          {:ok, user} ->
+            conn
+            |> put_status(:ok)
+            |> render("index.json", %{user: user})
+        end
+
+      {:error, reason} ->
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{message: reason})
+    end
   end
 
   @doc """
   Delete Action Endpoint
   """
-  def delete(conn, %{"id" => id}) do
-    Logger.info("Delete user with id #{id}")
+  def delete(conn, %{"uuid" => uuid}) do
+    Logger.info("Attempt to delete user with uuid #{uuid}")
 
-    try do
-      if not ValidatorService.validate_int(id) do
-        raise InvalidRequest, message: "Invalid Request"
-      end
-
-      id = ValidatorService.get_int(id, 0)
-
-      result = UserModule.delete_user(id)
-
-      case result do
-        {:not_found, _} ->
-          raise ResourceNotFound, "User with id #{id} not found"
-
-        {:error, _} ->
-          raise InternalError, message: "Internal Server Error"
+    if conn.assigns[:user_uuid] == uuid do
+      conn
+      |> put_status(:bad_request)
+      |> render("error.json", %{message: "User can't delete his own account!"})
+    else
+      case UserModule.delete_user_by_uuid(uuid) do
+        {:not_found, msg} ->
+          conn
+          |> put_status(:not_found)
+          |> render("error.json", %{message: msg})
 
         {:ok, _} ->
           conn
           |> send_resp(:no_content, "")
       end
-    rescue
-      e in InvalidRequest ->
-        conn
-        |> put_status(:bad_request)
-        |> render("error.json", %{message: e.message})
+    end
+  end
 
-      e in ResourceNotFound ->
-        conn
-        |> put_status(:not_found)
-        |> render("error.json", %{message: e.message})
+  defp validate_update_request(params, user_uuid) do
+    errs = %{
+      name_required: "User name is required",
+      name_invalid: "User name is invalid",
+      email_required: "User email is required",
+      email_invalid: "User email is invalid",
+      role_required: "User role is required",
+      role_invalid: "User role is invalid",
+      password_required: "User password is required",
+      password_invalid:
+        "User password is invalid, It must be alphanumeric and not less than 6 characters",
+      email_used: "User email is already used"
+    }
 
-      _ ->
-        conn
-        |> put_status(:internal_server_error)
-        |> render("error.json", %{message: "Internal server error"})
+    case ValidatorService.is_not_empty?(params["password"], "") do
+      {:ok, _} ->
+        with {:ok, _} <- ValidatorService.is_string?(params["name"], errs.name_required),
+             {:ok, _} <- ValidatorService.is_string?(params["email"], errs.email_required),
+             {:ok, _} <- ValidatorService.is_string?(params["role"], errs.role_required),
+             {:ok, _} <- ValidatorService.is_string?(params["password"], errs.password_required),
+             {:ok, _} <- ValidatorService.is_not_empty?(params["name"], errs.name_required),
+             {:ok, _} <- ValidatorService.is_not_empty?(params["email"], errs.email_required),
+             {:ok, _} <- ValidatorService.is_not_empty?(params["role"], errs.role_required),
+             {:ok, _} <-
+               ValidatorService.is_not_empty?(params["password"], errs.password_required),
+             {:ok, _} <-
+               ValidatorService.is_length_between?(
+                 params["name"],
+                 @name_min_length,
+                 @name_max_length,
+                 errs.name_invalid
+               ),
+             {:ok, _} <- ValidatorService.is_email?(params["email"], errs.email_invalid),
+             {:ok, _} <-
+               ValidatorService.in?(params["role"], ["regular", "super"], errs.role_invalid),
+             {:ok, _} <- ValidatorService.is_password?(params["password"], errs.password_invalid),
+             {:ok, _} <-
+               ValidatorService.is_email_used?(params["email"], user_uuid, errs.email_used) do
+          {:ok, ""}
+        else
+          {:error, reason} -> {:error, reason}
+        end
+
+      {:error, _} ->
+        # password is not provided
+        with {:ok, _} <- ValidatorService.is_string?(params["name"], errs.name_required),
+             {:ok, _} <- ValidatorService.is_string?(params["email"], errs.email_required),
+             {:ok, _} <- ValidatorService.is_string?(params["role"], errs.role_required),
+             {:ok, _} <- ValidatorService.is_not_empty?(params["name"], errs.name_required),
+             {:ok, _} <- ValidatorService.is_not_empty?(params["email"], errs.email_required),
+             {:ok, _} <- ValidatorService.is_not_empty?(params["role"], errs.role_required),
+             {:ok, _} <-
+               ValidatorService.is_length_between?(
+                 params["name"],
+                 @name_min_length,
+                 @name_max_length,
+                 errs.name_invalid
+               ),
+             {:ok, _} <- ValidatorService.is_email?(params["email"], errs.email_invalid),
+             {:ok, _} <-
+               ValidatorService.in?(params["role"], ["regular", "super"], errs.role_invalid),
+             {:ok, _} <-
+               ValidatorService.is_email_used?(params["email"], user_uuid, errs.email_used) do
+          {:ok, ""}
+        else
+          {:error, reason} -> {:error, reason}
+        end
     end
   end
 
   defp validate_create_request(params) do
-    email = ValidatorService.get_str(params["email"], "")
-    name = ValidatorService.get_str(params["name"], "")
-    role = ValidatorService.get_str(params["role"], "regular")
-    password = ValidatorService.get_str(params["password"], "")
+    errs = %{
+      name_required: "User name is required",
+      name_invalid: "User name is invalid",
+      email_required: "User email is required",
+      email_invalid: "User email is invalid",
+      role_required: "User role is required",
+      role_invalid: "User role is invalid",
+      password_required: "User password is required",
+      password_invalid:
+        "User password is invalid, It must be alphanumeric and not less than 6 characters",
+      email_used: "User email is already used"
+    }
 
-    if ValidatorService.is_empty(email) do
-      raise InvalidRequest, message: "User email is required"
-    end
-
-    if ValidatorService.is_empty(name) do
-      raise InvalidRequest, message: "User name is required"
-    end
-
-    if ValidatorService.is_empty(role) do
-      raise InvalidRequest, message: "User role is required"
-    end
-
-    if ValidatorService.is_empty(password) do
-      raise InvalidRequest, message: "User password is required"
-    end
-
-    if UserModule.is_email_used(email) do
-      raise InvalidRequest, message: "Email is already used"
+    with {:ok, _} <- ValidatorService.is_string?(params["name"], errs.name_required),
+         {:ok, _} <- ValidatorService.is_string?(params["email"], errs.email_required),
+         {:ok, _} <- ValidatorService.is_string?(params["role"], errs.role_required),
+         {:ok, _} <- ValidatorService.is_string?(params["password"], errs.password_required),
+         {:ok, _} <- ValidatorService.is_not_empty?(params["name"], errs.name_required),
+         {:ok, _} <- ValidatorService.is_not_empty?(params["email"], errs.email_required),
+         {:ok, _} <- ValidatorService.is_not_empty?(params["role"], errs.role_required),
+         {:ok, _} <- ValidatorService.is_not_empty?(params["password"], errs.password_required),
+         {:ok, _} <-
+           ValidatorService.is_length_between?(
+             params["name"],
+             @name_min_length,
+             @name_max_length,
+             errs.name_invalid
+           ),
+         {:ok, _} <- ValidatorService.is_email?(params["email"], errs.email_invalid),
+         {:ok, _} <-
+           ValidatorService.in?(params["role"], ["regular", "super"], errs.role_invalid),
+         {:ok, _} <- ValidatorService.is_password?(params["password"], errs.password_invalid),
+         {:ok, _} <- ValidatorService.is_email_used?(params["email"], nil, errs.email_used) do
+      {:ok, ""}
+    else
+      {:error, reason} -> {:error, reason}
     end
   end
 end
