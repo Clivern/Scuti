@@ -27,6 +27,17 @@ function format_datetime(datetime) {
     return formattedDate;
 }
 
+function generateRandomSecret() {
+  const secretChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#^&*()';
+
+  let secret = '';
+  for (let i = 0; i < 20; i++) {
+    secret += secretChars.charAt(Math.floor(Math.random() * secretChars.length));
+  }
+
+  return secret;
+}
+
 // Install Page
 scuti_app.install_screen = (Vue, axios, $) => {
 
@@ -1039,7 +1050,7 @@ scuti_app.hosts_list = (Vue, axios, $) => {
 }
 
 // Add Host Modal
-scuti_app.add_host_modal = (Vue, axios, $) => {
+scuti_app.add_host_modal01 = (Vue, axios, $) => {
 
     return new Vue({
         delimiters: ['${', '}'],
@@ -1050,7 +1061,7 @@ scuti_app.add_host_modal = (Vue, axios, $) => {
             }
         },
         mounted() {
-            $('input[name="secret_key"]').val(crypto.randomUUID());
+            $('input[name="secret_key"]').val(generateRandomSecret());
         },
         methods: {
             addHostAction(event) {
@@ -1085,6 +1096,40 @@ scuti_app.add_host_modal = (Vue, axios, $) => {
 
 }
 
+
+// Add Host Modal
+scuti_app.add_host_modal02 = (Vue, axios, $) => {
+
+    return new Vue({
+        delimiters: ['${', '}'],
+        el: '#rjoin',
+        data() {
+            return {
+                group: {}
+            }
+        },
+        mounted() {
+            this.loadDataAction();
+        },
+        methods: {
+            loadDataAction() {
+                axios.get($("#rjoin").attr("data-action"))
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            this.group = response.data;
+                            this.group.hostUUID = crypto.randomUUID();
+                            this.group.hostSecret = generateRandomSecret();
+                            $("#host_group_name").text(this.group.name);
+                        }
+                    })
+                    .catch((error) => {
+                        show_notification(error.response.data.errorMessage);
+                    });
+            }
+        }
+    });
+
+}
 
 $(document).ready(() => {
     axios.defaults.headers.common = {
@@ -1214,7 +1259,15 @@ $(document).ready(() => {
     }
 
     if (document.getElementById("add_host_modal")) {
-        scuti_app.add_host_modal(
+        scuti_app.add_host_modal01(
+            Vue,
+            axios,
+            $
+        );
+    }
+
+    if (document.getElementById("add_host_modal")) {
+        scuti_app.add_host_modal02(
             Vue,
             axios,
             $

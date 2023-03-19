@@ -257,7 +257,7 @@
                                     <li class="breadcrumb-item">
                                         <a href={Routes.page_path(@conn, :groups)}><%= gettext "Host Groups" %></a>
                                     </li>
-                                    <li class="breadcrumb-item active">**</li>
+                                    <li id="host_group_name" class="breadcrumb-item active">**</li>
                                 </ol>
                             </nav>
                         </div>
@@ -305,17 +305,17 @@
                                         <td style="text-align: center">${host.hostname}</td>
                                         <template v-if="host.status == 'offline'">
                                             <td style="text-align: center">
-                                                <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger">OFFLINE</div>
+                                                <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger"><%= gettext "OFFLINE" %></div>
                                             </td>
                                         </template>
                                         <template v-if="host.status == 'online'">
                                             <td style="text-align: center">
-                                                <div class="badge bg-success-4 hp-bg-dark-success text-success border-success">ONLINE</div>
+                                                <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "ONLINE" %></div>
                                             </td>
                                         </template>
                                         <template v-if="host.status == 'unknown'">
                                             <td style="text-align: center">
-                                                <div class="badge bg-light-4 hp-bg-dark-light text-dark border-light">UNKNOWN</div>
+                                                <div class="badge bg-light-4 hp-bg-dark-light text-dark border-light"><%= gettext "UNKNOWN" %></div>
                                             </td>
                                         </template>
                                         <td style="text-align: center">${formatDatetime(host.createdAt)}</td>
@@ -431,7 +431,7 @@
                                             <div class="col-12">
                                                 <div class="mb-24">
                                                     <label class="form-label"><%= gettext "Labels" %></label>
-                                                    <textarea name="labels" class="form-control" required="required"  minlength="2" maxlength="200"></textarea>
+                                                    <textarea name="labels" class="form-control" maxlength="200"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -448,22 +448,33 @@
                                     </div>
                                 </form>
                           </div>
-                          <div class="tab-pane fade" id="rjoin" role="tabpanel" aria-labelledby="rjoin-tab">
-<pre style="margin: 20px">agent:
-#...
+                          <div class="tab-pane fade" id="rjoin" role="tabpanel" aria-labelledby="rjoin-tab" data-action={Routes.host_group_path(@conn, :index, @data.group_id)}>
+                                <template v-if="group.remoteJoin == true">
+                                    <div style="margin: 20px;">
+                                        <div class="alert alert-primary" role="alert"><%= gettext "Remote Join is enabled for this host group!" %></div>
+                                        <p><%= gettext "Hosts agents can be configured with the following settings to connect to management cluster and show up in the host group list:" %></p>
+<pre>agent:
+#... other configs ...
   # Remote management server configs
   management:
     # Management server address
-    address: http://localhost:4000
+    address: <%= @data.app_url %>
     # Host Group UUID
-    host_group_uuid: TBA
-    # Host UUID
-    host_uuid: TBA
+    host_group_uuid: <%= @data.group_id %>
+    # Auto Generated Host UUID (UNIQUE PER HOST)
+    host_uuid: ${group.hostUUID}
     # Host Group Secret
-    host_group_secret: TBA
-    # Host Secret
-    host_secret: TBA
-#....</pre>
+    host_group_secret: ${group.secretKey}
+    # Auto Generated Host Secret
+    host_secret: ${group.hostSecret}
+#... other configs ...</pre>
+                                    </div>
+                                </template>
+                                <template v-if="group.remoteJoin == false">
+                                    <div style="margin: 20px;">
+                                        <div class="alert alert-primary" role="alert"><%= gettext "Remote Join is disabled for this host group!" %></div>
+                                    </div>
+                                </template>
                           </div>
                         </div>
                     </div>
