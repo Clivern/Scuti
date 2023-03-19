@@ -181,7 +181,8 @@ defmodule ScutiWeb.UserController do
       password_required: "User password is required",
       password_invalid:
         "User password is invalid, It must be alphanumeric and not less than 6 characters",
-      email_used: "User email is already used"
+      email_used: "User email is already used",
+      team_id_invalid: "Team id is invalid"
     }
 
     case ValidatorService.is_not_empty?(params["password"], "") do
@@ -207,7 +208,8 @@ defmodule ScutiWeb.UserController do
                ValidatorService.in?(params["role"], ["regular", "super"], errs.role_invalid),
              {:ok, _} <- ValidatorService.is_password?(params["password"], errs.password_invalid),
              {:ok, _} <-
-               ValidatorService.is_email_used?(params["email"], user_uuid, errs.email_used) do
+               ValidatorService.is_email_used?(params["email"], user_uuid, errs.email_used),
+             {:ok, _} <- ValidatorService.is_uuid?(user_uuid, errs.team_id_invalid) do
           {:ok, ""}
         else
           {:error, reason} -> {:error, reason}
@@ -232,7 +234,8 @@ defmodule ScutiWeb.UserController do
              {:ok, _} <-
                ValidatorService.in?(params["role"], ["regular", "super"], errs.role_invalid),
              {:ok, _} <-
-               ValidatorService.is_email_used?(params["email"], user_uuid, errs.email_used) do
+               ValidatorService.is_email_used?(params["email"], user_uuid, errs.email_used),
+             {:ok, _} <- ValidatorService.is_uuid?(user_uuid, errs.team_id_invalid) do
           {:ok, ""}
         else
           {:error, reason} -> {:error, reason}

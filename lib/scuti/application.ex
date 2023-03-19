@@ -20,6 +20,8 @@ defmodule Scuti.Application do
       {Phoenix.PubSub, name: Scuti.PubSub},
       # Start the Endpoint (http/https)
       ScutiWeb.Endpoint,
+      # PromEx
+      Scuti.PromEx,
       # Start a worker by calling: Scuti.Worker.start_link(arg)
       {Scuti.Workers, %{}}
     ]

@@ -227,13 +227,14 @@ defmodule ScutiWeb.TeamController do
     end
   end
 
-  defp validate_update_request(params, team_uuid) do
+  defp validate_update_request(params, team_id) do
     errs = %{
       name_required: "Team name is required",
       name_invalid: "Team name is invalid",
       description_required: "Team description is required",
       description_invalid: "Team description is invalid",
-      members_invalid: "Team members are required"
+      members_invalid: "Team members are required",
+      team_id_invalid: "Team id is invalid"
     }
 
     with {:ok, _} <- ValidatorService.is_string?(params["name"], errs.name_required),
@@ -257,7 +258,8 @@ defmodule ScutiWeb.TeamController do
              errs.description_invalid
            ),
          {:ok, _} <- ValidatorService.is_list?(params["members"], errs.members_invalid),
-         {:ok, _} <- ValidatorService.is_not_empty_list?(params["members"], errs.members_invalid) do
+         {:ok, _} <- ValidatorService.is_not_empty_list?(params["members"], errs.members_invalid),
+         {:ok, _} <- ValidatorService.is_uuid?(team_id, errs.team_id_invalid) do
       {:ok, ""}
     else
       {:error, reason} -> {:error, reason}
