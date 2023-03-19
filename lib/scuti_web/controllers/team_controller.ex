@@ -7,7 +7,7 @@ defmodule ScutiWeb.TeamController do
   Team Controller
   """
 
-  use LynxWeb, :controller
+  use ScutiWeb, :controller
 
   alias Scuti.Module.TeamModule
   alias Scuti.Service.ValidatorService
