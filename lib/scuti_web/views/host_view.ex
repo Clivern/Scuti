@@ -40,7 +40,10 @@ defmodule ScutiWeb.HostView do
       group: %{
         id: group.uuid,
         name: group.name,
-        description: group.description
+        description: group.description,
+        secretKey: group.secret_key,
+        remoteJoin: group.remote_join,
+        labels: group.labels
       },
       labels: host.labels,
       agentAddress: host.agent_address,

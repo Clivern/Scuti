@@ -375,7 +375,26 @@
                         <div class="modal-body">
                             <div class="row gx-8">
                                 <div class="col-12">
-                                    <div class="mb-24" id="host_info_modal_content"></div>
+                                    <div class="mb-24" id="host_info_modal_content">
+                                        <div style="margin: 10px;">
+                                            <p><%= gettext "Host agent can be configured with the following settings to connect to management cluster:" %></p>
+<pre>agent:
+#... other configs ...
+  # Remote management server configs
+  management:
+    # Management server address
+    address: <%= @data.app_url %>
+    # Host Group UUID
+    host_group_uuid: _HOST_GROUP_UUID
+    # Host UUID
+    host_uuid: _HOST_UUID
+    # Host Group Secret
+    host_group_secret: _HOST_GROUP_SECRET
+    # Host Secret
+    host_secret: _HOST_SECRET
+#... other configs ...</pre>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

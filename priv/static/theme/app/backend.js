@@ -971,11 +971,13 @@ scuti_app.hosts_list = (Vue, axios, $) => {
                 currentPage: 1,
                 limit: 10,
                 totalCount: 5,
-                hosts: []
+                hosts: [],
+                hostModal: null
             }
         },
         mounted() {
             this.loadDataAction();
+            this.hostModal = $("div#host_info_modal_content").html();
         },
         computed: {
             totalPages() {
@@ -984,7 +986,12 @@ scuti_app.hosts_list = (Vue, axios, $) => {
         },
         methods: {
             showHostInfoAction(host) {
-                $("div#host_info_modal_content").text(host.name);
+                var text = this.hostModal;
+                text = text.replace("_HOST_GROUP_UUID", host.group.id);
+                text = text.replace("_HOST_UUID", host.id);
+                text = text.replace("_HOST_GROUP_SECRET", host.group.secretKey);
+                text = text.replace("_HOST_SECRET", host.secretKey);
+                $("div#host_info_modal_content").html(text);
             },
 
             formatDatetime(datatime) {
