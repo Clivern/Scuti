@@ -719,11 +719,13 @@ scuti_app.groups_list = (Vue, axios, $) => {
                 currentPage: 1,
                 limit: 10,
                 totalCount: 5,
-                groups: []
+                groups: [],
+                groupModal: null
             }
         },
         mounted() {
             this.loadDataAction();
+            this.groupModal = $("div#group_info_modal_content").html();
         },
         computed: {
             totalPages() {
@@ -731,8 +733,11 @@ scuti_app.groups_list = (Vue, axios, $) => {
             }
         },
         methods: {
-            showGroupInfoAction(description) {
-                $("div#group_info_modal_content").text(description);
+            showGroupInfoAction(group) {
+                var data = this.groupModal;
+                data = data.replace("_HOST_GROUP_UUID", group.id);
+                data = data.replace("_HOST_GROUP_SECRET", group.secretKey);
+                $("div#group_info_modal_content").html(data);
             },
 
             editGroupAction(id) {
@@ -986,12 +991,12 @@ scuti_app.hosts_list = (Vue, axios, $) => {
         },
         methods: {
             showHostInfoAction(host) {
-                var text = this.hostModal;
-                text = text.replace("_HOST_GROUP_UUID", host.group.id);
-                text = text.replace("_HOST_UUID", host.id);
-                text = text.replace("_HOST_GROUP_SECRET", host.group.secretKey);
-                text = text.replace("_HOST_SECRET", host.secretKey);
-                $("div#host_info_modal_content").html(text);
+                var data = this.hostModal;
+                data = data.replace("_HOST_GROUP_UUID", host.group.id);
+                data = data.replace("_HOST_UUID", host.id);
+                data = data.replace("_HOST_GROUP_SECRET", host.group.secretKey);
+                data = data.replace("_HOST_SECRET", host.secretKey);
+                $("div#host_info_modal_content").html(data);
             },
 
             formatDatetime(datatime) {
