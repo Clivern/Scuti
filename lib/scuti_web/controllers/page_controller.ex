@@ -290,6 +290,7 @@ defmodule ScutiWeb.PageController do
             user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
             user_email: conn.assigns[:user_email],
+            deployment_id: params["uuid"],
             avatar_url: get_gavatar(conn.assigns[:user_email]),
             app_name: SettingsModule.get_config("app_name", ""),
             app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
