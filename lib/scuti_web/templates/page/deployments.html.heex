@@ -18,7 +18,7 @@
 
                         <div class="col hp-flex-none w-auto hp-horizontal-block">
                             <div class="hp-header-logo d-flex align-items-end">
-                                <a href={Routes.page_path(@conn, :dashboard)}>
+                                <a href={Routes.page_path(@conn, :deployments)}>
                                     <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                     <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                     <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -37,25 +37,25 @@
                                 </li>
 
                                 <li class="px-6">
-                                    <a href={Routes.page_path(@conn, :list_groups)} class="px-12 py-4">
+                                    <a href={Routes.page_path(@conn, :groups)} class="px-12 py-4">
                                         <span><%= gettext "Host Groups" %></span>
                                     </a>
                                 </li>
 
                                 <li class="px-6">
-                                    <a href={Routes.page_path(@conn, :list_deployments)} class="px-12 py-4">
+                                    <a href={Routes.page_path(@conn, :deployments)} class="px-12 py-4">
                                         <span><%= gettext "Deployments" %></span>
                                     </a>
                                 </li>
                                 <%= if @data.is_super do %>
                                     <li class="px-6">
-                                        <a href={Routes.page_path(@conn, :list_teams)} class="px-12 py-4">
+                                        <a href={Routes.page_path(@conn, :teams)} class="px-12 py-4">
                                             <span><%= gettext "Teams" %></span>
                                         </a>
                                     </li>
 
                                     <li class="px-6">
-                                        <a href={Routes.page_path(@conn, :list_users)} class="px-12 py-4">
+                                        <a href={Routes.page_path(@conn, :users)} class="px-12 py-4">
                                             <span><%= gettext "Users" %></span>
                                         </a>
                                     </li>
@@ -108,7 +108,7 @@
             <div class="offcanvas-header justify-content-between align-items-end me-16 ms-24 mt-16 p-0">
                 <div class="w-auto px-0">
                     <div class="hp-header-logo d-flex align-items-end">
-                        <a href={Routes.page_path(@conn, :dashboard)}>
+                        <a href={Routes.page_path(@conn, :deployments)}>
                             <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                             <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                             <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -137,7 +137,7 @@
 
                             <div class="w-auto px-0">
                                 <div class="hp-header-logo d-flex align-items-end">
-                                    <a href={Routes.page_path(@conn, :dashboard)}>
+                                    <a href={Routes.page_path(@conn, :deployments)}>
                                         <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                         <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                         <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -275,6 +275,56 @@
                 <div class="col-12">
                     <div class="card hp-contact-card mb-32">
                         <div class="card-body px-0">
+
+
+
+                            <div class="table-responsive">
+                                <table class="table align-middle table-hover table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th style="text-align: center"><%= gettext "Name" %></th>
+                                            <th style="text-align: center"><%= gettext "Type" %></th>
+                                            <th style="text-align: center"><%= gettext "Status" %></th>
+                                            <th style="text-align: center"><%= gettext "Created at" %></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                      <tr v-for="deployment in deployments">
+                                        <td>
+                                          <a href="javascript:;">
+                                            <div class="avatar-item avatar-lg d-flex align-items-center justify-content-center bg-primary-4 hp-bg-dark-primary text-primary hp-text-color-dark-0 rounded-circle">
+                                              <i class="iconly-Curved-Document"></i>
+                                            </div>
+                                          </a>
+                                        </td>
+                                        <td style="text-align: center">${deployment.name}</td>
+                                        <td style="text-align: center">${deployment.hostsCount}</td>
+                                        <td style="text-align: center">${deployment.team.name}</td>
+                                        <td style="text-align: center">${formatDatetime(deployment.createdAt)}</td>
+                                        <td>
+                                            <button @click="viewDeploymentAction(deployment.id)" class="btn btn-dashed btn-sm text-warning-100 border-warning-100 hp-hover-text-color-warning-80 hp-hover-border-color-warning-80">
+                                                <%= gettext "View" %>
+                                            </button>
+                                            <button @click="editDeploymentAction(deployment.id)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80" data-bs-toggle="modal" data-bs-target="#edit_deployment_modal">
+                                                <%= gettext "Edit" %>
+                                            </button>
+                                            <button @click="deleteDeploymentAction(deployment.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2">
+                                                <%= gettext "Delete" %>
+                                            </button>
+                                        </td>
+                                      </tr>
+                                      <tr v-if="deployments.length == 0">
+                                        <td colspan="6" style="text-align: center;"><%= gettext "No Records Found!" %></td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
                             <div class="table-responsive">
                                 <table class="table align-middle table-hover table-borderless">
                                     <thead>
@@ -343,32 +393,40 @@
                                 </table>
                             </div>
 
-                            <!--
-                            TODO
                             <nav>
                                 <ul class="pagination justify-content-end px-32">
                                     <li class="page-item">
-                                        <a class="page-link" href="javascript:;">
+                                        <button class="page-link" @click="loadPreviousPageAction" v-if="currentPage > 1">
                                             <svg viewBox="64 64 896 896" focusable="false" data-icon="left" width="12px" height="12px" fill="currentColor" aria-hidden="true">
                                                 <path d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"></path>
                                             </svg>
-                                        </a>
+                                        </button>
                                     </li>
 
                                     <li class="page-item">
-                                        <a class="page-link" href="javascript:;">1</a>
+                                        <button class="page-link">${currentPage}</button>
                                     </li>
 
                                     <li class="page-item">
-                                        <a class="page-link" href="javascript:;">
+                                        <button class="page-link" @click="loadNextPageAction" v-if="currentPage != totalPages">
                                             <svg viewBox="64 64 896 896" focusable="false" data-icon="right" width="12px" height="12px" fill="currentColor" aria-hidden="true">
                                                 <path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"></path>
                                             </svg>
-                                        </a>
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
-                            --->
+
+
+
+
+
+
+
+
+
+
+
                         </div>
                     </div>
                 </div>
