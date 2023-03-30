@@ -8,15 +8,9 @@ defmodule ScutiWeb.PageController do
   """
   use ScutiWeb, :controller
 
-  alias Scuti.Module.TeamModule
-  alias Scuti.Module.UserModule
   alias Scuti.Module.SettingsModule
   alias Scuti.Module.InstallModule
   alias Scuti.Service.AuthService
-  alias Scuti.Module.HostGroupModule
-  alias Scuti.Module.HostModule
-  alias Scuti.Module.DeploymentModule
-  alias Scuti.Module.TaskModule
 
   @doc """
   Install Page

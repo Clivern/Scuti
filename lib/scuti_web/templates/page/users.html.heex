@@ -88,7 +88,7 @@
 
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <a href="https://github.com/clivern/lynx/issues" class="d-flex align-items-center hp-p1-body py-4 px-10 hp-transition hp-hover-bg-primary-4 hp-hover-bg-dark-primary hp-hover-bg-dark-80 rounded" style="margin-left: -10px; margin-right: -10px;">
+                                                    <a href="https://github.com/clivern/scuti/issues" class="d-flex align-items-center hp-p1-body py-4 px-10 hp-transition hp-hover-bg-primary-4 hp-hover-bg-dark-primary hp-hover-bg-dark-80 rounded" style="margin-left: -10px; margin-right: -10px;">
                                                         <i class="iconly-Curved-Game me-8" style="font-size: 16px;"></i>
 
                                                         <span class="hp-ml-8"><%= gettext "Support" %></span>
@@ -294,27 +294,27 @@
                                     </thead>
 
                                     <tbody>
-                                      <tr v-for="user in users">
-                                        <td>
-                                          <a href="javascript:;">
-                                            <div class="avatar-item avatar-lg d-flex align-items-center justify-content-center bg-primary-4 hp-bg-dark-primary text-primary hp-text-color-dark-0 rounded-circle">
-                                              <i class="iconly-Light-User"></i>
-                                            </div>
-                                          </a>
-                                        </td>
-                                        <td style="text-align: center">${user.name}</td>
-                                        <td style="text-align: center">${user.email}</td>
-                                        <td style="text-align: center">${user.role}</td>
-                                        <td style="text-align: center">${formatDatetime(user.createdAt)}</td>
-                                        <td>
-                                        <!--
-                                          <button @click="editUserAction(user.id)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80"><%= gettext "Edit" %></button>-->
-                                          <button @click="deleteUserAction(user.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2"><%= gettext "Delete" %></button>
-                                        </td>
-                                      </tr>
-                                      <tr v-if="users.length == 0">
-                                        <td colspan="6" style="text-align: center;"><%= gettext "No Records Found!" %></td>
-                                      </tr>
+                                        <tr v-for="user in users">
+                                            <td>
+                                              <a href="javascript:;">
+                                                <div class="avatar-item avatar-lg d-flex align-items-center justify-content-center bg-primary-4 hp-bg-dark-primary text-primary hp-text-color-dark-0 rounded-circle">
+                                                  <i class="iconly-Light-User"></i>
+                                                </div>
+                                              </a>
+                                            </td>
+                                            <td style="text-align: center">${user.name}</td>
+                                            <td style="text-align: center">${user.email}</td>
+                                            <td style="text-align: center">${user.role}</td>
+                                            <td style="text-align: center">${formatDatetime(user.createdAt)}</td>
+                                            <td>
+                                            <!--
+                                                <button @click="editUserAction(user.id)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80"><%= gettext "Edit" %></button>-->
+                                                <button @click="deleteUserAction(user.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2"><%= gettext "Delete" %></button>
+                                            </td>
+                                        </tr>
+                                        <tr v-if="users.length == 0">
+                                            <td colspan="6" style="text-align: center;"><%= gettext "No Records Found!" %></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

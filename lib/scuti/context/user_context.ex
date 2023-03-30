@@ -13,7 +13,7 @@ defmodule Scuti.Context.UserContext do
   alias Scuti.Model.{Team, UserMeta, User, UserSession, UserTeam}
 
   @doc """
-  Get a new user
+  Creates a new user with the provided attributes
   """
   def new_user(attrs \\ %{}) do
     %{
@@ -29,29 +29,29 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get a user meta
+  Creates a new user meta with the provided attributes
   """
-  def new_meta(attrs \\ %{}) do
+  def new_meta(meta \\ %{}) do
     %{
-      key: attrs.key,
-      value: attrs.value,
-      user_id: attrs.user_id
+      key: meta.key,
+      value: meta.value,
+      user_id: meta.user_id
     }
   end
 
   @doc """
-  Get a user session
+  Creates a new user session with the provided attributes
   """
-  def new_session(attrs \\ %{}) do
+  def new_session(session \\ %{}) do
     %{
-      value: attrs.value,
-      expire_at: attrs.expire_at,
-      user_id: attrs.user_id
+      value: session.value,
+      expire_at: session.expire_at,
+      user_id: session.user_id
     }
   end
 
   @doc """
-  Create a new user
+  Creates a new user record in the database
   """
   def create_user(attrs \\ %{}) do
     %User{}
@@ -60,20 +60,34 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Retrieve a user by ID
+  Retrieves a user record by its ID
   """
   def get_user_by_id(id) do
     Repo.get(User, id)
   end
 
   @doc """
-  Get user by uuid
+  Retrieves the ID of a user by its UUID
+  """
+  def get_user_id_with_uuid(uuid) do
+    case get_user_by_uuid(uuid) do
+      nil ->
+        nil
+
+      user ->
+        user.id
+    end
+  end
+
+  @doc """
+  Retrieves a user record by its UUID
   """
   def get_user_by_uuid(uuid) do
     from(
       u in User,
       where: u.uuid == ^uuid
     )
+    |> limit(1)
     |> Repo.one()
   end
 
@@ -85,6 +99,7 @@ defmodule Scuti.Context.UserContext do
       u in User,
       where: u.api_key == ^api_key
     )
+    |> limit(1)
     |> Repo.one()
   end
 
@@ -96,6 +111,7 @@ defmodule Scuti.Context.UserContext do
       u in User,
       where: u.email == ^email
     )
+    |> limit(1)
     |> Repo.one()
   end
 
