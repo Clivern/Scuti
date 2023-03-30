@@ -167,10 +167,7 @@ defmodule Scuti.Module.TaskModule do
   Delete A Task
   """
   def delete_task(id) do
-    task =
-      id
-      |> ValidatorService.parse_int()
-      |> TaskContext.get_task_by_id()
+    task = TaskContext.get_task_by_id(id)
 
     case task do
       nil ->
