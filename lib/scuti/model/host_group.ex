@@ -12,11 +12,12 @@ defmodule Scuti.Model.HostGroup do
 
   schema "host_groups" do
     field :uuid, Ecto.UUID
-    field :team_id, :id
     field :name, :string
+    field :description, :string
     field :secret_key, :string
     field :labels, :string
     field :remote_join, :boolean, default: false
+    field :team_id, :id
 
     timestamps()
   end
@@ -28,6 +29,7 @@ defmodule Scuti.Model.HostGroup do
       :uuid,
       :team_id,
       :name,
+      :description,
       :secret_key,
       :labels,
       :remote_join
@@ -36,6 +38,7 @@ defmodule Scuti.Model.HostGroup do
       :uuid,
       :team_id,
       :name,
+      :description,
       :secret_key,
       :labels,
       :remote_join

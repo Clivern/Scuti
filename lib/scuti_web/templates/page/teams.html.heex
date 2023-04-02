@@ -287,6 +287,7 @@
                                             <th></th>
                                             <th style="text-align: center"><%= gettext "Name" %></th>
                                             <th style="text-align: center"><%= gettext "Members" %></th>
+                                            <th style="text-align: center"><%= gettext "Host Groups" %></th>
                                             <th style="text-align: center"><%= gettext "Created at" %></th>
                                             <th></th>
                                         </tr>
@@ -303,15 +304,17 @@
                                         </td>
                                         <td style="text-align: center">${team.name}</td>
                                         <td style="text-align: center">${team.usersCount}</td>
+                                        <td style="text-align: center">${team.groupsCount}</td>
                                         <td style="text-align: center">${formatDatetime(team.createdAt)}</td>
                                         <td>
                                             <!--
-                                          <button @click="editTeamAction(team.id)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80"><%= gettext "Edit" %></button>-->
-                                          <button @click="deleteTeamAction(team.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2"><%= gettext "Delete" %></button>
+                                                <button @click="editTeamAction(team.id)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80"><%= gettext "Edit" %></button>
+                                            -->
+                                            <button @click="deleteTeamAction(team.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2"><%= gettext "Delete" %></button>
                                         </td>
                                       </tr>
                                       <tr v-if="teams.length == 0">
-                                        <td colspan="5" style="text-align: center;"><%= gettext "No Records Found!" %></td>
+                                        <td colspan="6" style="text-align: center;"><%= gettext "No Records Found!" %></td>
                                       </tr>
                                     </tbody>
                                 </table>

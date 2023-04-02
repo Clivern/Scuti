@@ -9,6 +9,7 @@ defmodule Scuti.Repo.Migrations.CreateDeployments do
     create table(:deployments) do
       add :uuid, :uuid
       add :name, :string
+      add :description, :string
 
       add :hosts_filter, :string
       add :host_groups_filter, :string

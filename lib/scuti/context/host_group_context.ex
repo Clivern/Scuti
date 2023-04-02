@@ -19,6 +19,7 @@ defmodule Scuti.Context.HostGroupContext do
     %{
       name: attrs.name,
       secret_key: attrs.secret_key,
+      description: attrs.description,
       team_id: attrs.team_id,
       labels: attrs.labels,
       remote_join: attrs.remote_join,
@@ -61,6 +62,32 @@ defmodule Scuti.Context.HostGroupContext do
       h in HostGroup,
       where: h.uuid == ^uuid
     )
+    |> Repo.one()
+  end
+
+  @doc """
+  Get host group by ID and team ids
+  """
+  def get_group_by_id_teams(id, teams_ids) do
+    from(
+      h in HostGroup,
+      where: h.id == ^id,
+      where: h.team_id in ^teams_ids
+    )
+    |> limit(1)
+    |> Repo.one()
+  end
+
+  @doc """
+  Get host group by UUID and team ids
+  """
+  def get_group_by_uuid_teams(uuid, teams_ids) do
+    from(
+      h in HostGroup,
+      where: h.uuid == ^uuid,
+      where: h.team_id in ^teams_ids
+    )
+    |> limit(1)
     |> Repo.one()
   end
 
@@ -110,6 +137,16 @@ defmodule Scuti.Context.HostGroupContext do
       offset: ^offset
     )
     |> Repo.all()
+  end
+
+  @doc """
+  Count host groups
+  """
+  def count_groups() do
+    from(h in HostGroup,
+      select: count(h.id)
+    )
+    |> Repo.one()
   end
 
   @doc """

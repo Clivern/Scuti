@@ -9,6 +9,7 @@ defmodule Scuti.Repo.Migrations.CreateHostGroups do
     create table(:host_groups) do
       add :uuid, :uuid
       add :name, :string
+      add :description, :string
       add :secret_key, :string
       add :labels, :string
       add :remote_join, :boolean, default: false

@@ -19,6 +19,7 @@ defmodule Scuti.Module.HostGroupModule do
     group =
       HostGroupContext.new_group(%{
         name: data[:name],
+        description: data[:description],
         secret_key: data[:secret_key],
         team_id: data[:team_id],
         labels: data[:labels],
@@ -36,6 +37,67 @@ defmodule Scuti.Module.HostGroupModule do
 
         {:error, Enum.at(messages, 0)}
     end
+  end
+
+  @doc """
+  Update a group
+  """
+  def update_group(data \\ %{}) do
+    case HostGroupContext.get_group_by_uuid(data[:uuid]) do
+      nil ->
+        {:not_found, "Group with ID #{data[:uuid]} not found"}
+
+      group ->
+        new_group = %{
+          name: params[:name] || group.name,
+          description: params[:description] || group.description,
+          team_id: params[:team_id] || group.team_id,
+          labels: params[:labels] || group.labels,
+          remote_join: params[:remote_join] || group.remote_join
+        }
+
+        case HostGroupContext.update_group(group, new_group) do
+          {:ok, group} ->
+            {:ok, group}
+
+          {:error, changeset} ->
+            messages =
+              changeset.errors()
+              |> Enum.map(fn {field, {message, _options}} -> "#{field}: #{message}" end)
+
+            {:error, Enum.at(messages, 0)}
+        end
+    end
+  end
+
+  @doc """
+  Get host groups
+  """
+  def get_groups(offset, limit) do
+    HostGroupContext.get_groups(offset, limit)
+  end
+
+  @doc """
+  Count host groups
+  """
+  def count_groups() do
+    HostGroupContext.count_groups()
+  end
+
+  @doc """
+  Get user host groups
+  """
+  def get_groups(user_id, offset, limit) do
+    get_user_teams(user_id)
+    |> HostGroupContext.get_groups_by_teams(offset, limit)
+  end
+
+  @doc """
+  Get user host groups
+  """
+  def count_groups(user_id) do
+    get_user_teams(user_id)
+    |> count_groups_by_teams()
   end
 
   @doc """
@@ -92,9 +154,30 @@ defmodule Scuti.Module.HostGroupModule do
   end
 
   @doc """
+  Validate Team UUID
+  """
+  def validate_team_uuid(uuid) do
+    TeamContext.validate_team_uuid(uuid)
+  end
+
+  @doc """
   Count Hosts by Host Group
   """
   def count_hosts_by_host_group(group_id) do
     HostContext.count_hosts_by_host_group(group_id)
+  end
+
+  @doc """
+  Delete a Group by UUID
+  """
+  def delete_group_by_uuid(uuid) do
+    case HostGroupContext.get_group_by_uuid(uuid) do
+      nil ->
+        {:not_found, "Host group with ID #{uuid} not found"}
+
+      group ->
+        HostGroupContext.delete_group(group)
+        {:ok, "Host group with ID #{uuid} deleted successfully"}
+    end
   end
 end

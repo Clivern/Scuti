@@ -15,11 +15,19 @@ defmodule ScutiWeb.HostGroupController do
   alias Scuti.Service.ValidatorService
   alias Scuti.Service.AuthService
   alias Scuti.Exception.InvalidRequest
+  alias Scuti.Module.PermissionModule
 
-  @default_list_limit "10"
-  @default_list_offset "0"
+  @default_list_limit 10
+  @default_list_offset 0
+
+  @name_min_length 2
+  @name_max_length 60
+
+  @description_min_length 2
+  @description_max_length 250
 
   plug :regular_user, only: [:list, :index, :create, :update, :delete]
+  plug :access_check when action in [:index, :update, :delete]
 
   defp regular_user(conn, _opts) do
     Logger.info("Validate user permissions")
@@ -37,27 +45,46 @@ defmodule ScutiWeb.HostGroupController do
     end
   end
 
+  defp access_check(conn, _opts) do
+    Logger.info("Validate if user can access group")
+
+    if not PermissionModule.can_access_group_uuid(
+         :group,
+         conn.assigns[:user_role],
+         conn.params["uuid"],
+         conn.assigns[:user_id]
+       ) do
+      Logger.info("User doesn't own the group")
+
+      conn
+      |> put_status(:forbidden)
+      |> render("error.json", %{message: "Forbidden Access"})
+      |> halt
+    else
+      Logger.info("User can access the group")
+
+      conn
+    end
+  end
+
   @doc """
   List Action Endpoint
   """
   def list(conn, params) do
-    limit = ValidatorService.get_int(params["limit"], @default_list_limit)
-    offset = ValidatorService.get_int(params["offset"], @default_list_offset)
-    user_teams = HostGroupModule.get_user_teams(conn.assigns[:user_id])
-
-    teams_ids = []
-
-    teams_ids =
-      for user_team <- user_teams do
-        teams_ids ++ user_team.id
+    {groups, count} =
+      if conn.assigns[:is_super] do
+        {HostGroupModule.get_groups(offset, limit), HostGroupModule.count_groups()}
+      else
+        {HostGroupModule.get_groups(conn.assigns[:user_id], offset, limit),
+         HostGroupModule.count_groups(conn.assigns[:user_id])}
       end
 
     render(conn, "list.json", %{
-      groups: HostGroupModule.get_groups_by_teams(teams_ids, offset, limit),
+      groups: groups,
       metadata: %{
         limit: limit,
         offset: offset,
-        totalCount: HostGroupModule.count_groups_by_teams(teams_ids)
+        totalCount: count
       }
     })
   end
@@ -66,92 +93,209 @@ defmodule ScutiWeb.HostGroupController do
   Create Action Endpoint
   """
   def create(conn, params) do
-    try do
-      validate_create_request(params)
+    case validate_create_request(params) do
+      {:ok, _} ->
+        result =
+          HostGroupModule.create_group(%{
+            name: params["name"],
+            description: params["description"],
+            secret_key: AuthService.get_random_salt(),
+            team_id: params["team_id"],
+            labels: params["labels"],
+            remote_join: params["remote_join"] == "enabled"
+          })
 
-      name = ValidatorService.get_str(params["name"], "")
-      labels = ValidatorService.get_str(params["labels"], "")
-      remote_join = ValidatorService.get_list(params["remoteJoin"], "disabled")
-      team = ValidatorService.get_int(params["teamId"], 0)
+        case result do
+          {:ok, group} ->
+            conn
+            |> put_status(:created)
+            |> render("index.json", %{group: group})
 
-      result =
-        HostGroupModule.create_group(%{
-          name: name,
-          secret_key: AuthService.get_random_salt(),
-          team_id: team,
-          labels: labels,
-          remote_join: remote_join == "enabled"
-        })
+          {:error, msg} ->
+            conn
+            |> put_status(:bad_request)
+            |> render("error.json", %{message: msg})
+        end
 
-      case result do
-        {:error, _} ->
-          raise InvalidRequest, message: "Invalid Request"
-
-        {:ok, group} ->
-          conn
-          |> put_status(:created)
-          |> render("create.json", %{group: group})
-      end
-    rescue
-      e in InvalidRequest ->
+      {:error, reason} ->
         conn
         |> put_status(:bad_request)
-        |> render("error.json", %{message: e.message})
-
-      _ ->
-        conn
-        |> put_status(:internal_server_error)
-        |> render("error.json", %{message: "Internal server error"})
+        |> render("error.json", %{message: reason})
     end
   end
 
   @doc """
   Index Action Endpoint
   """
-  def index(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def index(conn, %{"uuid" => uuid}) do
+    case HostGroupModule.get_group_by_uuid(uuid) do
+      {:not_found, msg} ->
+        conn
+        |> put_status(:not_found)
+        |> render("error.json", %{message: msg})
+
+      {:ok, group} ->
+        conn
+        |> put_status(:ok)
+        |> render("index.json", %{group: group})
+    end
   end
 
   @doc """
   Update Action Endpoint
   """
-  def update(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def update(conn, params) do
+    case validate_update_request(params, params["uuid"]) do
+      {:ok, _} ->
+        result =
+          HostGroupModule.update_group(%{
+            name: params["name"],
+            description: params["description"],
+            team_id: params["team_id"],
+            labels: params["labels"],
+            remote_join: params["remote_join"] == "enabled"
+          })
+
+        case result do
+          {:ok, group} ->
+            conn
+            |> put_status(:ok)
+            |> render("index.json", %{group: group})
+
+          {:error, msg} ->
+            conn
+            |> put_status(:bad_request)
+            |> render("error.json", %{message: msg})
+        end
+
+      {:error, reason} ->
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{message: reason})
+    end
   end
 
   @doc """
   Delete Action Endpoint
   """
-  def delete(conn, _params) do
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{status: "ok"}))
+  def delete(conn, %{"uuid" => uuid}) do
+    Logger.info("Attempt to delete host group with uuid #{uuid}")
+
+    case HostGroupModule.delete_group_by_uuid(uuid) do
+      {:not_found, msg} ->
+        Logger.info("Host group with uuid #{uuid} not found")
+
+        conn
+        |> put_status(:not_found)
+        |> render("error.json", %{message: msg})
+
+      {:ok, _} ->
+        Logger.info("Host group with uuid #{uuid} is deleted")
+
+        conn
+        |> send_resp(:no_content, "")
+    end
   end
 
   defp validate_create_request(params) do
-    name = ValidatorService.get_str(params["name"], "")
-    remote_join = ValidatorService.get_str(params["remoteJoin"], "disabled")
+    errs = %{
+      name_required: "Group name is required",
+      name_invalid: "Group name is invalid",
+      description_required: "Group description is required",
+      description_invalid: "Group description is invalid",
+      labels_required: "Group labels is required",
+      labels_invalid: "Group labels is invalid",
+      remote_join_required: "Group remote join is required",
+      remote_join_invalid: "Group remote join is invalid",
+      team_id_required: "Group team id is required",
+      team_id_invalid: "Group team id is invalid"
+    }
 
-    if ValidatorService.is_empty(name) do
-      raise InvalidRequest, message: "Host group name is required"
+    with {:ok, _} <- ValidatorService.is_string?(params["name"], errs.name_required),
+         {:ok, _} <-
+           ValidatorService.is_string?(params["description"], errs.description_required),
+         {:ok, _} <- ValidatorService.is_string?(params["labels"], errs.labels_required),
+         {:ok, _} <-
+           ValidatorService.is_string?(params["remote_join"], errs.remote_join_required),
+         {:ok, _} <- ValidatorService.is_string?(params["team_id"], errs.team_id_required),
+         {:ok, _} <-
+           ValidatorService.is_length_between?(
+             params["name"],
+             @name_min_length,
+             @name_max_length,
+             errs.name_invalid
+           ),
+         {:ok, _} <-
+           ValidatorService.is_length_between?(
+             params["description"],
+             @description_min_length,
+             @description_max_length,
+             errs.description_invalid
+           ),
+         {:ok, _} <- ValidatorService.is_uuid?(params["team_id"], errs.team_id_invalid),
+         {:ok, _} <- ValidatorService.is_labels?(params["labels"], errs.labels_invalid),
+         {:ok, _} <-
+           ValidatorService.in?(
+             params["remote_join"],
+             ["enabled", "disabled"],
+             errs.remote_join_invalid
+           ) do
+      {:ok, ""}
+    else
+      {:error, reason} -> {:error, reason}
     end
+  end
 
-    if ValidatorService.is_empty(remote_join) do
-      raise InvalidRequest, message: "Remote join option is required"
-    end
+  defp validate_update_request(params, group_id) do
+    errs = %{
+      name_required: "Group name is required",
+      name_invalid: "Group name is invalid",
+      description_required: "Group description is required",
+      description_invalid: "Group description is invalid",
+      labels_required: "Group labels is required",
+      labels_invalid: "Group labels is invalid",
+      remote_join_required: "Group remote join is required",
+      remote_join_invalid: "Group remote join is invalid",
+      team_id_required: "Group team id is required",
+      team_id_invalid: "Group team id  is invalid",
+      group_id_required: "Group id is required",
+      group_id_invalid: "Group id is invalid"
+    }
 
-    if not ValidatorService.validate_int(params["teamId"]) do
-      raise InvalidRequest, message: "Team is required"
-    end
-
-    team = ValidatorService.get_int(params["teamId"], 0)
-
-    if not HostGroupModule.validate_team_id(team) do
-      raise InvalidRequest, message: "Team is required"
+    with {:ok, _} <- ValidatorService.is_string?(params["name"], errs.name_required),
+         {:ok, _} <-
+           ValidatorService.is_string?(params["description"], errs.description_required),
+         {:ok, _} <- ValidatorService.is_string?(params["labels"], errs.labels_required),
+         {:ok, _} <-
+           ValidatorService.is_string?(params["remote_join"], errs.remote_join_required),
+         {:ok, _} <- ValidatorService.is_string?(params["team_id"], errs.team_id_required),
+         {:ok, _} <- ValidatorService.is_string?(group_id, errs.group_id_required),
+         {:ok, _} <-
+           ValidatorService.is_length_between?(
+             params["name"],
+             @name_min_length,
+             @name_max_length,
+             errs.name_invalid
+           ),
+         {:ok, _} <-
+           ValidatorService.is_length_between?(
+             params["description"],
+             @description_min_length,
+             @description_max_length,
+             errs.description_invalid
+           ),
+         {:ok, _} <- ValidatorService.is_uuid?(params["team_id"], errs.team_id_invalid),
+         {:ok, _} <- ValidatorService.is_uuid?(group_id, errs.group_id_invalid),
+         {:ok, _} <- ValidatorService.is_labels?(params["labels"], errs.labels_invalid),
+         {:ok, _} <-
+           ValidatorService.in?(
+             params["remote_join"],
+             ["enabled", "disabled"],
+             errs.remote_join_invalid
+           ) do
+      {:ok, ""}
+    else
+      {:error, reason} -> {:error, reason}
     end
   end
 end

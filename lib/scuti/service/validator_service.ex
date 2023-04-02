@@ -151,6 +151,16 @@ defmodule Scuti.Service.ValidatorService do
   end
 
   @doc """
+  Validates if a value is labels
+  """
+  def is_labels?(value, err) do
+    case Regex.match?(~r/^(?:\w+=[^,]+(?:,\s*\w+=[^,]+)*)?$/, value) do
+      true -> {:ok, value}
+      false -> {:error, err}
+    end
+  end
+
+  @doc """
   Validates if email is used
   """
   def is_email_used?(email, user_uuid, err) do

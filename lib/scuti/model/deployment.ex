@@ -12,8 +12,9 @@ defmodule Scuti.Model.Deployment do
 
   schema "deployments" do
     field :uuid, Ecto.UUID
-    field :team_id, :id
     field :name, :string
+    field :description, :string
+    field :team_id, :id
 
     # Hosts Filters
     field :hosts_filter, :string
@@ -55,6 +56,7 @@ defmodule Scuti.Model.Deployment do
       :uuid,
       :team_id,
       :name,
+      :description,
       :hosts_filter,
       :host_groups_filter,
       :patch_type,
@@ -75,6 +77,7 @@ defmodule Scuti.Model.Deployment do
       :uuid,
       :team_id,
       :name,
+      :description,
       :hosts_filter,
       :host_groups_filter,
       :patch_type,

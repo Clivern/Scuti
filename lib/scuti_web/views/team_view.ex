@@ -7,6 +7,7 @@ defmodule ScutiWeb.TeamView do
 
   alias Scuti.Module.UserModule
   alias Scuti.Module.TeamModule
+  alias Scuti.Module.HostGroupModule
 
   # Render teams list
   def render("list.json", %{teams: teams, metadata: metadata}) do
@@ -36,6 +37,7 @@ defmodule ScutiWeb.TeamView do
       id: team.uuid,
       name: team.name,
       usersCount: UserModule.count_team_users(team.id),
+      groupsCount: HostGroupModule.count_groups_by_teams([team.id]),
       description: team.description,
       members: TeamModule.get_team_members(team.id),
       createdAt: team.inserted_at,
