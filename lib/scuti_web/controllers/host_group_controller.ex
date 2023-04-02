@@ -14,7 +14,6 @@ defmodule ScutiWeb.HostGroupController do
   alias Scuti.Module.HostGroupModule
   alias Scuti.Service.ValidatorService
   alias Scuti.Service.AuthService
-  alias Scuti.Exception.InvalidRequest
   alias Scuti.Module.PermissionModule
 
   @default_list_limit 10
@@ -26,7 +25,7 @@ defmodule ScutiWeb.HostGroupController do
   @description_min_length 2
   @description_max_length 250
 
-  plug :regular_user, only: [:list, :index, :create, :update, :delete]
+  plug :regular_user when action in [:list, :index, :create, :update, :delete]
   plug :access_check when action in [:index, :update, :delete]
 
   defp regular_user(conn, _opts) do
@@ -46,7 +45,7 @@ defmodule ScutiWeb.HostGroupController do
   end
 
   defp access_check(conn, _opts) do
-    Logger.info("Validate if user can access group")
+    Logger.info("Validate if user can access host group")
 
     if not PermissionModule.can_access_group_uuid(
          :group,
@@ -54,14 +53,14 @@ defmodule ScutiWeb.HostGroupController do
          conn.params["uuid"],
          conn.assigns[:user_id]
        ) do
-      Logger.info("User doesn't own the group")
+      Logger.info("User doesn't own the host group")
 
       conn
       |> put_status(:forbidden)
       |> render("error.json", %{message: "Forbidden Access"})
       |> halt
     else
-      Logger.info("User can access the group")
+      Logger.info("User can access the host group")
 
       conn
     end
