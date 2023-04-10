@@ -49,11 +49,11 @@ defmodule Scuti.Module.HostGroupModule do
 
       group ->
         new_group = %{
-          name: params[:name] || group.name,
-          description: params[:description] || group.description,
-          team_id: params[:team_id] || group.team_id,
-          labels: params[:labels] || group.labels,
-          remote_join: params[:remote_join] || group.remote_join
+          name: data[:name] || group.name,
+          description: data[:description] || group.description,
+          team_id: data[:team_id] || group.team_id,
+          labels: data[:labels] || group.labels,
+          remote_join: data[:remote_join] || group.remote_join
         }
 
         case HostGroupContext.update_group(group, new_group) do
