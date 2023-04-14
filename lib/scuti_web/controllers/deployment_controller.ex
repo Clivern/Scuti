@@ -12,8 +12,8 @@ defmodule ScutiWeb.DeploymentController do
   require Logger
 
   alias Scuti.Module.DeploymentModule
-  alias Scuti.Service.ValidatorService
   alias Scuti.Module.TeamModule
+  alias Scuti.Service.ValidatorService
   alias Scuti.Exception.InvalidRequest
 
   # @default_list_limit "10"

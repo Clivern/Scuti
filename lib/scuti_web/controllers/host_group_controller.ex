@@ -12,9 +12,10 @@ defmodule ScutiWeb.HostGroupController do
   require Logger
 
   alias Scuti.Module.HostGroupModule
+  alias Scuti.Module.PermissionModule
+  alias Scuti.Module.TeamModule
   alias Scuti.Service.ValidatorService
   alias Scuti.Service.AuthService
-  alias Scuti.Module.PermissionModule
 
   @default_list_limit 10
   @default_list_offset 0
@@ -70,6 +71,9 @@ defmodule ScutiWeb.HostGroupController do
   List Action Endpoint
   """
   def list(conn, params) do
+    limit = params["limit"] || @default_list_limit
+    offset = params["offset"] || @default_list_offset
+
     {groups, count} =
       if conn.assigns[:is_super] do
         {HostGroupModule.get_groups(offset, limit), HostGroupModule.count_groups()}
@@ -99,7 +103,7 @@ defmodule ScutiWeb.HostGroupController do
             name: params["name"],
             description: params["description"],
             secret_key: AuthService.get_random_salt(),
-            team_id: params["team_id"],
+            team_id: TeamModule.get_team_id_with_uuid(params["team_id"]),
             labels: params["labels"],
             remote_join: params["remote_join"] == "enabled"
           })
@@ -150,7 +154,7 @@ defmodule ScutiWeb.HostGroupController do
           HostGroupModule.update_group(%{
             name: params["name"],
             description: params["description"],
-            team_id: params["team_id"],
+            team_id: TeamModule.get_team_id_with_uuid(params["team_id"]),
             labels: params["labels"],
             remote_join: params["remote_join"] == "enabled"
           })

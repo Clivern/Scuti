@@ -17,6 +17,7 @@ defmodule ScutiWeb.UserController do
 
   @name_min_length 2
   @name_max_length 60
+
   @default_list_limit 10
   @default_list_offset 0
 
