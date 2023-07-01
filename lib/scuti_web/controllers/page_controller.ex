@@ -274,7 +274,7 @@ defmodule ScutiWeb.PageController do
   @doc """
   Deployment Page
   """
-  def deployment(conn, _params) do
+  def deployment(conn, params) do
     case conn.assigns[:is_super] do
       false ->
         conn

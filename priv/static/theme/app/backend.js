@@ -1108,7 +1108,6 @@ scuti_app.add_host_modal01 = (Vue, axios, $) => {
 
 }
 
-
 // Add Host Modal
 scuti_app.add_host_modal02 = (Vue, axios, $) => {
 
@@ -1135,6 +1134,155 @@ scuti_app.add_host_modal02 = (Vue, axios, $) => {
                         }
                     })
                     .catch((error) => {
+                        show_notification(error.response.data.errorMessage);
+                    });
+            }
+        }
+    });
+
+}
+
+// Deployment list
+scuti_app.deployments_list = (Vue, axios, $) => {
+
+    return new Vue({
+        delimiters: ['${', '}'],
+        el: '#deployments_list',
+        data() {
+            return {
+                currentPage: 1,
+                limit: 10,
+                totalCount: 5,
+                deployments: []
+            }
+        },
+        mounted() {
+            this.loadDataAction();
+        },
+        computed: {
+            totalPages() {
+                return Math.ceil(this.totalCount / this.limit);
+            }
+        },
+        methods: {
+            formatDatetime(datatime) {
+                return format_datetime(datatime);
+            },
+
+            deleteDeploymentAction(id) {
+                if (confirm(_globals.delete_deployment_alert) != true) {
+                    return;
+                }
+
+                axios.delete(_globals.delete_deployment_endpoint.replace("UUID", id), {})
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            show_notification(_globals.delete_deployment_message);
+                            setTimeout(() => { location.reload(); }, 2000);
+                        }
+                    })
+                    .catch((error) => {
+                        show_notification(error.response.data.errorMessage);
+                    });
+            },
+
+            loadDataAction() {
+                var offset = (this.currentPage - 1) * this.limit;
+
+                axios.get($("#deployments_list").attr("data-action"), {
+                        params: {
+                            offset: offset,
+                            limit: this.limit
+                        }
+                    })
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            this.deployments = response.data.deployments;
+                            this.limit = response.data._metadata.limit;
+                            this.offset = response.data._metadata.offset;
+                            this.totalCount = response.data._metadata.totalCount;
+                        }
+                    })
+                    .catch((error) => {
+                        show_notification(error.response.data.errorMessage);
+                    });
+            },
+            loadPreviousPageAction(event) {
+                event.preventDefault();
+
+                if (this.currentPage > 1) {
+                    this.currentPage--;
+                    this.loadDataAction();
+                }
+            },
+            loadNextPageAction(event) {
+                event.preventDefault();
+
+                if (this.currentPage < this.totalPages) {
+                    this.currentPage++;
+                    this.loadDataAction();
+                }
+            }
+        }
+    });
+}
+
+// Add Deployment Modal
+scuti_app.add_deployment_modal = (Vue, axios, $) => {
+
+    return new Vue({
+        delimiters: ['${', '}'],
+        el: '#add_deployment_modal',
+        data() {
+            return {
+                isInProgress: false,
+                teams: []
+            }
+        },
+        mounted() {
+            this.loadData();
+        },
+        methods: {
+            loadData() {
+                axios.get($("#add_deployment_modal").attr("data-action"), {
+                        params: {
+                            offset: 0,
+                            limit: 10000
+                        }
+                    })
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            this.teams = response.data.teams;
+                        }
+                    })
+                    .catch((error) => {
+                        show_notification(error.response.data.errorMessage);
+                    });
+            },
+            addDeploymentAction(event) {
+                event.preventDefault();
+                this.isInProgress = true;
+
+                let inputs = {};
+                let _self = $(event.target);
+                let _form = _self.closest("form");
+
+                _form.serializeArray().map((item, index) => {
+                    inputs[item.name] = item.value;
+                });
+
+                axios.post(_form.attr('action'), inputs)
+                    .then((response) => {
+                        if (response.status >= 200) {
+                            show_notification(_globals.new_deployment);
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
+                        }
+                    })
+                    .catch((error) => {
+                        this.isInProgress = false;
+                        // Show error
                         show_notification(error.response.data.errorMessage);
                     });
             }
@@ -1280,6 +1428,22 @@ $(document).ready(() => {
 
     if (document.getElementById("add_host_modal")) {
         scuti_app.add_host_modal02(
+            Vue,
+            axios,
+            $
+        );
+    }
+
+    if (document.getElementById("deployments_list")) {
+        scuti_app.deployments_list(
+            Vue,
+            axios,
+            $
+        );
+    }
+
+    if (document.getElementById("add_deployment_modal")) {
+        scuti_app.add_deployment_modal(
             Vue,
             axios,
             $

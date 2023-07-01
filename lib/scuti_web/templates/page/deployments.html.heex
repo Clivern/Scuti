@@ -1,8 +1,14 @@
 <script type="text/javascript">
-    var i18n_globals = {
-      new_deployment: '<%= gettext "Deployment created successfully!" %>'
-    }
+  var _globals = {
+    new_deployment: '<%= gettext "Deployment created successfully!" %>',
+    delete_deployment_message: '<%= gettext "Deployment deleted successfully!" %>',
+    update_deployment_message: '<%= gettext "Deployment updated successfully!" %>',
+    delete_deployment_alert: '<%= gettext "You are trying to delete a deployment! are you sure?" %>',
+    delete_deployment_endpoint: '<%= Routes.deployment_path(@conn, :delete, "UUID") %>',
+    deployment_view_page: '<%= Routes.page_path(@conn, :deployment, "UUID") %>'
+  }
 </script>
+
 <main class="hp-bg-color-dark-90 d-flex min-vh-100">
     <div class="hp-main-layout hp-main-layout-horizontal">
         <header>
@@ -247,7 +253,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" id="deployments_list" data-action={Routes.deployment_path(@conn, :list)}>
                     <div class="card hp-contact-card mb-32">
                         <div class="card-body px-0">
                             <div class="table-responsive">
@@ -406,9 +412,6 @@
                                         <div class="mb-24">
                                             <label class="form-label"><%= gettext "Team" %></label>
                                             <select class="form-select" name="team_id" required="required">
-                                                <%= for team <- @data.user_teams do %>
-                                                <option value={team.id}><%= team.name %></option>
-                                                <% end %>
                                             </select>
                                         </div>
                                     </div>
