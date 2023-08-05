@@ -30,6 +30,7 @@ defmodule Scuti.Module.DeploymentModule do
         rollout_strategy_value: data[:rollout_strategy_value],
         schedule_type: data[:schedule_type],
         schedule_time: data[:schedule_time],
+        recurrence: data[:recurrence],
         last_status: data[:last_status],
         last_run_at: data[:last_run_at]
       })
@@ -71,7 +72,8 @@ defmodule Scuti.Module.DeploymentModule do
           rollout_strategy_value:
             data[:rollout_strategy_value] || deployment.rollout_strategy_value,
           schedule_type: data[:schedule_type] || deployment.schedule_type,
-          schedule_time: data[:schedule_time] || deployment.schedule_time
+          schedule_time: data[:schedule_time] || deployment.schedule_time,
+          recurrence: data[:recurrence] || deployment.recurrence
         }
 
         case DeploymentContext.update_deployment(deployment, new_deployment) do

@@ -38,6 +38,7 @@ defmodule Scuti.Model.Deployment do
     # :once || :recursive
     field :schedule_type, :string
     field :schedule_time, :utc_datetime
+    field :recurrence, :string
 
     # :unknown || :pending || :running || :success || :failure || :skipped
     field :last_status, :string
@@ -65,6 +66,7 @@ defmodule Scuti.Model.Deployment do
       :rollout_strategy_value,
       :schedule_type,
       :schedule_time,
+      :recurrence,
       :last_status,
       :last_run_at
     ])

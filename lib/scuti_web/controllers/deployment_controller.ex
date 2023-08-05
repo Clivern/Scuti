@@ -110,6 +110,7 @@ defmodule ScutiWeb.DeploymentController do
             rollout_strategy_value: params["rollout_strategy_value"],
             schedule_type: params["schedule_type"],
             schedule_time: params["schedule_time"],
+            recurrence: params["recurrence"],
             last_status: "unknown",
             last_run_at: DateTime.utc_now(),
             team_id: TeamModule.get_team_id_with_uuid(params["team_id"])
@@ -172,7 +173,8 @@ defmodule ScutiWeb.DeploymentController do
             rollout_strategy: params["rollout_strategy"],
             rollout_strategy_value: params["rollout_strategy_value"],
             schedule_type: params["schedule_type"],
-            schedule_time: params["schedule_time"]
+            schedule_time: params["schedule_time"],
+            recurrence: params["recurrence"]
           })
 
         case result do
@@ -239,6 +241,7 @@ defmodule ScutiWeb.DeploymentController do
       schedule_type_required: "Deployment schedule type is required",
       schedule_type_invalid: "Deployment schedule type is invalid",
       schedule_time_required: "Deployment schedule time is required",
+      recurrence_invalid: "Recurrence is invalid",
       team_id_required: "Team id is required",
       team_id_invalid: "Team id is invalid"
     }
@@ -325,7 +328,9 @@ defmodule ScutiWeb.DeploymentController do
              errs.schedule_type_invalid
            ),
          {:ok, _} <-
-           ValidatorService.is_string?(params["schedule_time"], errs.schedule_time_required) do
+           ValidatorService.is_string?(params["schedule_time"], errs.schedule_time_required),
+         {:ok, _} <-
+           ValidatorService.is_string?(params["recurrence"], errs.recurrence_invalid) do
       {:ok, ""}
     else
       {:error, reason} -> {:error, reason}
@@ -355,6 +360,7 @@ defmodule ScutiWeb.DeploymentController do
       schedule_type_required: "Deployment schedule type is required",
       schedule_type_invalid: "Deployment schedule type is invalid",
       schedule_time_required: "Deployment schedule time is required",
+      recurrence_invalid: "Recurrence is invalid",
       deployment_id_required: "Deployment id is required",
       deployment_id_invalid: "Deployment id is invalid"
     }
@@ -440,6 +446,8 @@ defmodule ScutiWeb.DeploymentController do
            ),
          {:ok, _} <-
            ValidatorService.is_string?(params["schedule_time"], errs.schedule_time_required),
+         {:ok, _} <-
+           ValidatorService.is_string?(params["recurrence"], errs.recurrence_invalid),
          {:ok, _} <- ValidatorService.is_string?(deployment_id, errs.deployment_id_required),
          {:ok, _} <- ValidatorService.is_uuid?(deployment_id, errs.deployment_id_invalid) do
       {:ok, ""}

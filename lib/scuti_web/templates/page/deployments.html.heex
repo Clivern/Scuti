@@ -367,7 +367,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="add_deployment_modal" tabindex="-1" aria-labelledby="addNewDeploymentLabel" aria-hidden="true">
+            <div class="modal fade" id="add_deployment_modal" tabindex="-1" aria-labelledby="addNewDeploymentLabel" aria-hidden="true" data-action={Routes.team_path(@conn, :list)}>
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header py-16 px-24">
@@ -405,13 +405,6 @@
                                                 <option value="os_upgrade" selected><%= gettext "OS Upgrade" %></option>
                                                 <option value="distribution_upgrade"><%= gettext "Distribution Upgrade" %></option>
                                                 <option value="custom_system_patch"><%= gettext "Custom System Patch" %></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Team" %></label>
-                                            <select class="form-select" name="team_id" required="required">
                                             </select>
                                         </div>
                                     </div>
@@ -469,16 +462,42 @@
                                     <div class="col-12">
                                         <div class="mb-24">
                                             <label class="form-label"><%= gettext "Schedule Type" %></label>
-                                            <select class="form-select" name="schedule_type" required="required">
+                                            <select class="form-select" name="schedule_type" required="required" v-model="scheduleType">
                                                 <option value="once" selected><%= gettext "Once" %></option>
                                                 <option value="recursive"><%= gettext "Recursive" %></option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12" v-show="scheduleType == 'once'">
                                         <div class="mb-24">
                                             <label class="form-label"><%= gettext "Schedule Time in UTC" %></label>
                                             <input type="datetime-local" class="form-control" name="schedule_time" required="required">
+                                        </div>
+                                    </div>
+                                    <div class="col-12" v-show="scheduleType == 'recursive'">
+                                        <div class="mb-24">
+                                            <label class="form-label"><%= gettext "Recurrence" %></label>
+                                            <select class="form-select" name="recurrence" required="required">
+                                                <option value="daily"><%= gettext "Daily" %></option>
+                                                <option value="weekly"><%= gettext "Weekly" %></option>
+                                                <option value="monthly"><%= gettext "Monthly" %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12" v-show="scheduleType == 'recursive'">
+                                        <div class="mb-24">
+                                            <label class="form-label"><%= gettext "Start Time in UTC" %></label>
+                                            <input type="datetime-local" class="form-control" name="schedule_time" required="required">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="mb-24">
+                                            <label class="form-label"><%= gettext "Team" %></label>
+                                            <select class="form-select" name="team_id" required="required">
+                                                <template v-for="team in teams">
+                                                    <option :value="team.id">${team.name}</option>
+                                                </template>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

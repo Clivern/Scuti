@@ -26,6 +26,7 @@ defmodule Scuti.Repo.Migrations.CreateDeployments do
 
       add :schedule_type, :string
       add :schedule_time, :utc_datetime
+      add :recurrence, :string
 
       add :last_status, :string
       add :last_run_at, :utc_datetime

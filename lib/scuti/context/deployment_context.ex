@@ -35,6 +35,7 @@ defmodule Scuti.Context.DeploymentContext do
       rollout_strategy_value: attrs.rollout_strategy_value,
       schedule_type: attrs.schedule_type,
       schedule_time: attrs.schedule_time,
+      recurrence: attrs.recurrence,
       last_status: attrs.last_status,
       last_run_at: attrs.last_run_at,
       uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())

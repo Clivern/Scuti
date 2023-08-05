@@ -1236,7 +1236,10 @@ scuti_app.add_deployment_modal = (Vue, axios, $) => {
         data() {
             return {
                 isInProgress: false,
-                teams: []
+                teams: [],
+                patchType: "os_upgrade",
+                rolloutStrategy: "one_by_one",
+                scheduleType: "once"
             }
         },
         mounted() {
