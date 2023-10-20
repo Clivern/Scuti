@@ -11,11 +11,11 @@ defmodule ScutiWeb.SettingsController do
 
   require Logger
 
-  @app_name_min_length 2
-  @app_name_max_length 60
-
   alias Scuti.Module.SettingsModule
   alias Scuti.Service.ValidatorService
+
+  @app_name_min_length 2
+  @app_name_max_length 60
 
   plug :super_user when action in [:update]
 

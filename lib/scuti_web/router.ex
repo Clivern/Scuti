@@ -38,16 +38,17 @@ defmodule ScutiWeb.Router do
 
     get "/admin/dashboard", PageController, :dashboard
     get "/admin/profile", PageController, :profile
-    get "/admin/group", PageController, :list_groups
-    get "/admin/group/:uuid", PageController, :view_group
 
-    get "/admin/deployment", PageController, :list_deployments
-    get "/admin/deployment/add", PageController, :add_deployment
-    get "/admin/deployment/edit/:uuid", PageController, :edit_deployment
-    get "/admin/deployment/view/:uuid", PageController, :view_deployment
+    get "/admin/groups", PageController, :groups
+    get "/admin/groups/view/:uuid", PageController, :group
 
-    get "/admin/team", PageController, :list_teams
-    get "/admin/user", PageController, :list_users
+    get "/admin/deployments", PageController, :deployments
+    get "/admin/deployments/add", PageController, :add_deployment
+    get "/admin/deployments/edit/:uuid", PageController, :edit_deployment
+    get "/admin/deployments/view/:uuid", PageController, :deployment
+
+    get "/admin/teams", PageController, :teams
+    get "/admin/users", PageController, :users
     get "/admin/settings", PageController, :settings
   end
 
@@ -86,18 +87,18 @@ defmodule ScutiWeb.Router do
     put "/settings", SettingsController, :update
 
     # HostGroup CRUD
-    get "/hostGroup", HostGroupController, :list
-    post "/hostGroup", HostGroupController, :create
-    get "/hostGroup/:uuid", HostGroupController, :index
-    put "/hostGroup/:uuid", HostGroupController, :update
-    delete "/hostGroup/:uuid", HostGroupController, :delete
+    get "/group", HostGroupController, :list
+    post "/group", HostGroupController, :create
+    get "/group/:uuid", HostGroupController, :index
+    put "/group/:uuid", HostGroupController, :update
+    delete "/group/:uuid", HostGroupController, :delete
 
     # Host CRUD
-    get "/hostGroup/:group_uuid/host", HostController, :list
-    post "/hostGroup/:group_uuid/host", HostController, :create
-    get "/hostGroup/:group_uuid/host/:host_uuid", HostController, :index
-    put "/hostGroup/:group_uuid/host/:host_uuid", HostController, :update
-    delete "/hostGroup/:group_uuid/host/:host_uuid", HostController, :delete
+    get "/group/:group_uuid/host", HostController, :list
+    post "/group/:group_uuid/host", HostController, :create
+    get "/group/:group_uuid/host/:host_uuid", HostController, :index
+    put "/group/:group_uuid/host/:host_uuid", HostController, :update
+    delete "/group/:group_uuid/host/:host_uuid", HostController, :delete
 
     # Deployment CRUD
     get "/deployment", DeploymentController, :list
@@ -107,11 +108,7 @@ defmodule ScutiWeb.Router do
     delete "/deployment/:uuid", DeploymentController, :delete
 
     # Task CRUD
-    get "/task", TaskController, :list
-    post "/task", TaskController, :create
     get "/task/:uuid", TaskController, :index
-    put "/task/:uuid", TaskController, :update
-    delete "/task/:uuid", TaskController, :delete
 
     # Profile Endpoint
     post "/profile", ProfileController, :update

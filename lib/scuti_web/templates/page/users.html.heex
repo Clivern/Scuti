@@ -1,6 +1,9 @@
 <script type="text/javascript">
   var i18n_globals = {
-    new_group: '<%= gettext "Host group created successfully!" %>'
+    new_user: '<%= gettext "User created successfully!" %>',
+    delete_user_message: '<%= gettext "User deleted successfully!" %>',
+    delete_user_alert: '<%= gettext "You are trying to delete a user! are you sure?" %>',
+    delete_user_endpoint: '<%= Routes.user_path(@conn, :delete, "UUID") %>'
   }
 </script>
 
@@ -18,7 +21,7 @@
 
                         <div class="col hp-flex-none w-auto hp-horizontal-block">
                             <div class="hp-header-logo d-flex align-items-end">
-                                <a href={Routes.page_path(@conn, :dashboard)}>
+                                <a href={Routes.page_path(@conn, :projects)}>
                                     <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                     <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                     <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -37,25 +40,25 @@
                                 </li>
 
                                 <li class="px-6">
-                                    <a href={Routes.page_path(@conn, :list_groups)} class="px-12 py-4">
+                                    <a href={Routes.page_path(@conn, :groups)} class="px-12 py-4">
                                         <span><%= gettext "Host Groups" %></span>
                                     </a>
                                 </li>
 
                                 <li class="px-6">
-                                    <a href={Routes.page_path(@conn, :list_deployments)} class="px-12 py-4">
+                                    <a href={Routes.page_path(@conn, :deployments)} class="px-12 py-4">
                                         <span><%= gettext "Deployments" %></span>
                                     </a>
                                 </li>
                                 <%= if @data.is_super do %>
                                     <li class="px-6">
-                                        <a href={Routes.page_path(@conn, :list_teams)} class="px-12 py-4">
+                                        <a href={Routes.page_path(@conn, :teams)} class="px-12 py-4">
                                             <span><%= gettext "Teams" %></span>
                                         </a>
                                     </li>
 
                                     <li class="px-6">
-                                        <a href={Routes.page_path(@conn, :list_users)} class="px-12 py-4">
+                                        <a href={Routes.page_path(@conn, :users)} class="px-12 py-4">
                                             <span><%= gettext "Users" %></span>
                                         </a>
                                     </li>
@@ -67,11 +70,12 @@
                                 <% end %>
                             </ul>
                         </div>
+
                         <div class="col hp-flex-none w-auto pe-0">
                             <div class="row align-items-center justify-content-end">
                                 <div class="hover-dropdown-fade w-auto px-0 ms-6 position-relative hp-cursor-pointer">
                                     <div class="avatar-item d-flex align-items-center justify-content-center rounded-circle" style="width: 40px; height: 40px;">
-                                        <img src={Routes.static_path(@conn, "/theme/app/avatar.png")}>
+                                        <img src={@data.avatar_url}>
                                     </div>
 
                                     <div class="hp-header-profile-menu dropdown-fade position-absolute pt-18" style="top: 100%; width: 260px;">
@@ -84,7 +88,7 @@
 
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <a href="https://github.com/clivern/scuti/issues" class="d-flex align-items-center hp-p1-body py-4 px-10 hp-transition hp-hover-bg-primary-4 hp-hover-bg-dark-primary hp-hover-bg-dark-80 rounded" style="margin-left: -10px; margin-right: -10px;">
+                                                    <a href="https://github.com/clivern/lynx/issues" class="d-flex align-items-center hp-p1-body py-4 px-10 hp-transition hp-hover-bg-primary-4 hp-hover-bg-dark-primary hp-hover-bg-dark-80 rounded" style="margin-left: -10px; margin-right: -10px;">
                                                         <i class="iconly-Curved-Game me-8" style="font-size: 16px;"></i>
 
                                                         <span class="hp-ml-8"><%= gettext "Support" %></span>
@@ -109,7 +113,7 @@
             <div class="offcanvas-header justify-content-between align-items-end me-16 ms-24 mt-16 p-0">
                 <div class="w-auto px-0">
                     <div class="hp-header-logo d-flex align-items-end">
-                        <a href={Routes.page_path(@conn, :dashboard)}>
+                        <a href={Routes.page_path(@conn, :projects)}>
                             <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                             <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                             <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -138,7 +142,7 @@
 
                             <div class="w-auto px-0">
                                 <div class="hp-header-logo d-flex align-items-end">
-                                    <a href={Routes.page_path(@conn, :dashboard)}>
+                                    <a href={Routes.page_path(@conn, :projects)}>
                                         <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                         <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                         <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -227,7 +231,7 @@
                             <div class="row align-items-center">
                                 <div class="me-8 w-auto px-0">
                                     <div class="avatar-item d-flex align-items-center justify-content-center rounded-circle" style="width: 36px; height: 36px;">
-                                        <img src={Routes.static_path(@conn, "/theme/app/avatar.png")}>
+                                        <img src={@data.avatar_url}>
                                     </div>
                                 </div>
 
@@ -251,10 +255,10 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href={Routes.page_path(@conn, :dashboard)}><%= gettext "Dashboard" %></a>
+                                        <a href="javascript:;"><%= gettext "Dashboard" %></a>
                                     </li>
                                     <li class="breadcrumb-item active">
-                                        <%= gettext "Deployments" %>
+                                        <%= gettext "Users" %>
                                     </li>
                                 </ol>
                             </nav>
@@ -263,9 +267,9 @@
                         <div class="col-12 col-md-7">
                             <div class="row g-16 align-items-center justify-content-end">
                                 <div class="col hp-flex-none w-auto">
-                                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add_deployment_modal">
+                                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#add_user_modal">
                                         <i class="ri-user-add-line remix-icon"></i>
-                                        <span><%= gettext "Add New Deployment" %></span>
+                                        <span><%= gettext "Add New User" %></span>
                                     </button>
                                 </div>
                             </div>
@@ -273,7 +277,7 @@
                     </div>
                 </div>
 
-                <div class="col-12">
+                <div class="col-12" id="users_list" data-action={Routes.user_path(@conn, :list)}>
                     <div class="card hp-contact-card mb-32">
                         <div class="card-body px-0">
                             <div class="table-responsive">
@@ -281,105 +285,73 @@
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th><%= gettext "Name" %></th>
-                                            <th><%= gettext "Type" %></th>
-                                            <th><%= gettext "Status" %></th>
-                                            <th><%= gettext "Created at" %></th>
+                                            <th style="text-align: center"><%= gettext "Name" %></th>
+                                            <th style="text-align: center"><%= gettext "Email" %></th>
+                                            <th style="text-align: center"><%= gettext "Role" %></th>
+                                            <th style="text-align: center"><%= gettext "Created at" %></th>
                                             <th></th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                      <%= for deployment <- @data.deployments do %>
-                                        <tr>
-                                            <td>
-                                                <a href="#">
-                                                    <div class="avatar-item avatar-lg d-flex align-items-center justify-content-center bg-primary-4 hp-bg-dark-primary text-primary hp-text-color-dark-0 rounded-circle">
-                                                        <i class="iconly-Curved-Category"></i>
-                                                    </div>
-                                                </a>
-                                            </td>
-                                            <td><%= deployment.name %></td>
-                                            <td>
-                                                <%= if deployment.patch_type == "os_upgrade" do %>
-                                                  <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "OS Upgrade" %></div>
-                                                <% end %>
-
-                                                <%= if deployment.patch_type == "distribution_upgrade" do %>
-                                                  <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger"><%= gettext "Distribution Upgrade" %></div>
-                                                <% end %>
-
-                                                <%= if deployment.patch_type == "custom_system_patch" do %>
-                                                    <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "Custom System Patch" %></div>
-                                                <% end %>
-                                            </td>
-                                            <td>
-                                                <%= if deployment.last_status == "skipped" do %>
-                                                  <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "SKIPPED" %></div>
-                                                <% end %>
-                                                <%= if deployment.last_status == "success" do %>
-                                                  <div class="badge bg-success-4 hp-bg-dark-success text-success border-success"><%= gettext "SUCCESS" %></div>
-                                                <% end %>
-                                                <%= if deployment.last_status == "failure" do %>
-                                                  <div class="badge bg-danger-4 hp-bg-dark-danger text-danger border-danger"><%= gettext "FAILURE" %></div>
-                                                <% end %>
-                                                <%= if deployment.last_status == "unknown" do %>
-                                                    <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "UNKNOWN" %></div>
-                                                <% end %>
-                                                <%= if deployment.last_status == "running" do %>
-                                                    <div class="badge bg-info-4 hp-bg-dark-info text-info border-info"><%= gettext "RUNNING" %></div>
-                                                <% end %>
-                                                <%= if deployment.last_status == "pending" do %>
-                                                    <div class="badge bg-warning-4 hp-bg-dark-warning text-warning border-warning"><%= gettext "PENDING" %></div>
-                                                <% end %>
-                                            </td>
-                                            <td><%= deployment.inserted_at %></td>
-                                            <td>
-                                                <a href={Routes.page_path(@conn, :view_deployment, deployment.uuid)} class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80" data-id={deployment.id} data-uuid={deployment.uuid}><%= gettext "View" %></a>
-                                                <button class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2" data-id={deployment.id} data-uuid={deployment.uuid}><%= gettext "Delete" %></button>
-                                            </td>
-                                        </tr>
-                                      <% end %>
+                                      <tr v-for="user in users">
+                                        <td>
+                                          <a href="javascript:;">
+                                            <div class="avatar-item avatar-lg d-flex align-items-center justify-content-center bg-primary-4 hp-bg-dark-primary text-primary hp-text-color-dark-0 rounded-circle">
+                                              <i class="iconly-Light-User"></i>
+                                            </div>
+                                          </a>
+                                        </td>
+                                        <td style="text-align: center">${user.name}</td>
+                                        <td style="text-align: center">${user.email}</td>
+                                        <td style="text-align: center">${user.role}</td>
+                                        <td style="text-align: center">${formatDatetime(user.createdAt)}</td>
+                                        <td>
+                                        <!--
+                                          <button @click="editUserAction(user.id)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80"><%= gettext "Edit" %></button>-->
+                                          <button @click="deleteUserAction(user.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2"><%= gettext "Delete" %></button>
+                                        </td>
+                                      </tr>
+                                      <tr v-if="users.length == 0">
+                                        <td colspan="6" style="text-align: center;"><%= gettext "No Records Found!" %></td>
+                                      </tr>
                                     </tbody>
                                 </table>
                             </div>
 
-                            <!--
-                            TODO
                             <nav>
                                 <ul class="pagination justify-content-end px-32">
                                     <li class="page-item">
-                                        <a class="page-link" href="javascript:;">
+                                        <button class="page-link" @click="loadPreviousPageAction" v-if="currentPage > 1">
                                             <svg viewBox="64 64 896 896" focusable="false" data-icon="left" width="12px" height="12px" fill="currentColor" aria-hidden="true">
                                                 <path d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"></path>
                                             </svg>
-                                        </a>
+                                        </button>
                                     </li>
 
                                     <li class="page-item">
-                                        <a class="page-link" href="javascript:;">1</a>
+                                        <button class="page-link">${currentPage}</button>
                                     </li>
 
                                     <li class="page-item">
-                                        <a class="page-link" href="javascript:;">
+                                        <button class="page-link" @click="loadNextPageAction" v-if="currentPage != totalPages">
                                             <svg viewBox="64 64 896 896" focusable="false" data-icon="right" width="12px" height="12px" fill="currentColor" aria-hidden="true">
                                                 <path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"></path>
                                             </svg>
-                                        </a>
+                                        </button>
                                     </li>
                                 </ul>
                             </nav>
-                            --->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="modal fade" id="add_deployment_modal" tabindex="-1" aria-labelledby="addNewDeploymentLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal fade" id="add_user_modal" tabindex="-1" aria-labelledby="addNewUserLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header py-16 px-24">
-                            <h5 class="modal-title" id="addNewDeploymentLabel"><%= gettext "Add New Deployment" %></h5>
+                            <h5 class="modal-title" id="addNewUserLabel"><%= gettext "Add New User" %></h5>
                             <button type="button" class="btn-close hp-bg-none d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
                                 <i class="ri-close-line hp-text-color-dark-0 lh-1" style="font-size: 24px;"></i>
                             </button>
@@ -387,128 +359,42 @@
 
                         <div class="divider m-0"></div>
 
-                        <form action={Routes.deployment_path(@conn, :create)} method="post" v-on:submit.prevent="addDeploymentAction">
+                        <form action={Routes.user_path(@conn, :create)} method="post" v-on:submit.prevent="addUserAction">
                             <div class="modal-body">
                                 <div class="row gx-8">
                                     <div class="col-12">
                                         <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Name" %></label>
-                                            <input type="text" class="form-control" name="name" required="required">
+                                            <label class="form-label"><%= gettext "Nick Name" %></label>
+                                            <input type="text" class="form-control" name="name" required="required" minlength="2" maxlength="60">
                                         </div>
                                     </div>
 
                                     <div class="col-12">
                                         <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Host Group Filter" %></label>
-                                            <input type="text" class="form-control" name="host_groups_filter" required="required">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Host Filter" %></label>
-                                            <input type="text" class="form-control" name="hosts_filter" required="required">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Patch Type" %></label>
-                                            <select class="form-select" name="patch_type" required="required" v-model="patchType">
-                                                <option value="os_upgrade" selected><%= gettext "OS Upgrade" %></option>
-                                                <option value="distribution_upgrade"><%= gettext "Distribution Upgrade" %></option>
-                                                <option value="custom_system_patch"><%= gettext "Custom System Patch" %></option>
+                                            <label class="form-label"><%= gettext "Role" %></label>
+                                            <select class="form-select" name="role" required="required">
+                                                <option value="regular" selected><%= gettext "Regular" %></option>
+                                                <option value="super"><%= gettext "Super" %></option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
                                         <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Team" %></label>
-                                            <select class="form-select" name="team_id" required="required">
-                                                <%= for team <- @data.user_teams do %>
-                                                  <option value={team.id}><%= team.name %></option>
-                                                <% end %>
-                                            </select>
+                                            <label class="form-label"><%= gettext "Email" %></label>
+                                            <input type="email" class="form-control" name="email" required="required">
                                         </div>
                                     </div>
 
                                     <div class="col-12">
                                         <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Pre Patch Script" %></label>
-                                            <textarea name="pre_patch_script" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12" v-show="patchType == 'custom_system_patch'">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Patch Script" %></label>
-                                            <textarea name="patch_script" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Post Patch Script" %></label>
-                                            <textarea name="post_patch_script" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Post Patch Reboot Option" %></label>
-                                            <select class="form-select" name="post_patch_reboot_option" required="required">
-                                                <option value="only_if_required" selected><%= gettext "Only if Required" %></option>
-                                                <option value="always"><%= gettext "Always" %></option>
-                                                <option value="never"><%= gettext "Never" %></option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Rollout Strategy" %></label>
-                                            <select class="form-select" name="rollout_strategy" required="required" v-model="rolloutStrategy">
-                                                <option value="one_by_one" selected><%= gettext "One by one" %></option>
-                                                <option value="all_at_once"><%= gettext "All at once" %></option>
-                                                <option value="percent"><%= gettext "Percent" %></option>
-                                                <option value="count"><%= gettext "Count" %></option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12" v-show="rolloutStrategy == 'count'">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Rollout Strategy Value" %></label>
-                                            <input type="text" class="form-control" name="rollout_strategy_value">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12" v-show="rolloutStrategy == 'percent'">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Rollout Strategy Value in Percent" %></label>
-                                            <input type="text" class="form-control" name="rollout_strategy_value">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Schedule Type" %></label>
-                                            <select class="form-select" name="schedule_type" required="required">
-                                                <option value="once" selected><%= gettext "Once" %></option>
-                                                <option value="recursive"><%= gettext "Recursive" %></option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="mb-24">
-                                            <label class="form-label"><%= gettext "Schedule Time in UTC" %></label>
-                                            <input type="datetime-local" class="form-control" name="schedule_time" required="required">
+                                            <label class="form-label"><%= gettext "Password" %></label>
+                                            <input type="password" class="form-control" name="password" required="required" minlength="6" maxlength="60">
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="modal-footer pt-0 px-24 pb-24">
                                 <div class="divider"></div>
                                 <button type="submit" class="m-0 btn btn-primary w-100" :disabled="isInProgress"><%= gettext "Submit" %></button>
@@ -517,6 +403,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <footer class="w-100 py-18 px-16 py-sm-24 px-sm-32 hp-bg-color-black-20 hp-bg-color-dark-90">
@@ -533,7 +420,7 @@
     <div class="toast fade hide" id="toast_notification" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <img class="me-8" src={Routes.static_path(@conn, "/images/ico.png")} width="20">
-            <strong class="me-auto"><%= gettext "Scuti" %></strong>
+            <strong class="me-auto"><%= @data.app_name %></strong>
             <small><%= gettext "Just Now" %></small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>

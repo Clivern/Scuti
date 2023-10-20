@@ -19,6 +19,27 @@ defmodule ScutiWeb.PageController do
   alias Scuti.Module.TaskModule
 
   @doc """
+  Install Page
+  """
+  def install(conn, _params) do
+    is_installed = InstallModule.is_installed()
+
+    case is_installed do
+      true ->
+        conn
+        |> redirect(to: "/")
+
+      false ->
+        conn
+        |> render("install.html",
+          data: %{
+            app_name: SettingsModule.get_config("app_name", "Scuti")
+          }
+        )
+    end
+  end
+
+  @doc """
   Login Page
   """
   def login(conn, _params) do
@@ -39,8 +60,12 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
+            user_email: conn.assigns[:user_email],
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
@@ -55,23 +80,6 @@ defmodule ScutiWeb.PageController do
     conn
     |> clear_session()
     |> redirect(to: "/")
-  end
-
-  @doc """
-  Install Page
-  """
-  def install(conn, _params) do
-    is_installed = InstallModule.is_installed()
-
-    case is_installed do
-      true ->
-        conn
-        |> redirect(to: "/")
-
-      false ->
-        conn
-        |> render("install.html")
-    end
   end
 
   @doc """
@@ -91,8 +99,13 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
+            user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
@@ -115,30 +128,13 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
-          }
-        )
-    end
-  end
-
-  @doc """
-  Dashboard Page
-  """
-  def dashboard(conn, _params) do
-    case conn.assigns[:is_logged] do
-      false ->
-        conn
-        |> redirect(to: "/")
-
-      true ->
-        conn
-        |> render("dashboard.html",
-          data: %{
-            is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super],
-            user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
+            user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
@@ -151,7 +147,7 @@ defmodule ScutiWeb.PageController do
     case conn.assigns[:is_logged] do
       false ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/login")
 
       true ->
         conn
@@ -159,161 +155,162 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
-            user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
-          }
-        )
-    end
-  end
-
-  @doc """
-  Host Groups List Page
-  """
-  def list_groups(conn, _params) do
-    case conn.assigns[:is_logged] do
-      false ->
-        conn
-        |> redirect(to: "/")
-
-      true ->
-        teams_ids = []
-        new_groups = []
-        user_teams = HostGroupModule.get_user_teams(conn.assigns[:user_id])
-
-        teams_ids =
-          for user_team <- user_teams do
-            teams_ids ++ user_team.id
-          end
-
-        groups = HostGroupModule.get_groups_by_teams(teams_ids, 0, 1000)
-
-        new_groups =
-          for group <- groups do
-            new_groups ++
-              %{
-                id: group.id,
-                uuid: group.uuid,
-                name: group.name,
-                host_count: HostGroupModule.count_hosts_by_host_group(group.id),
-                labels: group.labels,
-                inserted_at: group.inserted_at,
-                updated_at: group.updated_at
-              }
-          end
-
-        conn
-        |> render("list_groups.html",
-          data: %{
-            is_logged: conn.assigns[:is_logged],
-            is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
             user_email: conn.assigns[:user_email],
-            groups: new_groups,
-            user_teams: user_teams
+            user_api_key: conn.assigns[:user_api_key],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
   end
 
   @doc """
-  Host Groups View Page
+  Dashboard Page
   """
-  def view_group(conn, %{"uuid" => uuid}) do
-    case conn.assigns[:is_logged] do
+  def dashboard(conn, _params) do
+    case conn.assigns[:is_super] do
       false ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/login")
 
       true ->
-        group = HostGroupModule.get_group_by_uuid(uuid)
-
-        case group do
-          nil ->
-            conn
-            |> redirect(to: "/404")
-
-          _ ->
-            hosts = HostModule.get_hosts_by_group(group.id, 0, 10000)
-
-            conn
-            |> render("view_group.html",
-              data: %{
-                is_logged: conn.assigns[:is_logged],
-                is_super: conn.assigns[:is_super],
-                user_name: conn.assigns[:user_name],
-                user_email: conn.assigns[:user_email],
-                group: group,
-                hosts: hosts
-              }
-            )
-        end
-    end
-  end
-
-  @doc """
-  Deployments List Page
-  """
-  def list_deployments(conn, _params) do
-    case conn.assigns[:is_logged] do
-      false ->
         conn
-        |> redirect(to: "/")
-
-      true ->
-        teams_ids = []
-        user_teams = HostGroupModule.get_user_teams(conn.assigns[:user_id])
-
-        teams_ids =
-          for user_team <- user_teams do
-            teams_ids ++ user_team.id
-          end
-
-        deployments = DeploymentModule.get_deployments_by_teams(teams_ids, 0, 1000)
-
-        conn
-        |> render("list_deployments.html",
+        |> render("dashboard.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
             user_email: conn.assigns[:user_email],
-            deployments: deployments,
-            user_teams: user_teams
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
   end
 
   @doc """
-  Deployments Edit Page
+  Groups Page
   """
-  def edit_deployment(conn, %{uuid: _uuid}) do
-    case conn.assigns[:is_logged] do
+  def groups(conn, _params) do
+    case conn.assigns[:is_super] do
       false ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/login")
 
       true ->
         conn
-        |> render("edit_deployment.html",
+        |> render("groups.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
+            user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
   end
 
   @doc """
-  Deployments Add Page
+  Group Page
+  """
+  def group(conn, _params) do
+    case conn.assigns[:is_super] do
+      false ->
+        conn
+        |> redirect(to: "/login")
+
+      true ->
+        conn
+        |> render("group.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
+          }
+        )
+    end
+  end
+
+  @doc """
+  Deployments Page
+  """
+  def deployments(conn, _params) do
+    case conn.assigns[:is_super] do
+      false ->
+        conn
+        |> redirect(to: "/login")
+
+      true ->
+        conn
+        |> render("deployments.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
+          }
+        )
+    end
+  end
+
+  @doc """
+  Deployment Page
+  """
+  def deployment(conn, _params) do
+    case conn.assigns[:is_super] do
+      false ->
+        conn
+        |> redirect(to: "/login")
+
+      true ->
+        conn
+        |> render("deployment.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
+          }
+        )
+    end
+  end
+
+  @doc """
+  Add Deployment Page
   """
   def add_deployment(conn, _params) do
-    case conn.assigns[:is_logged] do
+    case conn.assigns[:is_super] do
       false ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/login")
 
       true ->
         conn
@@ -321,138 +318,94 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
-            user_email: conn.assigns[:user_email]
+            user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
   end
 
   @doc """
-  Deployments View Page
+  Edit Deployment Page
   """
-  def view_deployment(conn, %{"uuid" => uuid}) do
-    case conn.assigns[:is_logged] do
-      false ->
-        conn
-        |> redirect(to: "/")
-
-      true ->
-        deployment = DeploymentModule.get_deployment_by_uuid(uuid)
-
-        hosts = DeploymentModule.get_deployment_target_hosts(deployment.id)
-
-        tasks = TaskModule.get_deployment_tasks(deployment.id)
-
-        history =
-          for task <- tasks do
-            result = Jason.decode!(task.result)
-
-            total =
-              if result["total_hosts"] == 0 do
-                1
-              else
-                result["total_hosts"]
-              end
-
-            %{
-              id: task.id,
-              uuid: task.uuid,
-              total_hosts: result["total_hosts"],
-              updated_hosts: result["updated_hosts"],
-              failed_hosts: result["failed_hosts"],
-              progress:
-                Float.round((result["updated_hosts"] + result["failed_hosts"]) / total * 100, 0),
-              status: task.status,
-              run_at: task.run_at
-            }
-          end
-
-        case deployment do
-          nil ->
-            conn
-            |> redirect(to: "/404")
-
-          _ ->
-            conn
-            |> render("view_deployment.html",
-              data: %{
-                is_logged: conn.assigns[:is_logged],
-                is_super: conn.assigns[:is_super],
-                user_name: conn.assigns[:user_name],
-                user_email: conn.assigns[:user_email],
-                deployment: deployment,
-                hosts: hosts,
-                history: history
-              }
-            )
-        end
-    end
-  end
-
-  @doc """
-  Teams List Page
-  """
-  def list_teams(conn, _params) do
+  def edit_deployment(conn, _params) do
     case conn.assigns[:is_super] do
       false ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/login")
 
       true ->
-        users = UserModule.get_users(0, 1000)
-        teams = TeamModule.get_teams(0, 1000)
-
-        new_teams = []
-
-        new_teams =
-          for team <- teams do
-            new_teams ++
-              %{
-                id: team.id,
-                uuid: team.uuid,
-                name: team.name,
-                description: team.description,
-                count: UserModule.count_team_users(team.id),
-                inserted_at: team.inserted_at,
-                updated_at: team.updated_at
-              }
-          end
-
         conn
-        |> render("list_teams.html",
+        |> render("edit_deployment.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
             user_email: conn.assigns[:user_email],
-            users: users,
-            teams: new_teams
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
   end
 
   @doc """
-  Users List Page
+  Users Page
   """
-  def list_users(conn, _params) do
+  def users(conn, _params) do
     case conn.assigns[:is_super] do
       false ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/login")
 
       true ->
-        users = UserModule.get_users(0, 1000)
-
         conn
-        |> render("list_users.html",
+        |> render("users.html",
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
             user_email: conn.assigns[:user_email],
-            users: users
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
+          }
+        )
+    end
+  end
+
+  @doc """
+  Teams Page
+  """
+  def teams(conn, _params) do
+    case conn.assigns[:is_super] do
+      false ->
+        conn
+        |> redirect(to: "/login")
+
+      true ->
+        conn
+        |> render("teams.html",
+          data: %{
+            is_logged: conn.assigns[:is_logged],
+            is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
+            user_name: conn.assigns[:user_name],
+            user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
+            app_name: SettingsModule.get_config("app_name", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url
           }
         )
     end
@@ -465,7 +418,7 @@ defmodule ScutiWeb.PageController do
     case conn.assigns[:is_super] do
       false ->
         conn
-        |> redirect(to: "/")
+        |> redirect(to: "/login")
 
       true ->
         conn
@@ -473,13 +426,37 @@ defmodule ScutiWeb.PageController do
           data: %{
             is_logged: conn.assigns[:is_logged],
             is_super: conn.assigns[:is_super],
+            user_id: conn.assigns[:user_id],
+            user_role: conn.assigns[:user_role],
             user_name: conn.assigns[:user_name],
             user_email: conn.assigns[:user_email],
+            avatar_url: get_gavatar(conn.assigns[:user_email]),
             app_name: SettingsModule.get_config("app_name", ""),
-            app_url: SettingsModule.get_config("app_url", ""),
+            app_url: SettingsModule.get_config("app_url", "") |> add_backslash_to_url,
             app_email: SettingsModule.get_config("app_email", "")
           }
         )
+    end
+  end
+
+  defp get_gavatar(nil) do
+    ""
+  end
+
+  defp get_gavatar(email) do
+    hash = Base.encode16(:crypto.hash(:sha256, email)) |> String.downcase()
+    "https://gravatar.com/avatar/#{hash}?s=200"
+  end
+
+  defp add_backslash_to_url(nil) do
+    ""
+  end
+
+  defp add_backslash_to_url(url) do
+    if String.last(url) == "/" do
+      String.slice(url, 0..-2//1)
+    else
+      url
     end
   end
 end

@@ -35,7 +35,6 @@ defmodule ScutiWeb.TeamView do
     %{
       id: team.uuid,
       name: team.name,
-      slug: team.slug,
       usersCount: UserModule.count_team_users(team.id),
       description: team.description,
       members: TeamModule.get_team_members(team.id),

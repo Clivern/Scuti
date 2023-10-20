@@ -9,16 +9,15 @@ defmodule ScutiWeb.TeamController do
 
   use ScutiWeb, :controller
 
+  require Logger
+
   alias Scuti.Module.TeamModule
   alias Scuti.Service.ValidatorService
-
-  require Logger
 
   @name_min_length 2
   @name_max_length 60
   @description_min_length 2
   @description_max_length 250
-
   @default_list_limit 10
   @default_list_offset 0
 

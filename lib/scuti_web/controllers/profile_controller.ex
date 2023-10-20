@@ -11,11 +11,11 @@ defmodule ScutiWeb.ProfileController do
 
   require Logger
 
-  @name_min_length 2
-  @name_max_length 60
-
   alias Scuti.Module.UserModule
   alias Scuti.Service.ValidatorService
+
+  @name_min_length 2
+  @name_max_length 60
 
   plug :regular_user when action in [:update]
 
