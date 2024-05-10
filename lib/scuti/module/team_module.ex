@@ -37,31 +37,52 @@ defmodule Scuti.Module.TeamModule do
   Sync team members
   """
   def sync_team_members(team_id, future_members \\ []) do
-    current_members = []
+    # Get current member IDs
+    current_member_ids =
+      UserContext.get_team_users(team_id)
+      |> Enum.map(& &1.id)
 
-    current_members =
-      for member <- UserContext.get_team_users(team_id) do
-        current_members ++ member.id
-      end
+    # Get future member IDs
+    future_member_ids =
+      future_members
+      |> Enum.map(&get_user_id_with_uuid/1)
+      |> Enum.reject(&is_nil/1)
 
-    future_members_ids = []
+    # Find members to remove (in current but not in future)
+    members_to_remove = current_member_ids -- future_member_ids
 
-    future_members_ids =
-      for member <- future_members do
-        future_members_ids ++ get_user_id_with_uuid(member)
-      end
+    # Find members to add (in future but not in current)
+    members_to_add = future_member_ids -- current_member_ids
 
-    # @TODO: Track errors
-    for member <- current_members do
-      if member not in future_members_ids do
-        UserContext.remove_user_from_team(member, team_id)
-      end
-    end
+    # Track results
+    results = %{
+      added: [],
+      removed: [],
+      errors: []
+    }
 
-    for member <- future_members_ids do
-      if member not in current_members do
-        UserContext.add_user_to_team(member, team_id)
-      end
+    # Remove members
+    results =
+      Enum.reduce(members_to_remove, results, fn member_id, acc ->
+        case UserContext.remove_user_from_team(member_id, team_id) do
+          {:ok, _} -> %{acc | removed: [member_id | acc.removed]}
+          {:error, reason} -> %{acc | errors: [{:remove, member_id, reason} | acc.errors]}
+        end
+      end)
+
+    # Add members
+    results =
+      Enum.reduce(members_to_add, results, fn member_id, acc ->
+        case UserContext.add_user_to_team(member_id, team_id) do
+          {:ok, _} -> %{acc | added: [member_id | acc.added]}
+          {:error, reason} -> %{acc | errors: [{:add, member_id, reason} | acc.errors]}
+        end
+      end)
+
+    # Return results
+    case results.errors do
+      [] -> {:ok, results}
+      _errors -> {:error, results}
     end
   end
 
@@ -69,14 +90,8 @@ defmodule Scuti.Module.TeamModule do
   Get team members
   """
   def get_team_members(team_id) do
-    current_members = []
-
-    current_members =
-      for member <- UserContext.get_team_users(team_id) do
-        current_members ++ member.uuid
-      end
-
-    current_members
+    UserContext.get_team_users(team_id)
+    |> Enum.map(& &1.uuid)
   end
 
   @doc """
@@ -165,14 +180,9 @@ defmodule Scuti.Module.TeamModule do
   Get teams
   """
   def get_user_teams(user_id, offset, limit) do
-    user_teams = get_user_teams(user_id)
-
-    teams_ids = []
-
     teams_ids =
-      for user_team <- user_teams do
-        teams_ids ++ user_team.id
-      end
+      get_user_teams(user_id)
+      |> Enum.map(& &1.id)
 
     TeamContext.get_teams(teams_ids, offset, limit)
   end

@@ -15,7 +15,8 @@ defmodule Scuti.Context.ConfigContext do
   alias Scuti.Model.Config
 
   @doc """
-  Initializes a new config with given attributes. Generates a UUID if not provided.
+  Initializes a new config with given attributes.
+  Generates a UUID if not provided.
   """
   def new_config(attrs \\ %{}) do
     %{

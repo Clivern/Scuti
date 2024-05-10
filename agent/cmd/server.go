@@ -77,19 +77,6 @@ var agentCmd = &cobra.Command{
 					))
 				}
 			}
-
-			// Create log file if not exists
-			if !fys.FileExists(viper.GetString("agent.log.output")) {
-				f, err := os.Create(viper.GetString("agent.log.output"))
-				if err != nil {
-					panic(fmt.Sprintf(
-						"Error while creating log file [%s]: %s",
-						viper.GetString("agent.log.output"),
-						err.Error(),
-					))
-				}
-				defer f.Close()
-			}
 		}
 
 		defaultLogger := middleware.DefaultLoggerConfig
@@ -98,11 +85,20 @@ var agentCmd = &cobra.Command{
 			log.SetOutput(os.Stdout)
 			defaultLogger.Output = os.Stdout
 		} else {
-			f, _ := os.OpenFile(
+			f, err := os.OpenFile(
 				viper.GetString("agent.log.output"),
 				os.O_APPEND|os.O_CREATE|os.O_WRONLY,
 				0775,
 			)
+
+			if err != nil {
+				panic(fmt.Sprintf(
+					"Error while opening log file [%s]: %s",
+					viper.GetString("agent.log.output"),
+					err.Error(),
+				))
+			}
+
 			log.SetOutput(f)
 			defaultLogger.Output = f
 		}
@@ -123,7 +119,6 @@ var agentCmd = &cobra.Command{
 		}
 
 		viper.SetDefault("config", config)
-
 		messages := make(chan string, 500)
 
 		// Run Worker
