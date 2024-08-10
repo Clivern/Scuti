@@ -59,7 +59,7 @@ defmodule Scuti.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:bcrypt_elixir, "~> 3.0"},
       {:req, "~> 0.4.0"},
-      {:prom_ex, "~> 1.9.0"}
+      {:prom_ex, "~> 1.10.0"}
     ]
   end
 
