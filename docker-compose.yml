@@ -23,7 +23,7 @@ services:
       - db
 
   db:
-    image: postgres:16.4
+    image: postgres:16.7
     environment:
       POSTGRES_DB: scuti
       POSTGRES_USER: root
