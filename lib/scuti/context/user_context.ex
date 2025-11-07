@@ -5,6 +5,8 @@
 defmodule Scuti.Context.UserContext do
   @moduledoc """
   User Context Module
+
+  Manages user-related operations, including CRUD for users, sessions, and metadata.
   """
 
   import Ecto.Query
@@ -13,7 +15,7 @@ defmodule Scuti.Context.UserContext do
   alias Scuti.Model.{Team, UserMeta, User, UserSession, UserTeam}
 
   @doc """
-  Creates a new user with the provided attributes
+  Creates a new user with the provided attributes.
   """
   def new_user(attrs \\ %{}) do
     %{
@@ -29,7 +31,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Creates a new user meta with the provided attributes
+  Creates a new user meta with the provided attributes.
   """
   def new_meta(meta \\ %{}) do
     %{
@@ -40,7 +42,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Creates a new user session with the provided attributes
+  Creates a new user session with the provided attributes.
   """
   def new_session(session \\ %{}) do
     %{
@@ -51,7 +53,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Creates a new user record in the database
+  Creates a new user record in the database.
   """
   def create_user(attrs \\ %{}) do
     %User{}
@@ -60,27 +62,24 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Retrieves a user record by its ID
+  Retrieves a user record by its ID.
   """
   def get_user_by_id(id) do
     Repo.get(User, id)
   end
 
   @doc """
-  Retrieves the ID of a user by its UUID
+  Retrieves the ID of a user by its UUID.
   """
   def get_user_id_with_uuid(uuid) do
     case get_user_by_uuid(uuid) do
-      nil ->
-        nil
-
-      user ->
-        user.id
+      nil -> nil
+      user -> user.id
     end
   end
 
   @doc """
-  Retrieves a user record by its UUID
+  Retrieves a user record by its UUID.
   """
   def get_user_by_uuid(uuid) do
     from(
@@ -92,7 +91,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get user by API Key
+  Retrieves a user by API key.
   """
   def get_user_by_api_key(api_key) do
     from(
@@ -104,7 +103,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get user by email
+  Retrieves a user by email.
   """
   def get_user_by_email(email) do
     from(
@@ -116,7 +115,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Update a user
+  Updates an existing user with new attributes.
   """
   def update_user(user, attrs) do
     user
@@ -125,21 +124,21 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Delete a user
+  Deletes a specified user from the database.
   """
   def delete_user(user) do
     Repo.delete(user)
   end
 
   @doc """
-  Retrieve all users
+  Retrieves all users from the database.
   """
   def get_users() do
     Repo.all(User)
   end
 
   @doc """
-  Retrieve users
+  Retrieves users with pagination support.
   """
   def get_users(offset, limit) do
     from(u in User,
@@ -151,17 +150,15 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Count all users
+  Counts all users in the database.
   """
   def count_users() do
-    from(u in User,
-      select: count(u.id)
-    )
+    from(u in User, select: count(u.id))
     |> Repo.one()
   end
 
   @doc """
-  Create a new user meta
+  Creates and saves new user metadata.
   """
   def create_user_meta(attrs \\ %{}) do
     %UserMeta{}
@@ -170,7 +167,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Create a new user session
+  Creates and saves a new user session.
   """
   def create_user_session(attrs \\ %{}) do
     %UserSession{}
@@ -179,14 +176,14 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Retrieve a user meta by id
+  Retrieves user metadata by its ID.
   """
   def get_user_meta_by_id(id) do
     Repo.get(UserMeta, id)
   end
 
   @doc """
-  Update a user meta
+  Updates an existing user's metadata.
   """
   def update_user_meta(user_meta, attrs) do
     user_meta
@@ -195,7 +192,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Update a user session
+  Updates an existing user's session.
   """
   def update_user_session(user_session, attrs) do
     user_session
@@ -204,21 +201,21 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Delete a user meta
+  Deletes specified user metadata from the database.
   """
   def delete_user_meta(user_meta) do
     Repo.delete(user_meta)
   end
 
   @doc """
-  Delete a user session
+  Deletes specified user session from the database.
   """
   def delete_user_session(user_session) do
     Repo.delete(user_session)
   end
 
   @doc """
-  Delete user sessions
+  Deletes all sessions for a specific user.
   """
   def delete_user_sessions(user_id) do
     from(
@@ -229,11 +226,10 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get user meta by user id and key
+  Retrieves user metadata by user ID and key.
   """
   def get_user_meta_by_id_key(user_id, meta_key) do
-    from(
-      u in UserMeta,
+    from(u in UserMeta,
       where: u.user_id == ^user_id,
       where: u.key == ^meta_key
     )
@@ -241,11 +237,10 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get user session by user id and value
+  Retrieves a user's session by user ID and value.
   """
   def get_user_session_by_id_value(user_id, value) do
-    from(
-      u in UserSession,
+    from(u in UserSession,
       where: u.user_id == ^user_id,
       where: u.value == ^value
     )
@@ -253,7 +248,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get user sessions
+  Retrieves all sessions for a specific user.
   """
   def get_user_sessions(user_id) do
     from(
@@ -264,7 +259,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get user metas
+  Retrieves all metadata for a specific user.
   """
   def get_user_metas(user_id) do
     from(
@@ -275,7 +270,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Add a user to a team
+  Adds a user to a team with generated UUID for the association.
   """
   def add_user_to_team(user_id, team_id) do
     %UserTeam{}
@@ -288,7 +283,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Remove user from a team
+  Removes a specified user from a team.
   """
   def remove_user_from_team(user_id, team_id) do
     from(
@@ -300,7 +295,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Remove user from a team by UUID
+  Removes a specified user from a team using UUID.
   """
   def remove_user_from_team_by_uuid(uuid) do
     from(
@@ -311,7 +306,7 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get user teams
+  Retrieves teams associated with a specific user.
   """
   def get_user_teams(user_id) do
     teams = []
@@ -327,17 +322,14 @@ defmodule Scuti.Context.UserContext do
       team = Repo.get(Team, item.team_id)
 
       case team do
-        nil ->
-          nil
-
-        _ ->
-          teams ++ team
+        nil -> nil
+        _ -> teams ++ team
       end
     end
   end
 
   @doc """
-  Count team users
+  Count users associated with a specific team.
   """
   def count_team_users(team_id) do
     from(u in UserTeam,
@@ -348,7 +340,18 @@ defmodule Scuti.Context.UserContext do
   end
 
   @doc """
-  Get team users
+  Count teams associated with a specific user.
+  """
+  def count_user_teams(user_id) do
+    from(u in UserTeam,
+      select: count(u.id),
+      where: u.user_id == ^user_id
+    )
+    |> Repo.one()
+  end
+
+  @doc """
+  Retrieve users associated with a specific team.
   """
   def get_team_users(team_id) do
     users = []
@@ -364,42 +367,23 @@ defmodule Scuti.Context.UserContext do
       user = Repo.get(User, item.user_id)
 
       case user do
-        nil ->
-          nil
-
-        _ ->
-          users ++ user
+        nil -> nil
+        _ -> users ++ user
       end
     end
   end
 
   @doc """
-  Validate user id
+  Validate if a given user ID exists.
   """
-  def validate_user_id(user_id) do
-    user = Repo.get(User, user_id)
-
-    case user do
-      nil ->
-        false
-
-      _ ->
-        true
-    end
+  def validate_user_id(id) do
+    !!get_user_by_id(id)
   end
 
   @doc """
-  Validate team id
+  Validate if a given user UUID exists.
   """
-  def validate_team_id(team_id) do
-    team = Repo.get(Team, team_id)
-
-    case team do
-      nil ->
-        false
-
-      _ ->
-        true
-    end
+  def validate_user_uuid(uuid) do
+    !!get_user_by_uuid(uuid)
   end
 end

@@ -84,7 +84,7 @@ defmodule ScutiWeb.UserController do
           UserModule.create_user(%{
             name: params["name"],
             email: params["email"],
-            api_key: AuthService.get_random_salt(),
+            api_key: AuthService.get_uuid(),
             role: params["role"],
             password: params["password"]
           })
@@ -182,7 +182,7 @@ defmodule ScutiWeb.UserController do
       password_invalid:
         "User password is invalid, It must be alphanumeric and not less than 6 characters",
       email_used: "User email is already used",
-      user_id_invalid: "User id is invalid"
+      user_id_invalid: "User ID is invalid"
     }
 
     case ValidatorService.is_not_empty?(params["password"], "") do

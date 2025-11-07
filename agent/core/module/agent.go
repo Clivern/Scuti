@@ -182,13 +182,11 @@ func (a *Agent) Report(event AgentEvent) error {
 // ValidateManagementRequest validates incoming request
 func (a *Agent) ValidateManagementCommandRequest(cmd model.Command, token string) bool {
 	payload := fmt.Sprintf(
-		`{"deployment_uuid":"%s","host_uuid":"%s","task_uuid":"%s","patch_type":"%s","pkgs_to_upgrade":"%s","pkgs_to_exclude":"%s","pre_patch_script":"%s","patch_script":"%s","post_patch_script":"%s","post_patch_reboot_option":"%s"}`,
+		`{"deployment_uuid":"%s","host_uuid":"%s","task_uuid":"%s","patch_type":"%s","pre_patch_script":"%s","patch_script":"%s","post_patch_script":"%s","post_patch_reboot_option":"%s"}`,
 		cmd.DeploymentUUID,
 		cmd.HostUUID,
 		cmd.TaskUUID,
 		cmd.PatchType,
-		cmd.PkgsToUpgrade,
-		cmd.PkgsToExclude,
 		cmd.PrePatchScript,
 		cmd.PatchScript,
 		cmd.PostPatchScript,

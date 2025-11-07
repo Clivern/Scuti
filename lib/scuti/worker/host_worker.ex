@@ -32,7 +32,7 @@ defmodule Scuti.Worker.HostWorker do
 
     Logger.info("Mark absent hosts for 2 minutes as DOWN")
 
-    count = HostModule.mark_hosts_down(120)
+    count = HostModule.mark_hosts_as_offline(120)
 
     Logger.info("Mark #{count} hosts as DOWN")
 

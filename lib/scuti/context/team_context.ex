@@ -5,6 +5,8 @@
 defmodule Scuti.Context.TeamContext do
   @moduledoc """
   Team Context Module
+
+  Manages teams and their metadata, providing functions for CRUD operations.
   """
 
   import Ecto.Query
@@ -13,7 +15,7 @@ defmodule Scuti.Context.TeamContext do
   alias Scuti.Model.{Team, TeamMeta}
 
   @doc """
-  Get a new team
+  Initializes a new team with given attributes. Generates a UUID if not provided.
   """
   def new_team(attrs \\ %{}) do
     %{
@@ -24,18 +26,18 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Get a team meta
+  Initializes new team metadata.
   """
-  def new_meta(attrs \\ %{}) do
+  def new_meta(meta \\ %{}) do
     %{
-      key: attrs.key,
-      value: attrs.value,
-      team_id: attrs.team_id
+      key: meta.key,
+      value: meta.value,
+      team_id: meta.team_id
     }
   end
 
   @doc """
-  Create a new team
+  Creates and saves a new team.
   """
   def create_team(attrs \\ %{}) do
     %Team{}
@@ -44,66 +46,48 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Get Team ID with UUID
+  Retrieves a team's ID using its UUID.
   """
   def get_team_id_with_uuid(uuid) do
     case get_team_by_uuid(uuid) do
-      nil ->
-        nil
-
-      team ->
-        team.id
+      nil -> nil
+      team -> team.id
     end
   end
 
   @doc """
-  Get Team UUID with ID
+  Retrieves a team's UUID using its ID.
   """
   def get_team_uuid_with_id(id) do
     case get_team_by_id(id) do
-      nil ->
-        nil
-
-      team ->
-        team.uuid
+      nil -> nil
+      team -> team.uuid
     end
   end
 
   @doc """
-  Retrieve a team by ID
+  Fetches a team by its ID.
   """
   def get_team_by_id(id) do
     Repo.get(Team, id)
   end
 
   @doc """
-  Validate Team ID
+  Validates if a team ID exists.
   """
   def validate_team_id(id) do
-    case get_team_by_id(id) do
-      nil ->
-        false
-
-      _ ->
-        true
-    end
+    !!get_team_by_id(id)
   end
 
   @doc """
-  Validate Team UUID
+  Validates if a team UUID exists.
   """
   def validate_team_uuid(uuid) do
-    case get_team_by_uuid(uuid) do
-      nil ->
-        false
-
-      _ ->
-        true
-    end
+    !!get_team_by_uuid(uuid)
   end
 
   @doc """
-  Get team by uuid
+  Fetches a team by its UUID.
   """
   def get_team_by_uuid(uuid) do
     from(
@@ -115,7 +99,7 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Update a team
+  Updates an existing team's attributes.
   """
   def update_team(team, attrs) do
     team
@@ -124,21 +108,21 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Delete a team
+  Deletes a specified team.
   """
   def delete_team(team) do
     Repo.delete(team)
   end
 
   @doc """
-  Retrieve all teams
+  Retrieves all teams.
   """
   def get_teams() do
     Repo.all(Team)
   end
 
   @doc """
-  Retrieve teams
+  Retrieves teams with pagination.
   """
   def get_teams(offset, limit) do
     from(t in Team,
@@ -150,7 +134,7 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Retrieve teams
+  Retrieves specific teams by IDs with pagination.
   """
   def get_teams(teams_ids, offset, limit) do
     from(t in Team,
@@ -163,17 +147,18 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Count all teams
+  Counts all teams in the database.
   """
   def count_teams() do
-    from(t in Team,
+    from(
+      t in Team,
       select: count(t.id)
     )
     |> Repo.one()
   end
 
   @doc """
-  Create a new team meta
+  Creates and saves new team metadata.
   """
   def create_team_meta(attrs \\ %{}) do
     %TeamMeta{}
@@ -182,14 +167,14 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Retrieve a team meta by id
+  Retrieves team metadata by its ID.
   """
   def get_team_meta_by_id(id) do
     Repo.get(TeamMeta, id)
   end
 
   @doc """
-  Update a team meta
+  Updates an existing team's metadata.
   """
   def update_team_meta(team_meta, attrs) do
     team_meta
@@ -198,18 +183,17 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Delete a team meta
+  Deletes specified team metadata.
   """
   def delete_team_meta(team_meta) do
     Repo.delete(team_meta)
   end
 
   @doc """
-  Get team meta by team id and key
+  Retrieves team metadata by team ID and key.
   """
   def get_team_meta_by_id_key(team_id, meta_key) do
-    from(
-      t in TeamMeta,
+    from(t in TeamMeta,
       where: t.team_id == ^team_id,
       where: t.key == ^meta_key
     )
@@ -217,11 +201,10 @@ defmodule Scuti.Context.TeamContext do
   end
 
   @doc """
-  Get team metas
+  Retrieves all metadata for a specific team.
   """
   def get_team_metas(team_id) do
-    from(
-      t in TeamMeta,
+    from(t in TeamMeta,
       where: t.team_id == ^team_id
     )
     |> Repo.all()

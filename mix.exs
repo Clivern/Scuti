@@ -50,7 +50,7 @@ defmodule Scuti.MixProject do
       {:phoenix_live_view, "~> 0.17.5"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.6"},
-      {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.9", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
@@ -59,7 +59,7 @@ defmodule Scuti.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:bcrypt_elixir, "~> 3.0"},
       {:req, "~> 0.4.0"},
-      {:prom_ex, "~> 1.9.0"}
+      {:sleeplocks, "~> 1.0"}
     ]
   end
 
@@ -74,8 +74,8 @@ defmodule Scuti.MixProject do
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      # "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end

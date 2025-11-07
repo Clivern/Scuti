@@ -14,8 +14,6 @@ type Command struct {
 	HostUUID              string `json:"host_uuid"`
 	TaskUUID              string `json:"task_uuid"`
 	PatchType             string `json:"patch_type"`
-	PkgsToUpgrade         string `json:"pkgs_to_upgrade"`
-	PkgsToExclude         string `json:"pkgs_to_exclude"`
 	PrePatchScript        string `json:"pre_patch_script"`
 	PatchScript           string `json:"patch_script"`
 	PostPatchScript       string `json:"post_patch_script"`

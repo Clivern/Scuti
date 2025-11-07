@@ -13,11 +13,12 @@ defmodule ScutiWeb.ProfileController do
 
   alias Scuti.Module.UserModule
   alias Scuti.Service.ValidatorService
+  alias Scuti.Service.AuthService
 
   @name_min_length 2
   @name_max_length 60
 
-  plug :regular_user when action in [:update]
+  plug :regular_user when action in [:update, :fetch_api_key, :rotate_api_key]
 
   defp regular_user(conn, _opts) do
     Logger.info("Validate user permissions")
@@ -71,6 +72,53 @@ defmodule ScutiWeb.ProfileController do
         conn
         |> put_status(:bad_request)
         |> render("error.json", %{message: reason})
+    end
+  end
+
+  @doc """
+  Fetch API Key Endpoint
+  """
+  def fetch_api_key(conn, _params) do
+    case UserModule.get_user_by_uuid(conn.assigns[:user_uuid]) do
+      {:not_found, msg} ->
+        Logger.info(msg)
+
+        conn
+        |> put_status(:not_found)
+        |> render("error.json", %{message: "Profile not found"})
+
+      {:ok, user} ->
+        conn
+        |> put_status(:ok)
+        |> render("user.json", %{api_key: user.api_key})
+    end
+  end
+
+  @doc """
+  Rotate API Key Endpoint
+  """
+  def rotate_api_key(conn, _params) do
+    api_key = AuthService.get_uuid()
+
+    case UserModule.rotate_api_key(conn.assigns[:user_uuid], api_key) do
+      {:not_found, msg} ->
+        Logger.info(msg)
+
+        conn
+        |> put_status(:not_found)
+        |> render("error.json", %{message: "Profile not found"})
+
+      {:error, msg} ->
+        Logger.error(msg)
+
+        conn
+        |> put_status(:bad_request)
+        |> render("error.json", %{message: "Failed to rotate the API Key"})
+
+      {:ok, _} ->
+        conn
+        |> put_status(:ok)
+        |> render("user.json", %{api_key: api_key})
     end
   end
 

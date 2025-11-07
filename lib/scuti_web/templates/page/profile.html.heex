@@ -1,3 +1,10 @@
+<script type="text/javascript">
+  var _globals = {
+    fetch_api_key_endpoint: '<%= Routes.profile_path(@conn, :fetch_api_key) %>',
+    rotate_api_key_endpoint: '<%= Routes.profile_path(@conn, :rotate_api_key) %>'
+  }
+</script>
+
 <main class="hp-bg-color-dark-90 d-flex min-vh-100">
     <div class="hp-main-layout hp-main-layout-horizontal">
         <header>
@@ -12,7 +19,7 @@
 
                         <div class="col hp-flex-none w-auto hp-horizontal-block">
                             <div class="hp-header-logo d-flex align-items-end">
-                                <a href={Routes.page_path(@conn, :dashboard)}>
+                                <a href={Routes.page_path(@conn, :profile)}>
                                     <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                     <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                     <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -81,7 +88,6 @@
                                                 <div class="col-12">
                                                     <a href="https://github.com/clivern/scuti/issues" class="d-flex align-items-center hp-p1-body py-4 px-10 hp-transition hp-hover-bg-primary-4 hp-hover-bg-dark-primary hp-hover-bg-dark-80 rounded" style="margin-left: -10px; margin-right: -10px;">
                                                         <i class="iconly-Curved-Game me-8" style="font-size: 16px;"></i>
-
                                                         <span class="hp-ml-8"><%= gettext "Support" %></span>
                                                     </a>
                                                 </div>
@@ -104,7 +110,7 @@
             <div class="offcanvas-header justify-content-between align-items-end me-16 ms-24 mt-16 p-0">
                 <div class="w-auto px-0">
                     <div class="hp-header-logo d-flex align-items-end">
-                        <a href={Routes.page_path(@conn, :dashboard)}>
+                        <a href={Routes.page_path(@conn, :profile)}>
                             <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                             <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                             <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -133,7 +139,7 @@
 
                             <div class="w-auto px-0">
                                 <div class="hp-header-logo d-flex align-items-end">
-                                    <a href={Routes.page_path(@conn, :dashboard)}>
+                                    <a href={Routes.page_path(@conn, :profile)}>
                                         <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                         <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                         <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -260,7 +266,7 @@
                                     <div class="col-12">
                                         <ol class="breadcrumb mt-24">
                                             <li class="breadcrumb-item breadcrumb-link">
-                                                <a href="javascript:;"> <%= gettext "Dashboard" %> </a>
+                                                <a href={Routes.page_path(@conn, :dashboard)}> <%= gettext "Dashboard" %> </a>
                                             </li>
 
                                             <li class="breadcrumb-item active">
@@ -293,6 +299,11 @@
                                             <input class="form-control" name="email" type="email" value={@data.user_email} required="required">
                                         </div>
 
+                                        <div class="mb-24">
+                                            <label class="form-label"><%= gettext "New Password" %></label>
+                                            <input class="form-control" name="password" type="password" placeholder="*************">
+                                        </div>
+
                                         <button type="submit" class="btn btn-primary"><%= gettext "Submit" %></button>
                                     </form>
                                 </div>
@@ -300,7 +311,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-4" id="app_api_key">
                     <div class="card">
                         <div class="card-body">
                             <div class="row justify-content-between">
@@ -309,8 +320,14 @@
                                 </div>
                                 <div class="col-12 mt-16">
                                     <div class="mb-24">
-                                        <input class="form-control" name="api_key" type="text" value={@data.user_api_key} disabled>
+                                        <input class="form-control" name="api_key" type="text" v-model="apiKey" disabled>
                                     </div>
+                                    <button @click="showApiKeyAction" class="btn btn-sm btn-primary">
+                                        <%= gettext "Show the Key" %>
+                                    </button>
+                                    <button @click="rotateApiKeyAction" class="btn btn-sm btn-primary">
+                                        <%= gettext "Rotate the Key" %>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -322,7 +339,7 @@
         <footer class="w-100 py-18 px-16 py-sm-24 px-sm-32 hp-bg-color-black-20 hp-bg-color-dark-90">
             <div class="row">
                 <div class="col-12">
-                    <p class="hp-badge-text fw-semibold mb-0 text-center text-sm-start hp-text-color-dark-30"><%= gettext "Copyright © 2024 Clivern. All rights Reserved" %></p>
+                    <p class="hp-badge-text fw-semibold mb-0 text-center text-sm-start hp-text-color-dark-30"><%= gettext "Copyright © 2025 Clivern. All rights Reserved" %></p>
                 </div>
             </div>
         </footer>

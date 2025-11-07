@@ -1,9 +1,11 @@
 <script type="text/javascript">
-  var i18n_globals = {
+  var _globals = {
     new_user: '<%= gettext "User created successfully!" %>',
     delete_user_message: '<%= gettext "User deleted successfully!" %>',
+    update_user_message: '<%= gettext "User updated successfully!" %>',
     delete_user_alert: '<%= gettext "You are trying to delete a user! are you sure?" %>',
-    delete_user_endpoint: '<%= Routes.user_path(@conn, :delete, "UUID") %>'
+    delete_user_endpoint: '<%= Routes.user_path(@conn, :delete, "UUID") %>',
+    update_user_endpoint: '<%= Routes.user_path(@conn, :update, "UUID") %>'
   }
 </script>
 
@@ -21,7 +23,7 @@
 
                         <div class="col hp-flex-none w-auto hp-horizontal-block">
                             <div class="hp-header-logo d-flex align-items-end">
-                                <a href={Routes.page_path(@conn, :dashboard)}>
+                                <a href={Routes.page_path(@conn, :users)}>
                                     <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                     <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                     <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -90,7 +92,6 @@
                                                 <div class="col-12">
                                                     <a href="https://github.com/clivern/scuti/issues" class="d-flex align-items-center hp-p1-body py-4 px-10 hp-transition hp-hover-bg-primary-4 hp-hover-bg-dark-primary hp-hover-bg-dark-80 rounded" style="margin-left: -10px; margin-right: -10px;">
                                                         <i class="iconly-Curved-Game me-8" style="font-size: 16px;"></i>
-
                                                         <span class="hp-ml-8"><%= gettext "Support" %></span>
                                                     </a>
                                                 </div>
@@ -113,7 +114,7 @@
             <div class="offcanvas-header justify-content-between align-items-end me-16 ms-24 mt-16 p-0">
                 <div class="w-auto px-0">
                     <div class="hp-header-logo d-flex align-items-end">
-                        <a href={Routes.page_path(@conn, :dashboard)}>
+                        <a href={Routes.page_path(@conn, :users)}>
                             <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                             <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                             <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -142,7 +143,7 @@
 
                             <div class="w-auto px-0">
                                 <div class="hp-header-logo d-flex align-items-end">
-                                    <a href={Routes.page_path(@conn, :dashboard)}>
+                                    <a href={Routes.page_path(@conn, :users)}>
                                         <img class="hp-logo hp-sidebar-visible" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                         <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-none" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
                                         <img class="hp-logo hp-sidebar-hidden hp-dir-none hp-dark-block" src={Routes.static_path(@conn, "/images/ico.png")} alt="logo">
@@ -255,7 +256,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="javascript:;"><%= gettext "Dashboard" %></a>
+                                        <a href={Routes.page_path(@conn, :dashboard)}><%= gettext "Dashboard" %></a>
                                     </li>
                                     <li class="breadcrumb-item active">
                                         <%= gettext "Users" %>
@@ -294,27 +295,26 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr v-for="user in users">
-                                            <td>
-                                              <a href="javascript:;">
-                                                <div class="avatar-item avatar-lg d-flex align-items-center justify-content-center bg-primary-4 hp-bg-dark-primary text-primary hp-text-color-dark-0 rounded-circle">
-                                                  <i class="iconly-Light-User"></i>
-                                                </div>
-                                              </a>
-                                            </td>
-                                            <td style="text-align: center">${user.name}</td>
-                                            <td style="text-align: center">${user.email}</td>
-                                            <td style="text-align: center">${user.role}</td>
-                                            <td style="text-align: center">${formatDatetime(user.createdAt)}</td>
-                                            <td>
-                                            <!--
-                                                <button @click="editUserAction(user.id)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80"><%= gettext "Edit" %></button>-->
-                                                <button @click="deleteUserAction(user.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2"><%= gettext "Delete" %></button>
-                                            </td>
-                                        </tr>
-                                        <tr v-if="users.length == 0">
-                                            <td colspan="6" style="text-align: center;"><%= gettext "No Records Found!" %></td>
-                                        </tr>
+                                      <tr v-for="user in users">
+                                        <td>
+                                          <a href="javascript:;">
+                                            <div class="avatar-item avatar-lg d-flex align-items-center justify-content-center bg-primary-4 hp-bg-dark-primary text-primary hp-text-color-dark-0 rounded-circle">
+                                              <i class="iconly-Light-User"></i>
+                                            </div>
+                                          </a>
+                                        </td>
+                                        <td style="text-align: center">${user.name}</td>
+                                        <td style="text-align: center">${user.email}</td>
+                                        <td style="text-align: center">${user.role}</td>
+                                        <td style="text-align: center">${formatDatetime(user.createdAt)}</td>
+                                        <td>
+                                          <button @click="editUserAction(user.id)" class="btn btn-dashed btn-sm text-black-100 border-black-100 hp-hover-text-color-black-80 hp-hover-border-color-black-80" data-bs-toggle="modal" data-bs-target="#edit_user_modal"><%= gettext "Edit" %></button>
+                                          <button @click="deleteUserAction(user.id)" class="btn btn-dashed btn-sm text-danger border-danger hp-hover-text-color-danger-2 hp-hover-border-color-danger-2"><%= gettext "Delete" %></button>
+                                        </td>
+                                      </tr>
+                                      <tr v-if="users.length == 0">
+                                        <td colspan="6" style="text-align: center;"><%= gettext "No Records Found!" %></td>
+                                      </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -404,12 +404,70 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="edit_user_modal" tabindex="-1" aria-labelledby="editUserLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header py-16 px-24">
+                            <h5 class="modal-title" id="editUserLabel"><%= gettext "Edit User" %></h5>
+                            <button type="button" class="btn-close hp-bg-none d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="ri-close-line hp-text-color-dark-0 lh-1" style="font-size: 24px;"></i>
+                            </button>
+                        </div>
+
+                        <div class="divider m-0"></div>
+
+                        <form id="update_user_form" action={Routes.user_path(@conn, :update, "UUID")} method="post" v-on:submit.prevent="updateUserAction">
+                            <input type="hidden" value="" name="uuid">
+                            <div class="modal-body">
+                                <div class="row gx-8">
+                                    <div class="col-12">
+                                        <div class="mb-24">
+                                            <label class="form-label"><%= gettext "Nick Name" %></label>
+                                            <input type="text" class="form-control" name="name" required="required" minlength="2" maxlength="60">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="mb-24">
+                                            <label class="form-label"><%= gettext "Role" %></label>
+                                            <select class="form-select" name="role" required="required">
+                                                <option value="regular" selected><%= gettext "Regular" %></option>
+                                                <option value="super"><%= gettext "Super" %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="mb-24">
+                                            <label class="form-label"><%= gettext "Email" %></label>
+                                            <input type="email" class="form-control" name="email" required="required">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="mb-24">
+                                            <label class="form-label"><%= gettext "New Password" %></label>
+                                            <input type="password" class="form-control" name="password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer pt-0 px-24 pb-24">
+                                <div class="divider"></div>
+                                <button type="submit" class="m-0 btn btn-primary w-100" :disabled="isInProgress"><%= gettext "Submit" %></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <footer class="w-100 py-18 px-16 py-sm-24 px-sm-32 hp-bg-color-black-20 hp-bg-color-dark-90">
             <div class="row">
                 <div class="col-12">
-                    <p class="hp-badge-text fw-semibold mb-0 text-center text-sm-start hp-text-color-dark-30"><%= gettext "Copyright © 2024 Clivern. All rights Reserved" %></p>
+                    <p class="hp-badge-text fw-semibold mb-0 text-center text-sm-start hp-text-color-dark-30"><%= gettext "Copyright © 2025 Clivern. All rights Reserved" %></p>
                 </div>
             </div>
         </footer>

@@ -12,18 +12,21 @@ defmodule ScutiWeb.Router do
     plug :put_root_layout, {ScutiWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :add_server_header
     plug Scuti.Middleware.Logger
     plug Scuti.Middleware.UIAuthMiddleware
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :add_server_header
     plug Scuti.Middleware.Logger
     plug Scuti.Middleware.APIAuthMiddleware
   end
 
   pipeline :pub do
     plug :accepts, ["json"]
+    plug :add_server_header
     plug Scuti.Middleware.Logger
   end
 
@@ -83,9 +86,6 @@ defmodule ScutiWeb.Router do
     put "/team/:uuid", TeamController, :update
     delete "/team/:uuid", TeamController, :delete
 
-    # Settings Endpoint
-    put "/settings", SettingsController, :update
-
     # HostGroup CRUD
     get "/group", HostGroupController, :list
     post "/group", HostGroupController, :create
@@ -110,8 +110,19 @@ defmodule ScutiWeb.Router do
     # Task CRUD
     get "/task/:uuid", TaskController, :index
 
-    # Profile Endpoint
-    post "/profile", ProfileController, :update
+    # Settings Endpoints
+    put "/action/update_settings", SettingsController, :update
+    # Profile Endpoints
+    put "/action/update_profile", ProfileController, :update
+    # Fetch API Key Endpoint
+    get "/action/fetch_api_key", ProfileController, :fetch_api_key
+    # Rotate API Key Endpoint
+    put "/action/rotate_api_key", ProfileController, :rotate_api_key
+  end
+
+  defp add_server_header(conn, _opts) do
+    conn
+    |> put_resp_header("x-server-version", "scuti/0.5.11")
   end
 
   # Enables LiveDashboard only for development

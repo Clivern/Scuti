@@ -5,5 +5,6 @@
 defmodule Scuti.Repo do
   use Ecto.Repo,
     otp_app: :scuti,
-    adapter: Ecto.Adapters.Postgres
+    adapter: Ecto.Adapters.Postgres,
+    prepare: :unnamed
 end

@@ -22,10 +22,7 @@ defmodule Scuti.Model.Deployment do
 
     # :os_upgrade || :distribution_upgrade || :custom_system_patch
     field :patch_type, :string
-    # ONLY IF patch_type IS :upgrade
-    field :pkgs_to_upgrade, :string
-    # ONLY IF patch_type IS :upgrade
-    field :pkgs_to_exclude, :string
+
     # ALWAYS Available
     field :pre_patch_script, :string
     field :patch_script, :string
@@ -41,6 +38,7 @@ defmodule Scuti.Model.Deployment do
     # :once || :recursive
     field :schedule_type, :string
     field :schedule_time, :utc_datetime
+    field :recurrence, :string
 
     # :unknown || :pending || :running || :success || :failure || :skipped
     field :last_status, :string
@@ -60,8 +58,6 @@ defmodule Scuti.Model.Deployment do
       :hosts_filter,
       :host_groups_filter,
       :patch_type,
-      :pkgs_to_upgrade,
-      :pkgs_to_exclude,
       :pre_patch_script,
       :patch_script,
       :post_patch_script,
@@ -70,6 +66,7 @@ defmodule Scuti.Model.Deployment do
       :rollout_strategy_value,
       :schedule_type,
       :schedule_time,
+      :recurrence,
       :last_status,
       :last_run_at
     ])
@@ -81,14 +78,8 @@ defmodule Scuti.Model.Deployment do
       :hosts_filter,
       :host_groups_filter,
       :patch_type,
-      # :pkgs_to_upgrade,
-      # :pkgs_to_exclude,
-      # :pre_patch_script,
-      # :patch_script,
-      # :post_patch_script,
       :post_patch_reboot_option,
       :rollout_strategy,
-      # :rollout_strategy_value,
       :schedule_type,
       :schedule_time,
       :last_status,

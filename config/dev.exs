@@ -47,7 +47,9 @@ config :scuti, ScutiWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: System.get_env("APP_SECRET") || "koPmu7TJCwD8mttV9vgWUeU7iuu/zTPOR3sX4UalM9KkYEVGPfyi0PeTVzu1TT8C",
+  secret_key_base:
+    System.get_env("APP_SECRET") ||
+      "koPmu7TJCwD8mttV9vgWUeU7iuu/zTPOR3sX4UalM9KkYEVGPfyi0PeTVzu1TT8C",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}

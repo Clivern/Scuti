@@ -53,7 +53,7 @@ defmodule Scuti.Module.HostGroupModule do
           description: data[:description] || group.description,
           team_id: data[:team_id] || group.team_id,
           labels: data[:labels] || group.labels,
-          remote_join: data[:remote_join] || group.remote_join
+          remote_join: data[:remote_join] || false
         }
 
         case HostGroupContext.update_group(group, new_group) do
@@ -87,15 +87,14 @@ defmodule Scuti.Module.HostGroupModule do
   @doc """
   Get user host groups
   """
-  def get_groups(user_id, offset, limit) do
-    get_user_teams(user_id)
-    |> HostGroupContext.get_groups_by_teams(offset, limit)
+  def get_user_groups(user_id, offset, limit) do
+    HostGroupContext.get_groups_by_teams(get_user_teams(user_id), offset, limit)
   end
 
   @doc """
   Get user host groups
   """
-  def count_groups(user_id) do
+  def count_user_groups(user_id) do
     get_user_teams(user_id)
     |> count_groups_by_teams()
   end
@@ -111,7 +110,13 @@ defmodule Scuti.Module.HostGroupModule do
   Get Host Group by UUID
   """
   def get_group_by_uuid(uuid) do
-    HostGroupContext.get_group_by_uuid(uuid)
+    case HostGroupContext.get_group_by_uuid(uuid) do
+      nil ->
+        {:not_found, "Host group with ID #{uuid} not found"}
+
+      group ->
+        {:ok, group}
+    end
   end
 
   @doc """
@@ -119,6 +124,13 @@ defmodule Scuti.Module.HostGroupModule do
   """
   def get_groups_by_teams(teams_ids, offset, limit) do
     HostGroupContext.get_groups_by_teams(teams_ids, offset, limit)
+  end
+
+  @doc """
+  Get Host Groups by Team List
+  """
+  def get_groups_by_teams(teams_ids) do
+    HostGroupContext.get_groups_by_teams(teams_ids)
   end
 
   @doc """
@@ -158,6 +170,13 @@ defmodule Scuti.Module.HostGroupModule do
   """
   def validate_team_uuid(uuid) do
     TeamContext.validate_team_uuid(uuid)
+  end
+
+  @doc """
+  Get group ID with UUID
+  """
+  def get_group_id_with_uuid(group_uuid) do
+    HostGroupContext.get_group_id_with_uuid(group_uuid)
   end
 
   @doc """

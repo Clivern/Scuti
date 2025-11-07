@@ -5,6 +5,10 @@
 defmodule Scuti.Context.DeploymentContext do
   @moduledoc """
   Deployment Context Module
+
+  This module is used for managing deployments and their metadata.
+  This module provides functions to create, retrieve, update, and delete
+  deployments and their associated metadata.
   """
 
   import Ecto.Query
@@ -13,7 +17,7 @@ defmodule Scuti.Context.DeploymentContext do
   alias Scuti.Model.{DeploymentMeta, Deployment, HostGroup, Host}
 
   @doc """
-  Get a new deployment
+  Create a new deployment with the given attributes.
   """
   def new_deployment(attrs \\ %{}) do
     %{
@@ -23,8 +27,6 @@ defmodule Scuti.Context.DeploymentContext do
       hosts_filter: attrs.hosts_filter,
       host_groups_filter: attrs.host_groups_filter,
       patch_type: attrs.patch_type,
-      pkgs_to_upgrade: attrs.pkgs_to_upgrade,
-      pkgs_to_exclude: attrs.pkgs_to_exclude,
       pre_patch_script: attrs.pre_patch_script,
       patch_script: attrs.patch_script,
       post_patch_script: attrs.post_patch_script,
@@ -33,6 +35,7 @@ defmodule Scuti.Context.DeploymentContext do
       rollout_strategy_value: attrs.rollout_strategy_value,
       schedule_type: attrs.schedule_type,
       schedule_time: attrs.schedule_time,
+      recurrence: attrs.recurrence,
       last_status: attrs.last_status,
       last_run_at: attrs.last_run_at,
       uuid: Map.get(attrs, :uuid, Ecto.UUID.generate())
@@ -40,7 +43,7 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Get a deployment meta
+  Create a new deployment meta with the given attributes.
   """
   def new_meta(attrs \\ %{}) do
     %{
@@ -51,7 +54,7 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Create a new deployment
+  Create a new deployment in the database.
   """
   def create_deployment(attrs \\ %{}) do
     %Deployment{}
@@ -60,14 +63,21 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Retrieve a deployment by ID
+  Retrieve a deployment by its ID.
   """
   def get_deployment_by_id(id) do
     Repo.get(Deployment, id)
   end
 
   @doc """
-  Get deployment by UUID
+  Validate if a deployment ID exists in the database.
+  """
+  def validate_deployment_id(id) do
+    !!get_deployment_by_id(id)
+  end
+
+  @doc """
+  Get a deployment by its UUID.
   """
   def get_deployment_by_uuid(uuid) do
     from(
@@ -78,7 +88,40 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Get deployment target hosts by id
+  Validate if a deployment UUID exists in the database.
+  """
+  def validate_deployment_uuid(uuid) do
+    !!get_deployment_by_uuid(uuid)
+  end
+
+  @doc """
+  Retrieve a deployment by its ID and team IDs.
+  """
+  def get_deployment_by_id_teams(id, teams_ids) do
+    from(
+      d in Deployment,
+      where: d.id == ^id,
+      where: d.team_id in ^teams_ids
+    )
+    |> limit(1)
+    |> Repo.one()
+  end
+
+  @doc """
+  Retrieve a deployment by its UUID and team IDs.
+  """
+  def get_deployment_by_uuid_teams(uuid, teams_ids) do
+    from(
+      d in Deployment,
+      where: d.uuid == ^uuid,
+      where: d.team_id in ^teams_ids
+    )
+    |> limit(1)
+    |> Repo.one()
+  end
+
+  @doc """
+  Get target hosts for a specific deployment by its ID.
   """
   def get_deployment_target_hosts(id) do
     deployment = get_deployment_by_id(id)
@@ -147,7 +190,7 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Update a deployment
+  Update an existing deployment with new attributes.
   """
   def update_deployment(deployment, attrs) do
     deployment
@@ -156,21 +199,34 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Delete a deployment
+  Delete a specified deployment from the database.
   """
   def delete_deployment(deployment) do
     Repo.delete(deployment)
   end
 
   @doc """
-  Retrieve all deployments
+  Retrieve all deployments from the database.
   """
   def get_deployments() do
     Repo.all(Deployment)
   end
 
   @doc """
-  Retrieve deployments
+  Get deployment by UUID with locking
+  """
+  def get_deployment_by_uuid_with_locking(uuid) do
+    from(
+      d in Deployment,
+      where: d.uuid == ^uuid
+    )
+    |> lock("FOR UPDATE")
+    |> limit(1)
+    |> Repo.one()
+  end
+
+  @doc """
+  Retrieve a paginated list of deployments with an offset and limit.
   """
   def get_deployments(offset, limit) do
     from(d in Deployment,
@@ -182,7 +238,7 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Retrieve deployments by team id
+  Retrieve deployments associated with a specific team ID in a paginated format.
   """
   def get_deployments_by_team(team_id, offset, limit) do
     from(d in Deployment,
@@ -194,7 +250,7 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Retrieve deployments by team ids
+  Retrieve deployments associated with specific team IDs in a paginated format.
   """
   def get_deployments_by_teams(teams_ids, offset, limit) do
     from(d in Deployment,
@@ -207,7 +263,7 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Retrieve pending deployments
+  Retrieve pending deployments scheduled for once type execution.
   """
   def get_pending_once_deployments() do
     from(d in Deployment,
@@ -219,7 +275,17 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Count deployments by team ids
+  Count total number of deployments in the database.
+  """
+  def count_deployments() do
+    from(d in Deployment,
+      select: count(d.id)
+    )
+    |> Repo.one()
+  end
+
+  @doc """
+  Count total number of deployments associated with specific team IDs.
   """
   def count_deployments_by_teams(teams_ids) do
     from(d in Deployment,
@@ -230,7 +296,7 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Create a new deployment meta
+  Create a new deployment meta entry in the database with given attributes.
   """
   def create_deployment_meta(attrs \\ %{}) do
     %DeploymentMeta{}
@@ -239,14 +305,14 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Retrieve a deployment meta by id
+  Retrieve a specific deployment meta entry by its ID.
   """
   def get_deployment_meta_by_id(id) do
     Repo.get(DeploymentMeta, id)
   end
 
   @doc """
-  Update a deployment meta
+  Update an existing deployment meta entry with new attributes.
   """
   def update_deployment_meta(deployment_meta, attrs) do
     deployment_meta
@@ -255,14 +321,14 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Delete a deployment meta
+  Delete a specified deployment meta entry from the database.
   """
   def delete_deployment_meta(deployment_meta) do
     Repo.delete(deployment_meta)
   end
 
   @doc """
-  Get deployment meta by deployment id and key
+  Get a specific deployment meta entry by its associated deployment ID and key.
   """
   def get_deployment_meta_by_id_key(deployment_id, meta_key) do
     from(
@@ -274,7 +340,7 @@ defmodule Scuti.Context.DeploymentContext do
   end
 
   @doc """
-  Get deployment metas
+  Retrieve all metadata entries associated with a specific deployment ID.
   """
   def get_deployment_metas(deployment_id) do
     from(

@@ -5,6 +5,10 @@
 defmodule Scuti.Context.TaskContext do
   @moduledoc """
   Task Context Module
+
+  This module provides functions to manage tasks, task logs, and task metadata
+  within the application. It includes functionalities for creating, retrieving,
+  updating, and deleting tasks and their associated logs and metadata.
   """
 
   import Ecto.Query
@@ -13,7 +17,7 @@ defmodule Scuti.Context.TaskContext do
   alias Scuti.Model.{Task, TaskMeta, TaskLog}
 
   @doc """
-  Get a new task
+  Create a new task with the given attributes.
   """
   def new_task(attrs \\ %{}) do
     %{
@@ -27,7 +31,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Get a new task log
+  Create a new task log with the given attributes.
   """
   def new_task_log(attrs \\ %{}) do
     %{
@@ -40,7 +44,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Get a task meta
+  Create a new task metadata entry.
   """
   def new_meta(meta \\ %{}) do
     %{
@@ -51,7 +55,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Create a new task
+  Create a new task in the database.
   """
   def create_task(attrs \\ %{}) do
     %Task{}
@@ -60,7 +64,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Create a new task log
+  Create a new task log in the database.
   """
   def create_task_log(attrs \\ %{}) do
     %TaskLog{}
@@ -69,14 +73,21 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Retrieve a task by ID
+  Retrieve a task by its ID.
   """
   def get_task_by_id(id) do
     Repo.get(Task, id)
   end
 
   @doc """
-  Get task by uuid
+  Validate a task by its ID.
+  """
+  def validate_task_id(id) do
+    !!get_task_by_id(id)
+  end
+
+  @doc """
+  Retrieve a task by its UUID.
   """
   def get_task_by_uuid(uuid) do
     from(
@@ -87,7 +98,14 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Get task log by host id and task id
+  Validate a task by its UUID.
+  """
+  def validate_task_uuid(uuid) do
+    !!get_task_by_uuid(uuid)
+  end
+
+  @doc """
+  Retrieve a task log by host ID and task ID.
   """
   def get_task_log(host_id, task_id) do
     from(
@@ -99,7 +117,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Get task logs by host id
+  Retrieve all logs associated with a specific task ID.
   """
   def get_task_logs(task_id) do
     from(
@@ -110,7 +128,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Update a task
+  Update an existing task with new attributes.
   """
   def update_task(task, attrs) do
     task
@@ -119,7 +137,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Update a task log
+  Update an existing task log with new attributes.
   """
   def update_task_log(task, attrs) do
     task
@@ -128,21 +146,21 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Delete a task
+  Delete a specific task from the database.
   """
   def delete_task(task) do
     Repo.delete(task)
   end
 
   @doc """
-  Retrieve all tasks
+  Retrieve all tasks from the database.
   """
   def get_tasks() do
     Repo.all(Task)
   end
 
   @doc """
-  Retrieve tasks
+  Retrieve a paginated list of tasks from the database.
   """
   def get_tasks(offset, limit) do
     from(t in Task,
@@ -153,7 +171,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Retrieve pending tasks
+  Retrieve all pending tasks ordered by their creation date.
   """
   def get_pending_tasks() do
     from(t in Task,
@@ -164,7 +182,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Retrieve deployment tasks
+  Retrieve all tasks associated with a specific deployment ID.
   """
   def get_deployment_tasks(deployment_id) do
     from(t in Task,
@@ -175,7 +193,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Create a new task meta
+  Create a new metadata entry for a specific task in the database.
   """
   def create_task_meta(attrs \\ %{}) do
     %TaskMeta{}
@@ -184,14 +202,14 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Retrieve a task meta by id
+  Retrieve a specific metadata entry by its ID.
   """
   def get_task_meta_by_id(id) do
     Repo.get(TaskMeta, id)
   end
 
   @doc """
-  Update a task meta
+  Update an existing metadata entry with new attributes.
   """
   def update_task_meta(task_meta, attrs) do
     task_meta
@@ -200,14 +218,14 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Delete a task meta
+  Delete a specific metadata entry from the database.
   """
   def delete_task_meta(task_meta) do
     Repo.delete(task_meta)
   end
 
   @doc """
-  Get task meta by task id and key
+  Get specific metadata by its associated task ID and key.
   """
   def get_task_meta_by_id_key(task_id, meta_key) do
     from(
@@ -219,7 +237,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Get task metas
+  Get all metadata entries associated with a specific task ID.
   """
   def get_task_metas(task_id) do
     from(
@@ -230,7 +248,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Count updated hosts
+  Count hosts that were updated successfully for a given task.
   """
   def count_updated_hosts(task_id) do
     from(t in TaskLog,
@@ -242,7 +260,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Count failed hosts
+  Count hosts that failed to update for a given task.
   """
   def count_failed_hosts(task_id) do
     from(t in TaskLog,
@@ -254,7 +272,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Check if host updated successfully
+  Check if a specific host was updated successfully for a given task.
   """
   def is_host_updated_successfully(host_id, task_id) do
     from(t in TaskLog,
@@ -267,7 +285,7 @@ defmodule Scuti.Context.TaskContext do
   end
 
   @doc """
-  Check if host failed to update
+  Check if a specific host failed to update for a given task.
   """
   def is_host_failed_to_update(host_id, task_id) do
     from(t in TaskLog,

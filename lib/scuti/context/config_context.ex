@@ -5,6 +5,8 @@
 defmodule Scuti.Context.ConfigContext do
   @moduledoc """
   Config Context Module
+
+  Manages configuration settings, providing functions for CRUD operations.
   """
 
   import Ecto.Query
@@ -13,7 +15,8 @@ defmodule Scuti.Context.ConfigContext do
   alias Scuti.Model.Config
 
   @doc """
-  Get a new config
+  Initializes a new config with given attributes.
+  Generates a UUID if not provided.
   """
   def new_config(attrs \\ %{}) do
     %{
@@ -24,7 +27,7 @@ defmodule Scuti.Context.ConfigContext do
   end
 
   @doc """
-  Create a new config
+  Creates and saves a new config to the database.
   """
   def create_config(attrs \\ %{}) do
     %Config{}
@@ -33,14 +36,14 @@ defmodule Scuti.Context.ConfigContext do
   end
 
   @doc """
-  Get a config by id
+  Retrieves a config by its ID.
   """
   def get_config_by_id(id) do
     Repo.get(Config, id)
   end
 
   @doc """
-  Get a config by uuid
+  Retrieves a config by its UUID.
   """
   def get_config_by_uuid(uuid) do
     from(
@@ -52,7 +55,7 @@ defmodule Scuti.Context.ConfigContext do
   end
 
   @doc """
-  Get a config by name
+  Retrieves a config by its name.
   """
   def get_config_by_name(name) do
     from(
@@ -64,7 +67,7 @@ defmodule Scuti.Context.ConfigContext do
   end
 
   @doc """
-  Update a config
+  Updates an existing config with new attributes.
   """
   def update_config(config, attrs) do
     config
@@ -73,7 +76,7 @@ defmodule Scuti.Context.ConfigContext do
   end
 
   @doc """
-  Delete a config
+  Deletes a specified config from the database.
   """
   def delete_config(config) do
     Repo.delete(config)

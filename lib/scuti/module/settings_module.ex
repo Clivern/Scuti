@@ -26,15 +26,9 @@ defmodule Scuti.Module.SettingsModule do
   end
 
   @doc """
-  Get Config
+  Get Config By Name
   """
   def get_config(name, default \\ "") do
-    case ConfigContext.get_config_by_name(name) do
-      nil ->
-        default
-
-      config ->
-        config.value
-    end
+    (ConfigContext.get_config_by_name(name) || %{value: default}).value
   end
 end

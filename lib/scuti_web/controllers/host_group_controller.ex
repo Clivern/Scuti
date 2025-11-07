@@ -19,10 +19,8 @@ defmodule ScutiWeb.HostGroupController do
 
   @default_list_limit 10
   @default_list_offset 0
-
   @name_min_length 2
   @name_max_length 60
-
   @description_min_length 2
   @description_max_length 250
 
@@ -78,8 +76,8 @@ defmodule ScutiWeb.HostGroupController do
       if conn.assigns[:is_super] do
         {HostGroupModule.get_groups(offset, limit), HostGroupModule.count_groups()}
       else
-        {HostGroupModule.get_groups(conn.assigns[:user_id], offset, limit),
-         HostGroupModule.count_groups(conn.assigns[:user_id])}
+        {HostGroupModule.get_user_groups(conn.assigns[:user_id], offset, limit),
+         HostGroupModule.count_user_groups(conn.assigns[:user_id])}
       end
 
     render(conn, "list.json", %{
@@ -152,6 +150,7 @@ defmodule ScutiWeb.HostGroupController do
       {:ok, _} ->
         result =
           HostGroupModule.update_group(%{
+            uuid: params["uuid"],
             name: params["name"],
             description: params["description"],
             team_id: TeamModule.get_team_id_with_uuid(params["team_id"]),

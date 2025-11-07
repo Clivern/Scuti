@@ -5,6 +5,10 @@
 defmodule Scuti.Context.HostContext do
   @moduledoc """
   Host Context Module
+
+  This module provides functions to manage hosts and their metadata
+  within the application, including creation, retrieval, updating,
+  and deletion of hosts and host metadata.
   """
 
   import Ecto.Query
@@ -13,7 +17,7 @@ defmodule Scuti.Context.HostContext do
   alias Scuti.Model.{HostMeta, Host}
 
   @doc """
-  Get a new host
+  Create a new host with the given attributes.
   """
   def new_host(attrs \\ %{}) do
     %{
@@ -30,7 +34,7 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Get a host meta
+  Create a new host metadata entry with the given attributes.
   """
   def new_meta(attrs \\ %{}) do
     %{
@@ -41,7 +45,7 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Create a new host
+  Create a new host in the database.
   """
   def create_host(attrs \\ %{}) do
     %Host{}
@@ -50,14 +54,21 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Retrieve a host by ID
+  Retrieve a host by its ID.
   """
   def get_host_by_id(id) do
     Repo.get(Host, id)
   end
 
   @doc """
-  Get host by UUID
+  Validate if a host ID exists in the database.
+  """
+  def validate_host_id(id) do
+    !!get_host_by_id(id)
+  end
+
+  @doc """
+  Retrieve a host by its UUID.
   """
   def get_host_by_uuid(uuid) do
     from(
@@ -68,7 +79,14 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Update a host
+  Validate if a host UUID exists in the database.
+  """
+  def validate_host_uuid(uuid) do
+    !!get_host_by_uuid(uuid)
+  end
+
+  @doc """
+  Update an existing host with new attributes.
   """
   def update_host(host, attrs) do
     host
@@ -77,21 +95,21 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Delete a host
+  Delete a specified host from the database.
   """
   def delete_host(host) do
     Repo.delete(host)
   end
 
   @doc """
-  Retrieve all hosts
+  Retrieve all hosts from the database.
   """
   def get_hosts() do
     Repo.all(Host)
   end
 
   @doc """
-  Retrieve hosts
+  Retrieve a paginated list of hosts from the database.
   """
   def get_hosts(offset, limit) do
     from(h in Host,
@@ -103,22 +121,21 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Get host as down if x seconds has passed and agent didn't send any
-  heartbeat
+  Mark hosts as offline if they haven't sent a heartbeat within the specified time frame (in seconds).
   """
-  def mark_hosts_down(seconds) do
+  def mark_hosts_as_offline(seconds) do
     older_than_one_minute = DateTime.utc_now() |> DateTime.add(-seconds)
 
     hosts_to_update =
       Repo.all(
         from h in Host,
-          where: h.status != "down",
+          where: h.status != "offline",
           where: h.reported_at < ^older_than_one_minute
       )
 
     Enum.each(hosts_to_update, fn host ->
       host
-      |> Host.changeset(%{status: "down"})
+      |> Host.changeset(%{status: "offline"})
       |> Repo.update()
     end)
 
@@ -126,7 +143,33 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Retrieve hosts by host group id
+  Retrieve a host by its ID and team IDs.
+  """
+  def get_host_by_id_groups(id, groups_ids) do
+    from(
+      h in Host,
+      where: h.id == ^id,
+      where: h.host_group_id in ^groups_ids
+    )
+    |> limit(1)
+    |> Repo.one()
+  end
+
+  @doc """
+  Retrieve a host by its UUID and team IDs.
+  """
+  def get_host_by_uuid_groups(uuid, groups_ids) do
+    from(
+      h in Host,
+      where: h.uuid == ^uuid,
+      where: h.host_group_id in ^groups_ids
+    )
+    |> limit(1)
+    |> Repo.one()
+  end
+
+  @doc """
+  Retrieve all hosts associated with a specific host group ID.
   """
   def get_hosts_by_host_group(host_group_id, offset, limit) do
     from(h in Host,
@@ -139,7 +182,7 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Count hosts by host group id
+  Count the number of hosts associated with a specific host group ID.
   """
   def count_hosts_by_host_group(host_group_id) do
     from(h in Host,
@@ -150,7 +193,7 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Create a new host meta
+  Create a new metadata entry for a host in the database.
   """
   def create_host_meta(attrs \\ %{}) do
     %HostMeta{}
@@ -159,14 +202,14 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Retrieve a host meta by id
+  Retrieve a specific metadata entry by its ID.
   """
   def get_host_meta_by_id(id) do
     Repo.get(HostMeta, id)
   end
 
   @doc """
-  Update a host meta
+  Update an existing metadata entry with new attributes.
   """
   def update_host_meta(host_meta, attrs) do
     host_meta
@@ -175,14 +218,14 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Delete a host meta
+  Delete a specified metadata entry from the database.
   """
   def delete_host_meta(host_meta) do
     Repo.delete(host_meta)
   end
 
   @doc """
-  Get host meta by host id and key
+  Retrieve specific metadata for a host by its ID and key.
   """
   def get_host_meta_by_id_key(host_id, meta_key) do
     from(
@@ -194,7 +237,7 @@ defmodule Scuti.Context.HostContext do
   end
 
   @doc """
-  Get host metas
+  Retrieve all metadata entries associated with a specific host ID.
   """
   def get_host_metas(host_id) do
     from(

@@ -14,6 +14,8 @@ defmodule ScutiWeb.MiscController do
   @app_name_min_length 2
   @app_name_max_length 60
 
+  import Plug.Conn
+
   alias Scuti.Module.InstallModule
   alias Scuti.Service.ValidatorService
   alias Scuti.Service.AuthService
@@ -70,14 +72,16 @@ defmodule ScutiWeb.MiscController do
       # Authenticate
       case AuthService.login(email, password) do
         {:success, session} ->
+          conn = fetch_session(conn)
+
           conn
           |> put_status(:ok)
+          |> put_session(:token, session.value)
+          |> put_session(:uid, session.user_id)
           |> render(
             "token_success.json",
             %{
-              message: "User logged in successfully!",
-              token: session.value,
-              user: session.user_id
+              message: "User logged in successfully!"
             }
           )
 
